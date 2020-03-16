@@ -18,7 +18,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
+find_package(parsian_msgs REQUIRED)
 find_package(Qt4 REQUIRED COMPONENTS QtNetwork QtCore)
 include(${QT_USE_FILE})
 file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.hpp)
@@ -36,7 +36,7 @@ target_include_directories(grsim PRIVATE
         include/parsian_protobuf_wrapper/grsim
         include/parsian_protobuf_wrapper/common
         )
-ament_target_dependencies(grsim rclcpp std_msgs)
+ament_target_dependencies(grsim rclcpp parsian_msgs)
 target_link_libraries(grsim ${QT_LIBRARIES})
 
 # install nodes

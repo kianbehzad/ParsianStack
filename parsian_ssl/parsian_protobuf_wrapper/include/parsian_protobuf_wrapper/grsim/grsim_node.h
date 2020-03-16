@@ -10,7 +10,7 @@
 #include "net/udpsend.h"
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "parsian_msgs/msg/parsian_robot_command.hpp"
 using std::placeholders::_1;
 
 
@@ -20,8 +20,8 @@ public:
     GrsimNode();
 
 private:
-    void topic_callback(const std_msgs::msg::String::SharedPtr msg) const;
-    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+    void topic_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg) const;
+    rclcpp::Subscription<parsian_msgs::msg::ParsianRobotCommand>::SharedPtr subscription_;
 };
 
 
