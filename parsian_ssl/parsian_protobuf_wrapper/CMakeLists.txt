@@ -19,17 +19,25 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(Qt4 REQUIRED COMPONENTS QtNetwork QtCore)
+include(${QT_USE_FILE})
+file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.hpp)
+qt4_wrap_cpp(QT_MOC_HPP ${QT_MOC})
+file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.cpp)
+
 
 # grsim node
 add_executable(grsim
         src/grsim/grsim_exec.cpp
         src/grsim/grsim_node.cpp
         src/common/net/udpsend.cpp
-        include/parsian_protobuf_wrapper/grsim/grsim_node.h
-        include/parsian_protobuf_wrapper/common/net/udpsend.h
         )
-target_include_directories(grsim PRIVATE include/parsian_protobuf_wrapper/grsim include/parsian_protobuf_wrapper/common)
+target_include_directories(grsim PRIVATE
+        include/parsian_protobuf_wrapper/grsim
+        include/parsian_protobuf_wrapper/common
+        )
 ament_target_dependencies(grsim rclcpp std_msgs)
+target_link_libraries(grsim ${QT_LIBRARIES})
 
 # install nodes
 install(TARGETS

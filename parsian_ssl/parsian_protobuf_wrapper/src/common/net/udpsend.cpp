@@ -1,6 +1,6 @@
-#include "parsian_protobuf_wrapper/common/net/udpsend.h"
+#include "net/udpsend.h"
 
-UDPSend::UDPSend(std::__cxx11::string address, int _port) { // : QObject(parent)
+UDPSend::UDPSend(std::string address, int _port) { // : QObject(parent)
     connect = true;
     QString add(address.c_str());
     host.setAddress(add);
@@ -10,7 +10,7 @@ UDPSend::UDPSend(std::__cxx11::string address, int _port) { // : QObject(parent)
 
 }
 
-void UDPSend::setIP(std::__cxx11::string _ip) {
+void UDPSend::setIP(std::string _ip) {
     QString add(_ip.c_str());
     connect = false;
     socket->disconnectFromHost();

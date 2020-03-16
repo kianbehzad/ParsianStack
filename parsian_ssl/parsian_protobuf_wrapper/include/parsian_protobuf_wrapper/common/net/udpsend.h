@@ -6,7 +6,6 @@
 #include <QHostAddress>
 #include <QString>
 #include <QByteArray>
-#include "ros/ros.h"
 
 
 class UDPSend { // : public QObject
@@ -14,8 +13,8 @@ class UDPSend { // : public QObject
 public:
     explicit UDPSend(std::string address, int _port);
     ~UDPSend();
-    void send(std::__cxx11::string buf);
-    void setIP(std::__cxx11::string _ip);
+    void send(std::string buf);
+    void setIP(std::string _ip);
     void setport(int _port);
 
 private:
