@@ -21,8 +21,14 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
 # grsim node
-add_executable(grsim src/grsim/grsim_exec.cpp src/grsim/grsim_node.cpp include/parsian_protobuf_wrapper/grsim/grsim_node.h)
-target_include_directories(grsim PRIVATE include/parsian_protobuf_wrapper/grsim)
+add_executable(grsim
+        src/grsim/grsim_exec.cpp
+        src/grsim/grsim_node.cpp
+        src/common/net/udpsend.cpp
+        include/parsian_protobuf_wrapper/grsim/grsim_node.h
+        include/parsian_protobuf_wrapper/common/net/udpsend.h
+        )
+target_include_directories(grsim PRIVATE include/parsian_protobuf_wrapper/grsim include/parsian_protobuf_wrapper/common)
 ament_target_dependencies(grsim rclcpp std_msgs)
 
 # install nodes
