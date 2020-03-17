@@ -2,7 +2,7 @@
 // Created by kian behzad on 3/14/20.
 //
 #include "rclcpp/rclcpp.hpp"
-#include "grsim_node.h"
+#include "parsian_protobuf_wrapper/grsim/grsim_node.h"
 
 int main(int argc, char * argv[])
 {

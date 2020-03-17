@@ -1,4 +1,4 @@
-#include "grsim_node.h"
+#include "parsian_protobuf_wrapper/grsim/grsim_node.h"
 
 GrsimNode::GrsimNode() : Node("grsim_node")
 {
@@ -8,5 +8,5 @@ GrsimNode::GrsimNode() : Node("grsim_node")
 
 void GrsimNode::topic_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg) const
 {
-    RCLCPP_INFO(this->get_logger(), "I heard: '%d'", msg->kick_speed);
+    RCLCPP_INFO(this->get_logger(), "I heard: '%d', '%d'", msg->kick_speed, knowledge::Robot::MAX_ROBOT_NUM);
 }
