@@ -7,9 +7,9 @@
 
 #include <memory>
 
-#include "parsian_protobuf_wrapper/common/net/udpsend.h"
 #include "parsian_msgs/msg/parsian_robot_command.hpp"
 #include "parsian_util/knowledge/general.h"
+#include <string>
 
 #include "rclcpp/rclcpp.hpp"
 using std::placeholders::_1;
@@ -21,8 +21,9 @@ public:
     GrsimNode();
 
 private:
-    void topic_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg) const;
-    rclcpp::Subscription<parsian_msgs::msg::ParsianRobotCommand>::SharedPtr subscription_;
+    void command_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg) const;
+    rclcpp::Subscription<parsian_msgs::msg::ParsianRobotCommand>::SharedPtr command_subscription[knowledge::Robot::MAX_ROBOT_NUM];
+
 };
 
 

@@ -42,8 +42,8 @@ foreach(file ${PROTOBUF_DEFINITION_FILES})
             RESULT_VARIABLE PROTOBUF_RESULT
             OUTPUT_VARIABLE PROTOBUF_OUTPUT_VARIABLE
             ERROR_VARIABLE PROTOBUF_ERROR)
-#    message(WARNING "hello ${file} ${PROTOBUF_RESULT} ${PROTOBUF_OUTPUT_VARIABLE} ${PROTOBUF_ERROR}")
 endforeach()
+
 
 # include paths
 include_directories(
@@ -55,7 +55,6 @@ include_directories(
 add_executable(grsim
         src/grsim/grsim_exec.cpp
         src/grsim/grsim_node.cpp
-        src/common/net/udpsend.cpp
         )
 ament_target_dependencies(grsim rclcpp parsian_msgs)
 target_link_libraries(grsim ${QT_LIBRARIES})

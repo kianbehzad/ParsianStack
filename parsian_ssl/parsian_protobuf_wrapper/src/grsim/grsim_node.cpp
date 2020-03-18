@@ -2,11 +2,11 @@
 
 GrsimNode::GrsimNode() : Node("grsim_node")
 {
-    subscription_ = this->create_subscription<parsian_msgs::msg::ParsianRobotCommand>(
-            "topic", 10, std::bind(&GrsimNode::topic_callback, this, _1));
+    for(int i{}; i < knowledge::Robot::MAX_ROBOT_NUM; i++)
+        command_subscription[i] = this->create_subscription<parsian_msgs::msg::ParsianRobotCommand>("/agent_" + std::to_string(i) + "/command", 10, std::bind(&GrsimNode::command_callback, this, _1));
 }
 
-void GrsimNode::topic_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg) const
+void GrsimNode::command_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg) const
 {
     RCLCPP_INFO(this->get_logger(), "I heard: '%d', '%d'", msg->kick_speed, knowledge::Robot::MAX_ROBOT_NUM);
 }
