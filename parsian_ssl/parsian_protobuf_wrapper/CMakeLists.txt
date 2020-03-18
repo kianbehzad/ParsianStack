@@ -21,10 +21,29 @@ find_package(rclcpp REQUIRED)
 find_package(parsian_msgs REQUIRED)
 find_package(parsian_util REQUIRED)
 find_package(Qt4 REQUIRED COMPONENTS QtNetwork QtCore)
+find_package(Protobuf REQUIRED)
+
+# Qt4 configuration
 include(${QT_USE_FILE})
 file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.hpp)
 qt4_wrap_cpp(QT_MOC_HPP ${QT_MOC})
 file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.cpp)
+
+# compile proto files
+set(proto_dir ${PROJECT_SOURCE_DIR}/proto/)
+file(GLOB PROTOBUF_DEFINITION_FILES "${proto_dir}/*.proto")
+set(PROTOBUF_INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/proto")
+set(PROTOBUF_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/include/parsian_protobuf_wrapper/proto")
+foreach(file ${PROTOBUF_DEFINITION_FILES})
+    set(PROTOBUF_COMMAND protoc ${file})
+    set(PROTOBUF_ARGUMENTS --proto_path=${PROTOBUF_INPUT_DIRECTORY} --cpp_out=${PROTOBUF_OUTPUT_DIRECTORY})
+    execute_process(COMMAND ${PROTOBUF_COMMAND} ${PROTOBUF_ARGUMENTS}
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            RESULT_VARIABLE PROTOBUF_RESULT
+            OUTPUT_VARIABLE PROTOBUF_OUTPUT_VARIABLE
+            ERROR_VARIABLE PROTOBUF_ERROR)
+#    message(WARNING "hello ${file} ${PROTOBUF_RESULT} ${PROTOBUF_OUTPUT_VARIABLE} ${PROTOBUF_ERROR}")
+endforeach()
 
 # include paths
 include_directories(
