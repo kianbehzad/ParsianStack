@@ -55,6 +55,7 @@ include_directories(
 add_executable(grsim
         src/grsim/grsim_exec.cpp
         src/grsim/grsim_node.cpp
+        src/common/net/udpsend.cpp
         )
 ament_target_dependencies(grsim rclcpp parsian_msgs)
 target_link_libraries(grsim ${QT_LIBRARIES})

@@ -13,6 +13,7 @@
 #include "parsian_msgs/msg/parsian_robot_command.hpp"
 #include "parsian_msgs/msg/parsian_world_model.hpp"
 #include "parsian_util/knowledge/general.h"
+#include "parsian_protobuf_wrapper/common/net/udpsend.h"
 
 #include "rclcpp/rclcpp.hpp"
 
@@ -36,6 +37,10 @@ private:
 
     void command_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg) const;
     rclcpp::Subscription<parsian_msgs::msg::ParsianRobotCommand>::SharedPtr command_subscription[knowledge::Robot::MAX_ROBOT_NUM];
+
+    UDPSend* udp_send;
+    std::string grsim_ip;
+    int grsim_command_listen_port;
 
 
 };

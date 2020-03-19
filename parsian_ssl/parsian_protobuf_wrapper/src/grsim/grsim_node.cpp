@@ -22,6 +22,12 @@ GrsimNode::GrsimNode(const rclcpp::NodeOptions & options) : Node("grsim_node", o
     // set up agent_command callbacks
     for(int i{}; i < knowledge::Robot::MAX_ROBOT_NUM; i++)
         command_subscription[i] = this->create_subscription<parsian_msgs::msg::ParsianRobotCommand>("/agent_" + std::to_string(i) + "/command", 10, std::bind(&GrsimNode::command_callback, this, _1));
+
+    // set up udp connection
+    grsim_ip = parameters_client->get_parameter("grsim_ip", grsim_ip);
+    grsim_command_listen_port = parameters_client->get_parameter("grsim_command_listen_port", grsim_command_listen_port);
+    RCLCPP_INFO(this->get_logger(), "stablish udp com: " + grsim_ip +":%d", grsim_command_listen_port);
+    udp_send = new UDPSend(grsim_ip, grsim_command_listen_port);
 }
 
 void GrsimNode::command_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg) const
@@ -43,7 +49,18 @@ void GrsimNode::define_params_change_callback_lambda_function()
             //do stuff
         }
         for (auto & changed_parameter : event->changed_parameters) {
-            RCLCPP_INFO(this->get_logger(), "changed");
+            if(changed_parameter.name == "grsim_ip")
+            {
+                grsim_ip = changed_parameter.value.string_value;
+                udp_send->setIP(grsim_ip);
+            }
+            else if(changed_parameter.name == "grsim_command_listen_port")
+            {
+                grsim_command_listen_port = changed_parameter.value.integer_value;
+                udp_send->setport(grsim_command_listen_port);
+            }
+
+            RCLCPP_INFO(this->get_logger(), "stablish udp com: " + grsim_ip +":%d", grsim_command_listen_port);
         }
         for (auto & deleted_parameter : event->deleted_parameters) {
             //do stuff
