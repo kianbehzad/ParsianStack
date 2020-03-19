@@ -8,6 +8,7 @@
 #include <memory>
 #include <chrono>
 #include <string>
+#include <functional>
 
 #include "parsian_msgs/msg/parsian_robot_command.hpp"
 #include "parsian_msgs/msg/parsian_world_model.hpp"
@@ -26,10 +27,16 @@ public:
     GrsimNode(const rclcpp::NodeOptions & options);
 
 private:
+    std::function<void(const rcl_interfaces::msg::ParameterEvent::SharedPtr)> params_change_callback;
+    rclcpp::Subscription<rcl_interfaces::msg::ParameterEvent>::SharedPtr parameter_event_sub;
+    void define_params_change_callback_lambda_function();
+
     void worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::SharedPtr msg) const;
+    rclcpp::Subscription<parsian_msgs::msg::ParsianWorldModel>::SharedPtr worldmodel_subscription;
+
     void command_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg) const;
     rclcpp::Subscription<parsian_msgs::msg::ParsianRobotCommand>::SharedPtr command_subscription[knowledge::Robot::MAX_ROBOT_NUM];
-    rclcpp::Subscription<parsian_msgs::msg::ParsianWorldModel>::SharedPtr worldmodel_subscription;
+
 
 };
 
