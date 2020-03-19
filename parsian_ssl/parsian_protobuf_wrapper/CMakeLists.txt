@@ -56,9 +56,12 @@ add_executable(grsim
         src/grsim/grsim_exec.cpp
         src/grsim/grsim_node.cpp
         src/common/net/udpsend.cpp
+        include/parsian_protobuf_wrapper/proto/grSim_Packet.pb.cc
+        include/parsian_protobuf_wrapper/proto/grSim_Commands.pb.cc
+        include/parsian_protobuf_wrapper/proto/grSim_Replacement.pb.cc
         )
 ament_target_dependencies(grsim rclcpp parsian_msgs)
-target_link_libraries(grsim ${QT_LIBRARIES})
+target_link_libraries(grsim ${QT_LIBRARIES} ${PROTOBUF_LIBRARIES})
 
 # install nodes
 install(TARGETS

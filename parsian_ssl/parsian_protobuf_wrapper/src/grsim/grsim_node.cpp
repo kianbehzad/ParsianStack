@@ -12,7 +12,7 @@ GrsimNode::GrsimNode(const rclcpp::NodeOptions & options) : Node("grsim_node", o
         RCLCPP_INFO(this->get_logger(), "service not available, waiting again...");
     }
 
-    // set up parameter change callback
+    // set up parameter-change callback
     define_params_change_callback_lambda_function();
     parameter_event_sub = parameters_client->on_parameter_event(params_change_callback);
 
@@ -28,11 +28,27 @@ GrsimNode::GrsimNode(const rclcpp::NodeOptions & options) : Node("grsim_node", o
     grsim_command_listen_port = parameters_client->get_parameter("grsim_command_listen_port", grsim_command_listen_port);
     RCLCPP_INFO(this->get_logger(), "stablish udp com: " + grsim_ip +":%d", grsim_command_listen_port);
     udp_send = new UDPSend(grsim_ip, grsim_command_listen_port);
+
+    // protobuf packets
+    grsim_commands = new grSim_Commands;
 }
 
 void GrsimNode::command_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg) const
 {
     RCLCPP_INFO(this->get_logger(), "robot_command: '%d', '%d'", msg->robot_id, msg->kick_speed);
+    grSim_Robot_Command* grsim_robot_command = grsim_commands->add_robot_commands();
+    grsim_robot_command->set_id(msg->robot_id);
+    grsim_robot_command->set_kickspeedx(msg->kick_speed / 100.0);
+    grsim_robot_command->set_kickspeedz(msg->kick_speedz / 200.0);
+    grsim_robot_command->set_veltangent(0);
+    grsim_robot_command->set_velnormal(0);
+    grsim_robot_command->set_velangular(0);
+    grsim_robot_command->set_wheel1(msg->wheel1);
+    grsim_robot_command->set_wheel2(msg->wheel2);
+    grsim_robot_command->set_wheel3(msg->wheel3);
+    grsim_robot_command->set_wheel4(msg->wheel4);
+    grsim_robot_command->set_spinner(msg->spinner != 0u);
+    grsim_robot_command->set_wheelsspeed(msg->wheels_speed != 0u);
 }
 
 void GrsimNode::worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::SharedPtr msg) const

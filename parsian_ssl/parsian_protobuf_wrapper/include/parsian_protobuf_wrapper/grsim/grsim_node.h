@@ -14,6 +14,8 @@
 #include "parsian_msgs/msg/parsian_world_model.hpp"
 #include "parsian_util/knowledge/general.h"
 #include "parsian_protobuf_wrapper/common/net/udpsend.h"
+#include "parsian_protobuf_wrapper/proto/grSim_Commands.pb.h"
+#include "parsian_protobuf_wrapper/proto/grSim_Packet.pb.h"
 
 #include "rclcpp/rclcpp.hpp"
 
@@ -41,6 +43,9 @@ private:
     UDPSend* udp_send;
     std::string grsim_ip;
     int grsim_command_listen_port;
+
+    grSim_Commands* grsim_commands;
+    grSim_Packet grsim_packet;
 
 
 };
