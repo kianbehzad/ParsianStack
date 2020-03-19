@@ -7,7 +7,7 @@
 int main(int argc, char * argv[])
 {
     rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<GrsimNode>());
+    rclcpp::spin(std::make_shared<GrsimNode>(rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true)));
     rclcpp::shutdown();
     return 0;
 }
