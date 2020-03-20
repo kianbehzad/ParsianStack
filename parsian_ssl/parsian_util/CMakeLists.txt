@@ -17,6 +17,7 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
 
 
 # include paths
@@ -24,27 +25,34 @@ include_directories(
         include
 )
 
-# export include directories for other packages
-ament_export_include_directories(include)
 
-
-# create general library
-add_library(core
-        src/core/field.cpp
+# create libknowledge library
+add_library(libknowledge SHARED
         src/core/knowledge.cpp
         )
+ament_target_dependencies(libknowledge rclcpp)
+ament_export_interfaces(export_libknowledge HAS_LIBRARY_TARGET)
+ament_export_libraries(libknowledge)
+ament_export_include_directories(include)
+ament_export_dependencies(
+        ament_cmake
+        rclcpp
+)
 
 
-
-# install nodes and libraries
-install(TARGETS
-        core
-        DESTINATION lib/${PROJECT_NAME}
-        )
-install(DIRECTORY include/${PROJECT_NAME}/
-        DESTINATION include/${PROJECT_NAME}
-        FILES_MATCHING PATTERN "*.h"
-        PATTERN ".git" EXCLUDE)
+# install libknowledge
+install(
+        DIRECTORY include/
+        DESTINATION include
+)
+install(
+        TARGETS libknowledge
+        EXPORT export_libknowledge
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+)
 
 
 if(BUILD_TESTING)
