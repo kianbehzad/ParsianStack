@@ -20,7 +20,7 @@ GrsimNode::GrsimNode(const rclcpp::NodeOptions & options) : Node("grsim_node", o
     worldmodel_subscription = this->create_subscription<parsian_msgs::msg::ParsianWorldModel>("/world_model", 10, std::bind(&GrsimNode::worldmodel_callback, this, _1));
 
     // set up agent_command callbacks
-    for(int i{}; i < knowledge::Robot::MAX_ROBOT_NUM; i++)
+    for(int i{}; i < knowledge::MAX_ROBOT_NUM; i++)
         command_subscription[i] = this->create_subscription<parsian_msgs::msg::ParsianRobotCommand>("/agent_" + std::to_string(i) + "/command", 10, std::bind(&GrsimNode::command_callback, this, _1));
 
     // set up udp connection

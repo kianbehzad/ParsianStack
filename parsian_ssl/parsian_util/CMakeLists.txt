@@ -29,15 +29,16 @@ ament_export_include_directories(include)
 
 
 # create general library
-add_library(general
-        src/knowledge/general.cpp
+add_library(core
+        src/core/field.cpp
+        src/core/knowledge.cpp
         )
 
 
 
 # install nodes and libraries
 install(TARGETS
-        general
+        core
         DESTINATION lib/${PROJECT_NAME}
         )
 install(DIRECTORY include/${PROJECT_NAME}/

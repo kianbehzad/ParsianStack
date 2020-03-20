@@ -12,7 +12,7 @@
 
 #include "parsian_msgs/msg/parsian_robot_command.hpp"
 #include "parsian_msgs/msg/parsian_world_model.hpp"
-#include "parsian_util/knowledge/general.h"
+#include "parsian_util/core/knowledge.h"
 #include "parsian_protobuf_wrapper/common/net/udpsend.h"
 #include "parsian_protobuf_wrapper/proto/grSim_Commands.pb.h"
 #include "parsian_protobuf_wrapper/proto/grSim_Packet.pb.h"
@@ -38,7 +38,7 @@ private:
     rclcpp::Subscription<parsian_msgs::msg::ParsianWorldModel>::SharedPtr worldmodel_subscription;
 
     void command_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg) const;
-    rclcpp::Subscription<parsian_msgs::msg::ParsianRobotCommand>::SharedPtr command_subscription[knowledge::Robot::MAX_ROBOT_NUM];
+    rclcpp::Subscription<parsian_msgs::msg::ParsianRobotCommand>::SharedPtr command_subscription[knowledge::MAX_ROBOT_NUM];
 
     UDPSend* udp_send;
     std::string grsim_ip;
