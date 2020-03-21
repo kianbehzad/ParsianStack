@@ -34,17 +34,19 @@ private:
     rclcpp::Subscription<rcl_interfaces::msg::ParameterEvent>::SharedPtr parameter_event_sub;
     void define_params_change_callback_lambda_function();
 
-    void worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::SharedPtr msg) const;
+    void worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::SharedPtr msg);
     rclcpp::Subscription<parsian_msgs::msg::ParsianWorldModel>::SharedPtr worldmodel_subscription;
 
-    void command_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg) const;
+    void command_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg);
     rclcpp::Subscription<parsian_msgs::msg::ParsianRobotCommand>::SharedPtr command_subscription[knowledge::MAX_ROBOT_NUM];
 
     UDPSend* udp_send;
     std::string grsim_ip;
     int grsim_command_listen_port;
 
-    grSim_Commands* grsim_commands;
+    bool is_our_color_yellow = false;
+
+    grSim_Commands grsim_commands;
     grSim_Packet grsim_packet;
 
 
