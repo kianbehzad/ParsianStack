@@ -31,6 +31,8 @@ GrsimNode::GrsimNode(const rclcpp::NodeOptions & options) : Node("grsim_node", o
     for(int i{}; i < knowledge::MAX_ROBOT_NUM; i++)
         command_subscription[i] = this->create_subscription<parsian_msgs::msg::ParsianRobotCommand>("/agent_" + std::to_string(i) + "/command", 10, std::bind(&GrsimNode::command_callback, this, _1));
 
+    // set up ball replacement service
+    ball_replacement_service = this->create_service<parsian_msgs::srv::GrsimBallReplacement>("/grsim_ball_replacement",  std::bind(&GrsimNode::ball_replacement_callback, this, _1, _2));
 
 }
 
@@ -68,6 +70,11 @@ void GrsimNode::worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::
     grsim_commands.clear_robot_commands();
 }
 
+void GrsimNode::ball_replacement_callback(const std::shared_ptr<parsian_msgs::srv::GrsimBallReplacement::Request> request, std::shared_ptr<parsian_msgs::srv::GrsimBallReplacement::Response> response)
+{
+    RCLCPP_INFO(this->get_logger(), "here '%f'", request->x);
+
+}
 
 void GrsimNode::define_params_change_callback_lambda_function()
 {
