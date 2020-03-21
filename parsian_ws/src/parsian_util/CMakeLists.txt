@@ -54,6 +54,14 @@ install(
         INCLUDES DESTINATION include
 )
 
+# install launch files
+install(DIRECTORY tools/launch
+  DESTINATION share/${PROJECT_NAME})
+
+# install param files
+install(DIRECTORY tools/params
+  DESTINATION share/${PROJECT_NAME})
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
