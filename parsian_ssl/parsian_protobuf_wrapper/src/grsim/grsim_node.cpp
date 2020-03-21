@@ -72,7 +72,23 @@ void GrsimNode::worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::
 
 void GrsimNode::ball_replacement_callback(const std::shared_ptr<parsian_msgs::srv::GrsimBallReplacement::Request> request, std::shared_ptr<parsian_msgs::srv::GrsimBallReplacement::Response> response)
 {
-    RCLCPP_INFO(this->get_logger(), "here '%f'", request->x);
+    grSim_BallReplacement grsim_ball_replacement;
+    grsim_ball_replacement.set_x(request->x);
+    grsim_ball_replacement.set_y(request->y);
+    grsim_ball_replacement.set_vx(request->vx);
+    grsim_ball_replacement.set_vy(request->vy);
+
+    grSim_Replacement grsim_replacement;
+    grSim_BallReplacement* temp_grsim_ball_replacement = grsim_replacement.mutable_ball();
+    temp_grsim_ball_replacement->CopyFrom(grsim_ball_replacement);
+
+    grSim_Packet packet;
+    grSim_Replacement* temp_grsim_replacement = packet.mutable_replacement();
+    temp_grsim_replacement->CopyFrom(grsim_replacement);
+
+    std::string buffer;
+    packet.SerializeToString(&buffer);
+    udp_send->send(buffer);
 
 }
 

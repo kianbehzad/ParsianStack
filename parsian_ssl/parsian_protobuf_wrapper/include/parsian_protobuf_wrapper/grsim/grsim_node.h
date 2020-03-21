@@ -16,6 +16,7 @@
 #include "parsian_util/core/knowledge.h"
 #include "parsian_protobuf_wrapper/common/net/udpsend.h"
 #include "parsian_protobuf_wrapper/proto/grSim_Commands.pb.h"
+#include "parsian_protobuf_wrapper/proto/grSim_Replacement.pb.h"
 #include "parsian_protobuf_wrapper/proto/grSim_Packet.pb.h"
 
 #include "rclcpp/rclcpp.hpp"
@@ -53,6 +54,7 @@ private:
 
     grSim_Commands grsim_commands;
     grSim_Packet grsim_packet;
+
 
 
 };
