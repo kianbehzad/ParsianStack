@@ -1,6 +1,2 @@
 .DS_Store
 .idea/
-
-# compiled proto files
-*.pb.h
-*.pb.cc
