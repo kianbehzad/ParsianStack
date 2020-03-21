@@ -13,6 +13,7 @@
 #include "parsian_msgs/msg/parsian_robot_command.hpp"
 #include "parsian_msgs/msg/parsian_world_model.hpp"
 #include "parsian_msgs/srv/grsim_ball_replacement.hpp"
+#include "parsian_msgs/srv/grsim_robot_replacement.hpp"
 #include "parsian_util/core/knowledge.h"
 #include "parsian_protobuf_wrapper/common/net/udpsend.h"
 #include "parsian_protobuf_wrapper/proto/grSim_Commands.pb.h"
@@ -46,6 +47,9 @@ private:
     void ball_replacement_callback(const std::shared_ptr<parsian_msgs::srv::GrsimBallReplacement::Request> request, std::shared_ptr<parsian_msgs::srv::GrsimBallReplacement::Response> response);
     rclcpp::Service<parsian_msgs::srv::GrsimBallReplacement>::SharedPtr ball_replacement_service;
 
+    void robot_replacement_callback(const std::shared_ptr<parsian_msgs::srv::GrsimRobotReplacement::Request> request, std::shared_ptr<parsian_msgs::srv::GrsimRobotReplacement::Response> response);
+    rclcpp::Service<parsian_msgs::srv::GrsimRobotReplacement>::SharedPtr robot_replacement_service;
+
     UDPSend* udp_send;
     std::string grsim_ip;
     int grsim_command_listen_port;
@@ -54,7 +58,6 @@ private:
 
     grSim_Commands grsim_commands;
     grSim_Packet grsim_packet;
-
 
 
 };

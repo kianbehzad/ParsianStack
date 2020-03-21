@@ -31,8 +31,9 @@ GrsimNode::GrsimNode(const rclcpp::NodeOptions & options) : Node("grsim_node", o
     for(int i{}; i < knowledge::MAX_ROBOT_NUM; i++)
         command_subscription[i] = this->create_subscription<parsian_msgs::msg::ParsianRobotCommand>("/agent_" + std::to_string(i) + "/command", 10, std::bind(&GrsimNode::command_callback, this, _1));
 
-    // set up ball replacement service
+    // set up robot and ball replacement service
     ball_replacement_service = this->create_service<parsian_msgs::srv::GrsimBallReplacement>("/grsim_ball_replacement",  std::bind(&GrsimNode::ball_replacement_callback, this, _1, _2));
+    robot_replacement_service = this->create_service<parsian_msgs::srv::GrsimRobotReplacement>("/grsim_robot_replacement",  std::bind(&GrsimNode::robot_replacement_callback, this, _1, _2));
 
 }
 
@@ -91,6 +92,26 @@ void GrsimNode::ball_replacement_callback(const std::shared_ptr<parsian_msgs::sr
     udp_send->send(buffer);
 
 }
+
+void GrsimNode::robot_replacement_callback(const std::shared_ptr<parsian_msgs::srv::GrsimRobotReplacement::Request> request, std::shared_ptr<parsian_msgs::srv::GrsimRobotReplacement::Response> response)
+{
+    grSim_Replacement grsim_replacement;
+    grSim_RobotReplacement* grsim_robot_replacement = grsim_replacement.add_robots();
+    grsim_robot_replacement->set_x(request->x);
+    grsim_robot_replacement->set_y(request->y);
+    grsim_robot_replacement->set_dir(request->dir);
+    grsim_robot_replacement->set_id(request->id);
+    grsim_robot_replacement->set_yellowteam(request->yellow_team);
+
+    grSim_Packet packet;
+    grSim_Replacement* temp_grsim_replacement = packet.mutable_replacement();
+    temp_grsim_replacement->CopyFrom(grsim_replacement);
+
+    std::string buffer;
+    packet.SerializeToString(&buffer);
+    udp_send->send(buffer);
+}
+
 
 void GrsimNode::define_params_change_callback_lambda_function()
 {
