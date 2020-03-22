@@ -22,7 +22,7 @@
 #define ROBOCUP_SSL_CLIENT_H
 #include "netraw.h"
 #include <string>
-#include "parsian_protobuf_wrapper/referee.pb.h"
+#include "parsian_protobuf_wrapper/proto/referee.pb.h"
 using namespace std;
 /**
   @author Author Name

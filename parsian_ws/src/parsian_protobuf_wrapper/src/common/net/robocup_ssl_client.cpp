@@ -18,7 +18,7 @@
   \author  Stefan Zickler, 2009
 */
 //========================================================================
-#include <parsian_protobuf_wrapper/common/net/robocup_ssl_client.h>
+#include "parsian_protobuf_wrapper/common/net/robocup_ssl_client.h"
 
 RoboCupSSLClient::RoboCupSSLClient(int port,
                                    string net_address,

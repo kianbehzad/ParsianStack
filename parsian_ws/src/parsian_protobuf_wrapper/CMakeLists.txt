@@ -68,6 +68,14 @@ target_link_libraries(grsim ${QT_LIBRARIES} ${PROTOBUF_LIBRARIES})
 add_executable(vision
         src/vision/vision_exec.cpp
         src/vision/vision_node.cpp
+        src/common/net/robocup_ssl_client.cpp
+        src/common/net/netraw.cpp
+        src/common/net/udpsend.cpp
+        include/parsian_protobuf_wrapper/proto/referee.pb.cc
+        include/parsian_protobuf_wrapper/proto/messages_robocup_ssl_wrapper.pb.cc
+        include/parsian_protobuf_wrapper/proto/messages_robocup_ssl_detection.pb.cc
+        include/parsian_protobuf_wrapper/proto/messages_robocup_ssl_geometry.pb.cc
+        include/parsian_protobuf_wrapper/proto/messages_robocup_ssl_refbox_log.pb.cc
         )
 ament_target_dependencies(vision rclcpp parsian_msgs parsian_util)
 target_link_libraries(vision ${QT_LIBRARIES} ${PROTOBUF_LIBRARIES})
