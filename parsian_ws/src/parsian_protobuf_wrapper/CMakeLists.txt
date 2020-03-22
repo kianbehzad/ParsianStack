@@ -60,13 +60,24 @@ add_executable(grsim
         include/parsian_protobuf_wrapper/proto/grSim_Commands.pb.cc
         include/parsian_protobuf_wrapper/proto/grSim_Replacement.pb.cc
         )
-
 ament_target_dependencies(grsim rclcpp parsian_msgs parsian_util)
 target_link_libraries(grsim ${QT_LIBRARIES} ${PROTOBUF_LIBRARIES})
+
+
+# vision node
+add_executable(vision
+        src/vision/vision_exec.cpp
+        src/vision/vision_node.cpp
+        )
+ament_target_dependencies(vision rclcpp parsian_msgs parsian_util)
+target_link_libraries(vision ${QT_LIBRARIES} ${PROTOBUF_LIBRARIES})
+
+
 
 # install nodes
 install(TARGETS
   grsim
+  vision
   DESTINATION lib/${PROJECT_NAME})
 
 
