@@ -8,11 +8,11 @@
 #include <map>
 #include <string>
 
-#include "parsian_protobuf_wrapper/messages_robocup_ssl_geometry.pb.h"
+#include "parsian_protobuf_wrapper/proto/messages_robocup_ssl_geometry.pb.h"
 
-#include "parsian_msgs/ssl_vision_geometry.h"
+#include "parsian_msgs/msg/ssl_vision_geometry.hpp"
 
-#include "convert_units.h"
+#include "parsian_protobuf_wrapper/vision/convert/convert_units.h"
 
 
 namespace pr {
@@ -38,26 +38,26 @@ static std::map<std::string, std::string> name_map = {
 /**
  * Converts a protoBuf GeometryData to the ROS version.
  */
-parsian_msgs::ssl_vision_geometry convert_geometry_data(SSL_GeometryData protoData);
+parsian_msgs::msg::SSLVisionGeometry convert_geometry_data(SSL_GeometryData protoData);
 
 /**
  * Converts a protoBuf GeometryCameraCalibration to the ROS version.
  */
-parsian_msgs::ssl_vision_geom_cameracalibration convert_geometry_camera_calibration(SSL_GeometryCameraCalibration protoCal);
+parsian_msgs::msg::SSLVisionGeomCameracalibration convert_geometry_camera_calibration(SSL_GeometryCameraCalibration protoCal);
 
 /**
  * Converts a protoBuf GeometryFieldSize to the ROS version.
  */
-parsian_msgs::ssl_vision_geom_field convert_geometry_field_size(SSL_GeometryFieldSize protoSize);
+parsian_msgs::msg::SSLVisionGeomField convert_geometry_field_size(SSL_GeometryFieldSize protoSize);
 
 /**
  * Converts a protoBuf FieldLineSegment to the ROS version.
  */
-parsian_msgs::ssl_vision_geom_field_line convert_geometry_field_line_segment(SSL_FieldLineSegment protoLine);
+parsian_msgs::msg::SSLVisionGeomFieldLine convert_geometry_field_line_segment(SSL_FieldLineSegment protoLine);
 
 
 /**
  * Converts a protoBuf FieldCircularArc to the ROS version.
  */
-parsian_msgs::ssl_vision_geom_field_arc convert_geometry_field_Circular_arc(SSL_FieldCicularArc protoArc);
+parsian_msgs::msg::SSLVisionGeomFieldArc convert_geometry_field_Circular_arc(SSL_FieldCicularArc protoArc);
 }
