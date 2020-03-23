@@ -18,6 +18,8 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
+
 
 # convert msgs & srvs into language-specific code
 file(GLOB MSGS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} msg/*.msg)
@@ -26,6 +28,7 @@ file(GLOB SRVS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} srv/*.srv)
 rosidl_generate_interfaces(${PROJECT_NAME}
   ${MSGS}
   ${SRVS}
+  DEPENDENCIES builtin_interfaces std_msgs
  )
 ament_export_dependencies(rosidl_default_runtime)
 
