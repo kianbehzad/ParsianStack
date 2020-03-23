@@ -71,6 +71,9 @@ add_executable(vision
         src/common/net/robocup_ssl_client.cpp
         src/common/net/netraw.cpp
         src/common/net/udpsend.cpp
+        src/vision/convert/convert_detection.cpp
+        src/vision/convert/convert_geometry.cpp
+        src/vision/convert/convert_units.cpp
         include/parsian_protobuf_wrapper/proto/referee.pb.cc
         include/parsian_protobuf_wrapper/proto/messages_robocup_ssl_wrapper.pb.cc
         include/parsian_protobuf_wrapper/proto/messages_robocup_ssl_detection.pb.cc
