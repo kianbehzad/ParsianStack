@@ -5,18 +5,9 @@ import os
 
 
 def generate_launch_description():
-	param_path = os.path.join(
-            get_package_share_directory('parsian_util'),
-            'params',
-            'config_params.yaml'
-            )
-	print(param_path)
-	return LaunchDescription([
-        Node(
-            package='parsian_protobuf_wrapper',
-            node_executable='grsim',
-            node_name='grsim_node',
-            parameters=[param_path]
-
-        )
-        ])
+    param_path = os.path.join(get_package_share_directory('parsian_util'), 'params', 'config_params.yaml')
+    
+    grsim_node = Node(package='parsian_protobuf_wrapper', node_executable='grsim', node_name='grsim_node', parameters=[param_path])
+    vision_node = Node(package='parsian_protobuf_wrapper', node_executable='vision', node_name='vision_node', parameters=[param_path])
+    
+    return LaunchDescription([grsim_node, vision_node])
