@@ -1,4 +1,5 @@
-
+# Qt build directories
+build-*/
 .DS_Store
 .idea/
 
