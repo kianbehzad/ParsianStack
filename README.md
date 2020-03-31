@@ -47,8 +47,43 @@ to use this project you will have to install ROS2 Eloquent you can refer to [ROS
   cd ~/ros2_OpenSplice
   tar xf ~/Downloads/PXXX-VortexOpenSplice-6.9.190925OSS-HDE-x86_64.darwin10_clang-release-installer.tar
     ```
-  and add the following to the end of you `.zshrc` or `.bashrc`
+  and add the following to the end of you `.zshrc`
     ```bash
     export OSPL_HOME="absolute/path/to/ros2_OpenSplice/HDE/x86_64.darwin10_clang"
     ```
-    
+
+## Installation
+clone the repository.
+```bash
+git clone https://github.com/kianbehzad/ParsianStack.git 
+```
+then add the following lin at the end of your `.zshrc` file.
+```bash
+source path/to/ParsianStack/parsian_ws/src/parsian_util/tools/env.zsh
+```
+from here on you can build the work-space simply by this command.
+```bash
+parsian build
+```
+### Note foe macOS users
+you need `Qt4` libraries for this project install it by brew
+```bash
+brew tap cartr/qt4
+brew install qt@4
+```
+if you have `Qt5` on your system installed you need to unlink it inorder to cmake find the `Qt4`
+```bash
+brew unlink qt
+brew link qt@4
+```
+if you wanted to have your `Qt5` back just reverse the above commands
+```bash
+brew unlink qt@4
+brew link qt --force
+```
+
+## Running nodes
+run the provided grsim launch file.
+```bash
+ros2 launch parsian_util grsim_launch.py
+```
