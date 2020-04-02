@@ -11,6 +11,10 @@
 #include <functional>
 
 #include "parsian_msgs/msg/ssl_vision_detection.hpp"
+#include "parsian_msgs/msg/ssl_vision_geometry.hpp"
+#include "parsian_msgs/msg/parsian_robot_command.hpp"
+#include "parsian_msgs/msg/parsian_world_model.hpp"
+#include "parsian_util/core/knowledge.h"
 
 #include "rclcpp/rclcpp.hpp"
 
@@ -26,8 +30,17 @@ public:
     WorldModelNode(const rclcpp::NodeOptions & options);
 
 private:
-//    void vision_detection_callback(const parsian_msgs::msg::SSLVisionDetection::SharedPtr msg);
-//    rclcpp::Subscription<parsian_msgs::msg::SSLVisionDetection>::SharedPtr vision_detection_subscription;
+    void vision_detection_callback(const parsian_msgs::msg::SSLVisionDetection::SharedPtr msg);
+    rclcpp::Subscription<parsian_msgs::msg::SSLVisionDetection>::SharedPtr vision_detection_subscription;
+
+    void vision_geometry_callback(const parsian_msgs::msg::SSLVisionGeometry::SharedPtr msg);
+    rclcpp::Subscription<parsian_msgs::msg::SSLVisionGeometry>::SharedPtr vision_geometry_subscription;
+
+    void command_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg);
+    rclcpp::Subscription<parsian_msgs::msg::ParsianRobotCommand>::SharedPtr command_subscription[knowledge::MAX_ROBOT_NUM];
+
+    rclcpp::Publisher<parsian_msgs::msg::ParsianWorldModel>::SharedPtr worldmodel_publisher;
+
 
 
 };
