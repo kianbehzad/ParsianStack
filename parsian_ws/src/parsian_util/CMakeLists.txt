@@ -18,6 +18,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(parsian_msgs REQUIRED)
 
 
 # include paths
@@ -27,7 +28,7 @@ include_directories(
 
 
 # create libknowledge library
-add_library(libknowledge SHARED
+add_library(libknowledge
         src/core/knowledge.cpp
         )
 ament_target_dependencies(libknowledge rclcpp)
@@ -39,15 +40,49 @@ ament_export_dependencies(
         rclcpp
 )
 
+# create libgeom library
+add_library(libgeom
+        src/geom/angle_deg.cpp
+        src/geom/circle_2d.cpp
+        src/geom/geom.cpp
+        src/geom/line_2d.cpp
+        src/geom/matrix_2d.cpp
+        src/geom/polygon_2d.cpp
+        src/geom/ray_2d.cpp
+        src/geom/rect_2d.cpp
+        src/geom/sector_2d.cpp
+        src/geom/segment_2d.cpp
+        src/geom/triangle_2d.cpp
+        src/geom/vector_2d.cpp
+        )
+ament_target_dependencies(libgeom rclcpp parsian_msgs)
+ament_export_interfaces(export_libgeom HAS_LIBRARY_TARGET)
+ament_export_libraries(libgeom)
+ament_export_include_directories(include)
+ament_export_dependencies(
+        ament_cmake
+        rclcpp
+)
 
-# install libknowledge
+
+# install include directory
 install(
         DIRECTORY include/
         DESTINATION include
 )
+# install libknowledge
 install(
         TARGETS libknowledge
         EXPORT export_libknowledge
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+)
+# install libgeom
+install(
+        TARGETS libgeom
+        EXPORT export_libgeom
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
