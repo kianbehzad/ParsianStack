@@ -43,7 +43,10 @@ add_executable(worldmodel
 ament_target_dependencies(worldmodel rclcpp parsian_msgs parsian_util)
 target_link_libraries(worldmodel ${QT_LIBRARIES})
 
-
+# install nodes
+install(TARGETS
+        worldmodel
+        DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
