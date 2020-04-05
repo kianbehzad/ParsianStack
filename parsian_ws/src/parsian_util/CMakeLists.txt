@@ -35,32 +35,32 @@ include_directories(
 
 
 # create libknowledge library
-add_library(libknowledge
-        src/core/knowledge.cpp
-        )
-ament_target_dependencies(libknowledge rclcpp)
-ament_export_interfaces(export_libknowledge HAS_LIBRARY_TARGET)
-ament_export_libraries(libknowledge)
-ament_export_include_directories(include)
-ament_export_dependencies(
-        ament_cmake
-        rclcpp
-)
+#add_library(libknowledge
+#        src/core/knowledge.cpp
+#        )
+#ament_target_dependencies(libknowledge rclcpp)
+#ament_export_interfaces(export_libknowledge HAS_LIBRARY_TARGET)
+#ament_export_libraries(libknowledge)
+#ament_export_include_directories(include)
+#ament_export_dependencies(
+#        ament_cmake
+#        rclcpp
+#)
 
 # create libgeom library
-add_library(libgeom
+add_library(libgeom SHARED
         src/geom/angle_deg.cpp
-        src/geom/circle_2d.cpp
-        src/geom/geom.cpp
-        src/geom/line_2d.cpp
-        src/geom/matrix_2d.cpp
-        src/geom/polygon_2d.cpp
-        src/geom/ray_2d.cpp
-        src/geom/rect_2d.cpp
-        src/geom/sector_2d.cpp
-        src/geom/segment_2d.cpp
-        src/geom/triangle_2d.cpp
-        src/geom/vector_2d.cpp
+#        src/geom/circle_2d.cpp
+#        src/geom/geom.cpp
+#        src/geom/line_2d.cpp
+#        src/geom/matrix_2d.cpp
+#        src/geom/polygon_2d.cpp
+#        src/geom/ray_2d.cpp
+#        src/geom/rect_2d.cpp
+#        src/geom/sector_2d.cpp
+#        src/geom/segment_2d.cpp
+#        src/geom/triangle_2d.cpp
+#        src/geom/vector_2d.cpp
         )
 ament_target_dependencies(libgeom rclcpp parsian_msgs)
 ament_export_interfaces(export_libgeom HAS_LIBRARY_TARGET)
@@ -72,19 +72,19 @@ ament_export_dependencies(
 )
 
 # create libmath library
-add_library(libmath
-        src/math/mathtools.cpp
-        src/math/matrix.cpp
-        )
-ament_target_dependencies(libmath rclcpp)
-target_link_libraries(libmath ${QT_LIBRARIES} libgeom)
-ament_export_interfaces(export_libmath HAS_LIBRARY_TARGET)
-ament_export_libraries(libmath)
-ament_export_include_directories(include)
-ament_export_dependencies(
-        ament_cmake
-        rclcpp
-)
+#add_library(libmath
+#        src/math/mathtools.cpp
+#        src/math/matrix.cpp
+#        )
+#ament_target_dependencies(libmath rclcpp)
+#target_link_libraries(libmath ${QT_LIBRARIES} libgeom)
+#ament_export_interfaces(export_libmath HAS_LIBRARY_TARGET)
+#ament_export_libraries(libmath)
+#ament_export_include_directories(include)
+#ament_export_dependencies(
+#        ament_cmake
+#        rclcpp
+#)
 
 
 
@@ -97,14 +97,14 @@ install(
 
 
 # install libknowledge
-install(
-        TARGETS libknowledge
-        EXPORT export_libknowledge
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin
-        INCLUDES DESTINATION include
-)
+#install(
+#        TARGETS libknowledge
+#        EXPORT export_libknowledge
+#        LIBRARY DESTINATION lib
+#        ARCHIVE DESTINATION lib
+#        RUNTIME DESTINATION bin
+#        INCLUDES DESTINATION include
+#)
 # install libgeom
 install(
         TARGETS libgeom
@@ -115,14 +115,14 @@ install(
         INCLUDES DESTINATION include
 )
 # install libmath
-install(
-        TARGETS libmath
-        EXPORT export_libmath
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin
-        INCLUDES DESTINATION include
-)
+#install(
+#        TARGETS libmath
+#        EXPORT export_libmath
+#        LIBRARY DESTINATION lib
+#        ARCHIVE DESTINATION lib
+#        RUNTIME DESTINATION bin
+#        INCLUDES DESTINATION include
+#)
 
 
 

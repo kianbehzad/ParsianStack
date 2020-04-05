@@ -35,6 +35,8 @@
 #include <functional>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
+#include <vector>
 
 namespace rcsc {
 
@@ -65,9 +67,8 @@ public:
     static const double RAD2DEG;
 
     //! default constructor.
-    AngleDeg()
-        : M_degree(0.0) {
-    }
+    AngleDeg();
+
     /*!
       \brief constructor with value.
 
@@ -75,43 +76,21 @@ public:
       This means that we can use this class as follows.
       AngleDeg angle = 3.0;
     */
-    AngleDeg(const double & deg)
-        : M_degree(deg) {
-        normalize();
-    }
+    AngleDeg(const double & deg);
 
     /*!
       \brief operator substitution.
       \param deg initialization parameter
       \return const reference to itself
     */
-    const
-    AngleDeg & operator=(const double & deg) {
-        M_degree = deg;
-        return normalize();
-    }
+    const AngleDeg & operator=(const double & deg);
 
 private:
     /*!
       \brief normalize the value to [-180, 180].
       \return const reference to itself.
     */
-    const
-    AngleDeg & normalize() {
-        if (M_degree < -360.0 || 360.0 < M_degree) {
-            M_degree = std::fmod(M_degree, 360.0);
-        }
-
-        if (M_degree < -180.0) {
-            M_degree += 360.0;
-        }
-
-        if (M_degree > 180.0) {
-            M_degree -= 360.0;
-        }
-
-        return *this;
-    }
+    const AngleDeg & normalize();
 
 public:
 
@@ -119,25 +98,18 @@ public:
       \brief get value of this angle
       \return const reference to the member variable
      */
-    const
-    double & degree() const {
-        return M_degree;
-    }
+    const double & degree() const;
 
     /*!
       \brief get absolute value of this angle
       \return absolute value of degree()
      */
-    double abs() const {
-        return std::fabs(degree());
-    }
+    double abs() const;
     /*!
       \brief get RADIAN value.
       \return radian value of degree()
      */
-    double radian() const {
-        return degree() * DEG2RAD;
-    }
+    double radian() const;
 
     /*
       operator double() const
@@ -150,64 +122,42 @@ public:
       \brief get new AngleDeg multiplyed by -1.
       \return new AngleDeg object
      */
-    AngleDeg operator-() const {
-        return AngleDeg(- degree());
-    }
+    AngleDeg operator-() const;
 
     /*!
       \brief operator += with AngleDeg
       \param angle added value
       \return const reference to this
     */
-    const
-    AngleDeg & operator+=(const AngleDeg & angle) {
-        M_degree += angle.degree();
-        return normalize();
-    }
+    const AngleDeg & operator+=(const AngleDeg & angle);
 
     /*!
       \brief operator += with double
       \param deg added value
       \return const reference to this
     */
-    const
-    AngleDeg & operator+=(const double & deg) {
-        M_degree += deg;
-        return normalize();
-    }
+    const AngleDeg & operator+=(const double & deg);
 
     /*!
       \brief operator -= with AngleDeg
       \param angle subtract argument
       \return const reference to this
      */
-    const
-    AngleDeg & operator-=(const AngleDeg & angle) {
-        M_degree -= angle.degree();
-        return normalize();
-    }
+    const AngleDeg & operator-=(const AngleDeg & angle);
 
     /*!
       \brief operator -= with double
       \param deg subtract argument
       \return const reference to this
      */
-    const
-    AngleDeg & operator-=(const double & deg) {
-        M_degree -= deg;
-        return normalize();
-    }
+    const AngleDeg & operator-=(const double & deg);
 
     /*!
       \brief operator *=
       \param scalar multiply argument
       \return const reference to this
      */
-    const
-    AngleDeg & operator*=(const double & scalar) {
-        M_degree *= scalar;
-        return normalize();
-    }
+    const AngleDeg & operator*=(const double & scalar);
 
     /*!
       \brief operator /=
@@ -215,13 +165,7 @@ public:
       \return const reference to this
      */
     const
-    AngleDeg & operator/=(const double & scalar) {
-        if (std::fabs(scalar) < EPSILOON) {
-            return * this;
-        }
-        M_degree /= scalar;
-        return normalize();
-    }
+    AngleDeg & operator/=(const double & scalar);
 
     //////////////////////////////////////////////////////////////////
 
@@ -229,69 +173,43 @@ public:
       \brief check if this angle is left of 'angle'
       \return true or false
      */
-    bool isLeftOf(const AngleDeg & angle) const {
-        //return (*this - angle).degree() < 0.0;
-        double diff = angle.degree() - this->degree();
-        return ((0.0 < diff && diff < 180.0)
-                || diff < -180.0);
-    }
+    bool isLeftOf(const AngleDeg & angle) const;
 
     /*!
       \brief check if this angle is left or equal of 'angle'
       \return true or false
      */
-    bool isLeftEqualOf(const AngleDeg & angle) const {
-        //return (*this - angle).degree() <= 0.0;
-        double diff = angle.degree() - this->degree();
-        return ((0.0 <= diff && diff < 180.0)
-                || diff < -180.0);
-    }
+    bool isLeftEqualOf(const AngleDeg & angle) const;
 
     /*!
       \brief check if this angle is right of 'angle'
       \return true or false
      */
-    bool isRightOf(const AngleDeg & angle) const {
-        //return (*this - angle).degree() > 0.0;
-        double diff = this->degree() - angle.degree();
-        return ((0.0 < diff && diff < 180.0)
-                || diff < -180.0);
-    }
+    bool isRightOf(const AngleDeg & angle) const;
 
     /*!
       \brief check if this angle is right or equal of 'angle'
       \return true or false
      */
-    bool isRightEqualOf(const AngleDeg & angle) const {
-        //return (*this - angle).degree() >= 0.0;
-        double diff = this->degree() - angle.degree();
-        return ((0.0 <= diff && diff < 180.0)
-                || diff < -180.0);
-    }
+    bool isRightEqualOf(const AngleDeg & angle) const;
 
     /*!
       \brief calculate cosine
       \return cosine value
      */
-    double cos() const {
-        return std::cos(degree() * DEG2RAD);
-    }
+    double cos() const;
 
     /*!
       \brief calculate sine
       \return sine value
      */
-    double sin() const {
-        return std::sin(degree() * DEG2RAD);
-    }
+    double sin() const;
 
     /*!
       \brief calculate tarngetn
       \return tangent value
      */
-    double tan() const {
-        return std::tan(degree() * DEG2RAD);
-    }
+    double tan() const;
 
     /*!
       \brief check if this angle is within [left, right] (turn clockwise).
@@ -479,9 +397,7 @@ public:
       \param os reference to the output stream
       \return reference to the output stream
      */
-    std::ostream & print(std::ostream & os) const {
-        return os << degree();
-    }
+    std::ostream & print(std::ostream & os) const;
 
     /*!
       \brief output rounded value to ostream
@@ -489,10 +405,8 @@ public:
       \param step round step
       \return reference to the output stream
      */
-    std::ostream & printRound(std::ostream & os,
-                              const double & step = 0.1) const {
-        return os << rint(degree() / step) * step;
-    }
+    std::ostream & printRound(std::ostream & os, const double & step = 0.1) const;
+
 
     ////////////////////////////////////////////////////////
     /*!
@@ -503,10 +417,7 @@ public:
         : public std::binary_function< AngleDeg, AngleDeg, bool > {
     public:
         //! operator method
-        result_type operator()(const first_argument_type & lhs,
-                               const second_argument_type & rhs) const {
-            return lhs.degree() < rhs.degree();
-        }
+        result_type operator()(const first_argument_type & lhs, const second_argument_type & rhs) const;
     };
 
 };
@@ -525,10 +436,7 @@ class AngleIsWithin
 public:
     //! constructor
     AngleIsWithin(const AngleDeg & left,
-                  const AngleDeg & right)
-        : M_left(left)
-        , M_right(right) {
-    }
+                  const AngleDeg & right);
 
     //! operator method
     result_type operator()(const argument_type & angle) const {
