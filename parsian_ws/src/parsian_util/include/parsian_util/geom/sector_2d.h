@@ -81,8 +81,7 @@ public:
        \param start start angle(turn clockwise)
        \param end end angle(turn clockwise)
      */
-    const
-    Sector2D & assign(const Vector2D & c,
+    const Sector2D & assign(const Vector2D & c,
                       const double & min_r,
                       const double & max_r,
                       const AngleDeg & start,
@@ -101,52 +100,31 @@ public:
       \brief get the small side radius
       \return const reference to the member variable
      */
-    const
-    double & radiusMin() const {
-        return M_min_radius;
-    }
-
+    const double & radiusMin() const;
     /*!
       \brief get the big side radius
       \return const reference to the member variable
      */
-    const
-    double & radiusMax() const {
-        return M_max_radius;
-    }
+    const double & radiusMax() const;
 
     /*!
       \brief get the left start angle
       \return const reference to the member variable
      */
-    const
-    AngleDeg & angleLeftStart() const {
-        return M_angle_left_start;
-    }
+    const AngleDeg & angleLeftStart() const;
 
     /*!
       \brief get the right end angle
       \return const reference to the member variable
      */
-    const
-    AngleDeg & angleRightEnd() const {
-        return M_angle_right_end;
-    }
+    const AngleDeg & angleRightEnd() const;
 
     /*!
       \brief check if point is within this region
       \param point considered point
       \return true or false
      */
-    bool contains(const Vector2D & point) const {
-        Vector2D rel = point - center();
-        double d2 = rel.r2();
-        return (M_min_radius * M_min_radius <= d2
-                && d2 <= M_max_radius * M_max_radius
-                && rel.th().isWithin(M_angle_left_start,
-                                     M_angle_right_end));
-    }
-
+    bool contains(const Vector2D & point) const;
     /*!
       \brief calculate the area of this region
       \return the value of area
@@ -158,26 +136,14 @@ public:
       ENSYUU NO NAGASA
       \return the length of circumference
     */
-    double getCircumferenceMin() const {
-        double div = (M_angle_right_end - M_angle_left_start).degree();
-        if (div < 0.0) {
-            div += 360.0;
-        }
-        return (2.0 * M_min_radius * M_PI) * (div / 360.0);
-    }
+    double getCircumferenceMin() const;
 
     /*!
       get bigger side circumference
       ENSYUU NO NAGASA
       \return the length of circumference
     */
-    double getCircumferenceMax() const {
-        double div = (M_angle_right_end - M_angle_left_start).degree();
-        if (div < 0.0) {
-            div += 360.0;
-        }
-        return (2.0 * M_max_radius * M_PI) * (div / 360.0);
-    }
+    double getCircumferenceMax() const;
 };
 
 }
