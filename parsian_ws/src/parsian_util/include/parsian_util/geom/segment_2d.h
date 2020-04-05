@@ -56,8 +56,7 @@ private:
 public:
 
     //! not used
-    Segment2D() {
-    }
+    Segment2D();
 
     /*!
       \brief construct from 2 points
@@ -65,10 +64,7 @@ public:
       \param b 2nd point of segment edge
      */
     Segment2D(const Vector2D & a,
-              const Vector2D & b)
-        : M_a(a)
-        , M_b(b) {
-    }
+              const Vector2D & b);
 
     /*!
       \brief construct directly using raw coordinate values
@@ -80,10 +76,7 @@ public:
     Segment2D(const double & ax,
               const double & ay,
               const double & bx,
-              const double & by)
-        : M_a(ax, ay)
-        , M_b(bx, by) {
-    }
+              const double & by);
     /*!
       \brief construct using origin, direction and length
       \param origin origin point
@@ -92,10 +85,7 @@ public:
      */
     Segment2D( const Vector2D & a,
                const double & length,
-               const AngleDeg & dir )
-            : M_a( a ),
-              M_b( a + Vector2D::from_polar( length, dir ) )
-    { }
+               const AngleDeg & dir );
 
     /*!
       \brief construct from 2 points
@@ -105,11 +95,7 @@ public:
     */
     const
     Segment2D & assign(const Vector2D & a,
-                       const Vector2D & b) {
-        M_a = a;
-        M_b = b;
-        return *this;
-    }
+                       const Vector2D & b);
 
     /*!
       \brief construct directly using raw coordinate values
@@ -122,11 +108,7 @@ public:
     Segment2D & assign(const double & ax,
                        const double & ay,
                        const double & bx,
-                       const double & by) {
-        M_a.assign(ax, ay);
-        M_b.assign(bx, by);
-        return *this;
-    }
+                       const double & by);
     /*!
       \brief construct using origin, direction and length
       \param origin origin point
@@ -137,91 +119,62 @@ public:
     const
     Segment2D & assign( const Vector2D & a,
                         const double & length,
-                        const AngleDeg & dir )
-    {
-        M_a = a;
-        M_b = a + Vector2D::from_polar( length, dir );
-        return *this;
-    }
+                        const AngleDeg & dir );
     /*!
       \brief swap segment edge point
       \return const reference to itself
     */
     const
-    Segment2D & swap() {
-        // std::swap( M_a, M_b );
-        rcsc::Vector2D tmp = M_a;
-        M_a = M_b;
-        M_b = tmp;
-        return *this;
-    }
+    Segment2D & swap();
 
     /*!
       \brief get 1st point of segment edge
       \return vector object
     */
     const
-    Vector2D & a() const {
-        return M_a;
-    }
+    Vector2D & a() const;
 
     /*!
       \brief get 2nd point of segment edge
       \return vector object
     */
     const
-    Vector2D & b() const {
-        return M_b;
-    }
+    Vector2D & b() const;
 
     const
-    Vector2D & origin() const {
-        return M_a;
-    }
+    Vector2D & origin() const;
 
     /*!
       \brief get 2nd point of segment edge
       \return const reference to the vector object
     */
     const
-    Vector2D & terminal() const {
-        return M_b;
-    }
+    Vector2D & terminal() const;
 
 
     /*!
       \brief get line generated from segment
       \return new line object
     */
-    Line2D line() const {
-        return Line2D(a(), b());
-    }
+    Line2D line() const;
 
     /*!
       \brief get the length of this segment
       \return distance value
      */
-    double length() const {
-        return a().dist(b());
-    }
+    double length() const;
 
     /*!
       \brief make perpendicular bisector line from segment points
       \return line object
      */
-    Line2D perpendicularBisector() const {
-        return Line2D::perpendicular_bisector(a(), b());
-    }
-
+    Line2D perpendicularBisector() const;
     /*!
       \brief check if the point is within the rectangle defined by this
       segment as a diagonal line.
       \return true if rectangle contains p
      */
-    bool contains(const Vector2D & p) const {
-        return ((p.x - a().x) * (p.x - b().x) <= 1.0e-5
-                && (p.y - a().y) * (p.y - b().y) <= 1.0e-5);
-    }
+    bool contains(const Vector2D & p) const;
 
     /*!
       \brief check & get the intersection point with other line segment
