@@ -60,7 +60,7 @@ add_library(libgeom SHARED
 #        src/geom/sector_2d.cpp
 #        src/geom/segment_2d.cpp
 #        src/geom/triangle_2d.cpp
-#        src/geom/vector_2d.cpp
+        src/geom/vector_2d.cpp
         )
 ament_target_dependencies(libgeom rclcpp parsian_msgs)
 ament_export_interfaces(export_libgeom HAS_LIBRARY_TARGET)
