@@ -55,57 +55,38 @@ public:
     /*!
       \brief defalut constructor. all values are set to 0.
      */
-    Ray2D()
-        : M_origin(0.0, 0.0)
-        , M_direction(0.0) {
-    }
+    Ray2D();
 
     /*!
       \brief constructor with origin and direction
       \param origin origin point
       \param direction direction angle
      */
-    Ray2D(const Vector2D & origin,
-          const AngleDeg & direction)
-        : M_origin(origin)
-        , M_direction(direction) {
-    }
+    Ray2D(const Vector2D & origin, const AngleDeg & direction);
     /*!
       \brief constructor with origin and other point
       \param origin origin point
       \param dir_point direction point
      */
-    Ray2D(const Vector2D & origin,
-          const Vector2D & dir_point)
-        : M_origin(origin)
-        , M_direction((dir_point - origin).th()) {
-    }
+    Ray2D(const Vector2D & origin, const Vector2D & dir_point);
 
     /*!
       \brief get origin point
       \return const referenct to the member variable
      */
-    const
-    Vector2D & origin() const {
-        return M_origin;
-    }
+    const Vector2D & origin() const;
 
     /*!
       \brief get the angle of this ray line
       \return const referenct to the member variable
      */
-    const
-    AngleDeg & dir() const {
-        return M_direction;
-    }
+    const AngleDeg & dir() const;
 
     /*!
       \brief get line generated from this ray
       \return new line object
     */
-    Line2D line() const {
-        return Line2D(origin(), dir());
-    }
+    Line2D line() const;
 
     /*!
       \brief check whether p is on the direction of this Ray
@@ -113,10 +94,7 @@ public:
       \param thr threshold angle buffer
       \return true or false
     */
-    bool inRightDir(const Vector2D & point,
-                    const double & thr = 10.0) const {
-        return ((point - origin()).th() - dir()).abs() < thr;
-    }
+    bool inRightDir(const Vector2D & point, const double & thr = 10.0) const;
 
     /*!
       \brief get the intersection point with 'line'
