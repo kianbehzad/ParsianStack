@@ -63,14 +63,7 @@ public:
     /*!
       \brief create an identity matrix
     */
-    Matrix2D()
-        : M_11(1.0)
-        , M_12(0.0)
-        , M_21(0.0)
-        , M_22(1.0)
-        , M_dx(0.0)
-        , M_dy(0.0) {
-    }
+    Matrix2D();
 
     /*!
       \brief create a matrix with all elements.
@@ -83,22 +76,13 @@ public:
     */
     Matrix2D(const double & m11, const double & m12,
              const double & m21, const double & m22,
-             const double & dx, const double & dy)
-        : M_11(m11), M_12(m12)
-        , M_21(m21), M_22(m22)
-        , M_dx(dx),  M_dy(dy) {
-    }
+             const double & dx, const double & dy);
 
     /*!
       \brief reset to the identity matrix
       \return const reference to itself
      */
-    const
-    Matrix2D & reset() {
-        M_11 = M_22 = 1.0;
-        M_12 = M_21 = M_dx = M_dy = 0.0;
-        return *this;
-    }
+    const Matrix2D & reset();
 
     /*!
       \brief set a matrix element with the specified values.
@@ -110,18 +94,9 @@ public:
       \param dy the vertical translation factor.
       \return const reference to itself
     */
-    const
-    Matrix2D & assign(const double & m11, const double & m12,
+    const Matrix2D & assign(const double & m11, const double & m12,
                       const double & m21, const double & m22,
-                      const double & dx, const double & dy) {
-        M_11 = m11;
-        M_12 = m12;
-        M_21 = m21;
-        M_22 = m22;
-        M_dx = dx;
-        M_dy = dy;
-        return *this;
-    }
+                      const double & dx, const double & dy);
 
     /*!
       \brief create the translation matrix.
@@ -129,13 +104,7 @@ public:
       \param dy the vertical translation factor.
       \return new matrix object
      */
-    static
-    Matrix2D make_translation(const double & dx,
-                              const double & dy) {
-        return Matrix2D(1.0, 0.0,
-                        0.0, 1.0,
-                        dx, dy);
-    }
+    static Matrix2D make_translation(const double & dx, const double & dy);
 
     /*!
       \brief create the scaling matrix.
@@ -143,97 +112,62 @@ public:
       \param sy the vertical scaling factor.
       \return new matrix object
      */
-    static
-    Matrix2D make_scaling(const double & sx,
-                          const double & sy) {
-        return Matrix2D(sx, 0.0,
-                        0.0, sy,
-                        0.0, 0.0);
-    }
+    static Matrix2D make_scaling(const double & sx, const double & sy);
 
     /*!
       \brief create the rotation matrix.
       \param angle the rotation angle
       \return new matrix object
      */
-    static
-    Matrix2D make_rotation(const AngleDeg & angle) {
-        double cosa = angle.cos();
-        double sina = angle.sin();
-        return Matrix2D(cosa, -sina,
-                        sina, cosa,
-                        0.0, 0.0);
-    }
+    static Matrix2D make_rotation(const AngleDeg & angle);
 
     /*!
       \brief get the horizontal scaling factor.
       \return the horizontal scaling factor value.
     */
-    const
-    double & m11() const {
-        return M_11;
-    }
+    const double & m11() const;
 
     /*!
       \brief get the vertical shearing factor.
       \return the vertical shearing factor value.
     */
-    const
-    double & m12() const {
-        return M_12;
-    }
+    const double & m12() const;
 
     /*!
       \brief get the horizontal shearing factor.
       \return  the horizontal shearing factor value.
     */
-    const
-    double & m21() const {
-        return M_21;
-    }
+    const double & m21() const;
 
     /*!
       \brief get the vertical scaling factor.
       \return the vertical scaling factor value.
     */
-    const
-    double & m22() const {
-        return M_22;
-    }
+    const double & m22() const;
 
     /*!
       \brief get the horizontal translation factor.
       \return the horizontal translation factor value.
     */
-    const
-    double & dx() const {
-        return M_dx;
-    }
+    const double & dx() const;
 
     /*!
       \brief get the vertical translation factor.
       \return the vertical translation factor value.
     */
-    const
-    double & dy() const {
-        return M_dy;
-    }
+    const double & dy() const;
 
     /*!
       \brief get the matrix's determinant.
       \return the determinant value.
      */
-    double det() const {
-        return M_11 * M_22 - M_12 * M_21;
-    }
+    double det() const;
 
     /*!
       \brief check if this matrix is invertible (is not isingular).
       \return true if this matirix is invertibale.
      */
-    bool invertible() const {
-        return !(std::fabs(det()) < 0.00000000001);
-    }
+    bool invertible() const;
 
     /*!
       \brief get the inverted matrix.
@@ -250,9 +184,7 @@ public:
       same as:
         this = make_translation(dx,dy) * this
      */
-    const
-    Matrix2D & translate(const double & dx,
-                         const double & dy) {
+    const Matrix2D & translate(const double & dx, const double & dy);
         // translation matrix
         // T = ( 1, 0, dx )
         //     ( 0, 1, dy )
@@ -267,10 +199,6 @@ public:
         // this = T * this
         // *this = make_translation(dx,dy) * *this;
 
-        M_dx += dx;
-        M_dy += dy;
-        return *this;
-    }
 
     /*!
       \brief scales the coordinate system.
@@ -281,9 +209,7 @@ public:
       same as:
         this = make_scaling(sx,sy) * this
      */
-    const
-    Matrix2D & scale(const double & sx,
-                     const double & sy) {
+    const Matrix2D & scale(const double & sx, const double & sy);
         // scaling matrixa
         // S = ( Sx,  0, 0 )
         //     (  0, Sy, 0 )
@@ -299,14 +225,6 @@ public:
         // this = S * this
         // *this = make_scaling(sx,sy) * *this;
 
-        M_11 *= sx;
-        M_12 *= sx;
-        M_dx *= sx;
-        M_21 *= sy;
-        M_22 *= sy;
-        M_dy *= sy;
-        return *this;
-    }
 
     /*
     const
@@ -331,42 +249,21 @@ public:
       same as:
         this = make_rotation(angle) * this
      */
-    const
-    Matrix2D & rotate(const AngleDeg & angle);
+    const Matrix2D & rotate(const AngleDeg & angle);
 
     /*!
       \brief multiplied by other matrix
       \param m left hand side matrix
       \return const reference to itself
      */
-    const
-    Matrix2D & operator*=(const Matrix2D & m) {
-        double tm11 = M_11 * m.M_11 + M_12 * m.M_21;
-        double tm12 = M_11 * m.M_12 + M_12 * m.M_22;
-        double tm21 = M_21 * m.M_11 + M_22 * m.M_21;
-        double tm22 = M_21 * m.M_12 + M_22 * m.M_22;
-
-        double tdx  = M_11 * m.M_dx + M_12 * m.M_dy + M_dx;
-        double tdy =  M_21 * m.M_dx + M_22 * m.M_dy + M_dy;
-
-        M_11 = tm11;
-        M_12 = tm12;
-        M_21 = tm21;
-        M_22 = tm22;
-        M_dx = tdx;
-        M_dy = tdy;
-        return *this;
-    }
+    const Matrix2D & operator*=(const Matrix2D & m);
 
     /*!
       \brief create transformed vector from input vector with this matrix
       \param v input vector
       \return mapped vector object
      */
-    Vector2D transform(const Vector2D & v) const {
-        return Vector2D(M_11 * v.x + M_12 * v.y + M_dx,
-                        M_21 * v.x + M_22 * v.y + M_dy);
-    }
+    Vector2D transform(const Vector2D & v) const;
 
     /*!
       \brief create transformed vector from input coordinates with this matrix
@@ -374,22 +271,13 @@ public:
       \param y input y-coordinates value
       \return mapped vector object
      */
-    Vector2D transform(const double & x,
-                       const double & y) const {
-        return Vector2D(M_11 * x + M_12 * y + M_dx,
-                        M_21 * x + M_22 * y + M_dy);
-    }
+    Vector2D transform(const double & x, const double & y) const;
 
     /*!
       \brief transform input vector with this matrix
       \param v pointer to the input vector.
      */
-    void transform(Vector2D * v) const {
-        double tx = M_11 * v->x + M_12 * v->y + M_dx;
-        double ty = M_21 * v->x + M_22 * v->y + M_dy;
-        v->assign(tx, ty);
-    }
-
+    void transform(Vector2D * v) const;
 #if 0
     Segment2D transform(const Segment2D & s) const {
         return Segment2D(transform(s.a()),
@@ -431,19 +319,11 @@ public:
       \param os reference to the output stream
       \return reference to the output stream
      */
-    std::ostream & print(std::ostream & os) const {
-        os << M_11 << ' '
-           << M_12 << ' '
-           << M_21 << ' '
-           << M_22 << ' '
-           << M_dx << ' '
-           << M_dy;
-        return os;
-    }
+    std::ostream & print(std::ostream & os) const;
 
 };
 
-}
+} // end of namespace
 
 /*!
   \brief multiplication operator of Matrix x Matrix.
