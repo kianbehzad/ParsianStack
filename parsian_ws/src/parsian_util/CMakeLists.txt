@@ -33,20 +33,6 @@ include_directories(
         include
 )
 
-
-# create libknowledge library
-#add_library(libknowledge
-#        src/core/knowledge.cpp
-#        )
-#ament_target_dependencies(libknowledge rclcpp)
-#ament_export_interfaces(export_libknowledge HAS_LIBRARY_TARGET)
-#ament_export_libraries(libknowledge)
-#ament_export_include_directories(include)
-#ament_export_dependencies(
-#        ament_cmake
-#        rclcpp
-#)
-
 # create libgeom library
 add_library(libgeom SHARED
         src/geom/angle_deg.cpp
@@ -87,6 +73,21 @@ ament_export_dependencies(
         rclcpp
 )
 
+# create libknowledge library
+add_library(libknowledge
+        src/core/knowledge.cpp
+        src/core/field.cpp
+        )
+ament_target_dependencies(libknowledge rclcpp parsian_msgs)
+target_link_libraries(libmath ${QT_LIBRARIES} libgeom)
+ament_export_interfaces(export_libknowledge HAS_LIBRARY_TARGET)
+ament_export_libraries(libknowledge)
+ament_export_include_directories(include)
+ament_export_dependencies(
+        ament_cmake
+        rclcpp
+)
+
 
 
 # install include directory
@@ -97,15 +98,6 @@ install(
 
 
 
-# install libknowledge
-#install(
-#        TARGETS libknowledge
-#        EXPORT export_libknowledge
-#        LIBRARY DESTINATION lib
-#        ARCHIVE DESTINATION lib
-#        RUNTIME DESTINATION bin
-#        INCLUDES DESTINATION include
-#)
 # install libgeom
 install(
         TARGETS libgeom
@@ -119,6 +111,15 @@ install(
 install(
         TARGETS libmath
         EXPORT export_libmath
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+)
+# install libknowledge
+install(
+        TARGETS libknowledge
+        EXPORT export_libknowledge
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
