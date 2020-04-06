@@ -63,11 +63,7 @@ public:
     /*!
       \brief create a zero area circle at (0,0)
      */
-    Circle2D()
-        : M_center(0.0, 0.0)
-        , M_radius(0.0) {
-    }
-
+    Circle2D();
 
 
     /*!
@@ -75,16 +71,7 @@ public:
       \param c center point
       \param r radius value
      */
-    Circle2D(const Vector2D & c,
-             const double & r)
-        : M_center(c)
-        , M_radius(r) {
-        if (r < 0.0) {
-            std::cerr << "Circle2D::Circle2D(). radius must be positive value."
-                      << std::endl;
-            M_radius = 0.0;
-        }
-    }
+    Circle2D(const Vector2D & c, const double & r);
 
     /*!
       \brief assign new value.
@@ -94,43 +81,27 @@ public:
      */
     const
     Circle2D & assign(const Vector2D & c,
-                      const double & r) {
-        M_center = c;
-        M_radius = r;
-        if (r < 0.0) {
-            std::cerr << "Circle2D::assign(). radius must be positive value."
-                      << std::endl;
-            M_radius = 0.0;
-        }
-        return *this;
-    }
-
+                      const double & r);
     /*!
       \brief check if point is within this region
       \param point considered point
       \return true if point is contained by this circle
      */
-    bool contains(const Vector2D & point) const {
-        return M_center.dist2(point) < M_radius * M_radius;
-    }
+    bool contains(const Vector2D & point) const;
 
     /*!
       \brief get the center point
       \return center point coordinate value
      */
     const
-    Vector2D & center() const {
-        return M_center;
-    }
+    Vector2D & center() const;
 
     /*!
       \brief get the radius value
       \return radius value
      */
     const
-    double & radius() const {
-        return M_radius;
-    }
+    double & radius() const;
 
     /*!
       \brief caluclate the intersection with straight line
