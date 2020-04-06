@@ -14,6 +14,7 @@
 #include "parsian_msgs/msg/ssl_vision_geometry.hpp"
 #include "parsian_msgs/msg/parsian_robot_command.hpp"
 #include "parsian_msgs/msg/parsian_world_model.hpp"
+#include "parsian_world_model/worldmodel/util/config.h"
 #include "parsian_util/core/knowledge.h"
 
 #include "rclcpp/rclcpp.hpp"
@@ -30,6 +31,10 @@ public:
     WorldModelNode(const rclcpp::NodeOptions & options);
 
 private:
+    std::function<void(const rcl_interfaces::msg::ParameterEvent::SharedPtr)> params_change_callback;
+    rclcpp::Subscription<rcl_interfaces::msg::ParameterEvent>::SharedPtr parameter_event_sub;
+    void define_params_change_callback_lambda_function();
+
     void vision_detection_callback(const parsian_msgs::msg::SSLVisionDetection::SharedPtr msg);
     rclcpp::Subscription<parsian_msgs::msg::SSLVisionDetection>::SharedPtr vision_detection_subscription;
 
