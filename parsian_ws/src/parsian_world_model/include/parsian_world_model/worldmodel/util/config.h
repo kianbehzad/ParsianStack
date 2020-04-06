@@ -5,7 +5,7 @@
 #ifndef PARSIAN_WORLD_MODEL_CONFIG_H
 #define PARSIAN_WORLD_MODEL_CONFIG_H
 
-class WorldModelConfig
+class CameraConfig
 {
 public:
     int camn_num;
@@ -19,10 +19,10 @@ public:
     bool camera_7;
 };
 
-extern WorldModelConfig m_config;
-extern bool isSimulation;
-extern bool isOurSideLeft;
-extern bool isOurColorYellow;
+extern CameraConfig extern_cameraConfig;
+extern bool extern_isSimulation;
+extern bool extern_isOurSideLeft;
+extern bool extern_isOurColorYellow;
 
 
 

@@ -2,10 +2,10 @@
 
 
 // extern value definitions
-WorldModelConfig m_config;
-bool isSimulation;
-bool isOurSideLeft;
-bool isOurColorYellow;
+CameraConfig extern_cameraConfig;
+bool extern_isSimulation;
+bool extern_isOurSideLeft;
+bool extern_isOurColorYellow;
 
 
 WorldModelNode::WorldModelNode(const rclcpp::NodeOptions & options) : Node("worldmodel_node", options)
@@ -26,17 +26,18 @@ WorldModelNode::WorldModelNode(const rclcpp::NodeOptions & options) : Node("worl
     parameter_event_sub = parameters_client->on_parameter_event(params_change_callback);
 
     //get initial parameters
-    m_config.camn_num = parameters_client->get_parameter("cam_num", m_config.camn_num);
-    m_config.camera_1 = parameters_client->get_parameter("camera_0", m_config.camera_1);
-    m_config.camera_2 = parameters_client->get_parameter("camera_0", m_config.camera_2);
-    m_config.camera_3 = parameters_client->get_parameter("camera_0", m_config.camera_3);
-    m_config.camera_4 = parameters_client->get_parameter("camera_0", m_config.camera_4);
-    m_config.camera_5 = parameters_client->get_parameter("camera_0", m_config.camera_5);
-    m_config.camera_6 = parameters_client->get_parameter("camera_0", m_config.camera_6);
-    m_config.camera_7 = parameters_client->get_parameter("camera_0", m_config.camera_7);
-    isSimulation = parameters_client->get_parameter("is_simulation", isSimulation);
-    isOurSideLeft = parameters_client->get_parameter("is_our_side_left", isOurSideLeft);
-    isOurColorYellow = parameters_client->get_parameter("is_our_color_yellow", isOurColorYellow);
+    extern_cameraConfig.camn_num = parameters_client->get_parameter("cam_num", extern_cameraConfig.camn_num);
+    extern_cameraConfig.camera_0 = parameters_client->get_parameter("camera_0", extern_cameraConfig.camera_1);
+    extern_cameraConfig.camera_1 = parameters_client->get_parameter("camera_1", extern_cameraConfig.camera_1);
+    extern_cameraConfig.camera_2 = parameters_client->get_parameter("camera_2", extern_cameraConfig.camera_2);
+    extern_cameraConfig.camera_3 = parameters_client->get_parameter("camera_3", extern_cameraConfig.camera_3);
+    extern_cameraConfig.camera_4 = parameters_client->get_parameter("camera_4", extern_cameraConfig.camera_4);
+    extern_cameraConfig.camera_5 = parameters_client->get_parameter("camera_5", extern_cameraConfig.camera_5);
+    extern_cameraConfig.camera_6 = parameters_client->get_parameter("camera_6", extern_cameraConfig.camera_6);
+    extern_cameraConfig.camera_7 = parameters_client->get_parameter("camera_7", extern_cameraConfig.camera_7);
+    extern_isSimulation = parameters_client->get_parameter("is_simulation", extern_isSimulation);
+    extern_isOurSideLeft = parameters_client->get_parameter("is_our_side_left", extern_isOurSideLeft);
+    extern_isOurColorYellow = parameters_client->get_parameter("is_our_color_yellow", extern_isOurColorYellow);
 
     // set up vision_detection callback
     vision_detection_subscription = this->create_subscription<parsian_msgs::msg::SSLVisionDetection>("/vision_detection", 8, std::bind(&WorldModelNode::vision_detection_callback, this, _1));
@@ -75,51 +76,51 @@ void WorldModelNode::define_params_change_callback_lambda_function()
         for (auto & changed_parameter : event->changed_parameters) {
             if(changed_parameter.name == "is_simulation")
             {
-                isSimulation = changed_parameter.value.bool_value;
+                extern_isSimulation = changed_parameter.value.bool_value;
             }
             else if(changed_parameter.name == "is_our_side_left")
             {
-                isOurSideLeft = changed_parameter.value.bool_value;
+                extern_isOurSideLeft = changed_parameter.value.bool_value;
             }
             else if(changed_parameter.name == "is_our_color_yellow")
             {
-                isOurColorYellow = changed_parameter.value.bool_value;
+                extern_isOurColorYellow = changed_parameter.value.bool_value;
             }
             else if(changed_parameter.name == "cam_num")
             {
-                m_config.camn_num = changed_parameter.value.integer_value;
+                extern_cameraConfig.camn_num = changed_parameter.value.integer_value;
             }
             else if(changed_parameter.name == "camera_0")
             {
-                m_config.camera_0 = changed_parameter.value.bool_value;
+                extern_cameraConfig.camera_0 = changed_parameter.value.bool_value;
             }
             else if(changed_parameter.name == "camera_1")
             {
-                m_config.camera_1 = changed_parameter.value.bool_value;
+                extern_cameraConfig.camera_1 = changed_parameter.value.bool_value;
             }
             else if(changed_parameter.name == "camera_2")
             {
-                m_config.camera_2 = changed_parameter.value.bool_value;
+                extern_cameraConfig.camera_2 = changed_parameter.value.bool_value;
             }
             else if(changed_parameter.name == "camera_3")
             {
-                m_config.camera_3 = changed_parameter.value.bool_value;
+                extern_cameraConfig.camera_3 = changed_parameter.value.bool_value;
             }
             else if(changed_parameter.name == "camera_4")
             {
-                m_config.camera_4 = changed_parameter.value.bool_value;
+                extern_cameraConfig.camera_4 = changed_parameter.value.bool_value;
             }
             else if(changed_parameter.name == "camera_5")
             {
-                m_config.camera_5 = changed_parameter.value.bool_value;
+                extern_cameraConfig.camera_5 = changed_parameter.value.bool_value;
             }
             else if(changed_parameter.name == "camera_6")
             {
-                m_config.camera_6 = changed_parameter.value.bool_value;
+                extern_cameraConfig.camera_6 = changed_parameter.value.bool_value;
             }
             else if(changed_parameter.name == "camera_7")
             {
-                m_config.camera_7 = changed_parameter.value.bool_value;
+                extern_cameraConfig.camera_7 = changed_parameter.value.bool_value;
             }
         }
         for (auto & deleted_parameter : event->deleted_parameters) {
