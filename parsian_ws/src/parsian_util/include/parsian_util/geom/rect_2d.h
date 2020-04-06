@@ -67,10 +67,7 @@ public:
     /*!
       \brief default constructor creates a zero area rectanble at (0,0)
      */
-    Rect2D()
-        : M_top_left(0.0, 0.0)
-        , M_size(0.0, 0.0) {
-    }
+    Rect2D();
 
     /*!
       \brief constructor
@@ -82,11 +79,7 @@ public:
     Rect2D(const double & left_x,
            const double & top_y,
            const double & length,
-           const double & width)
-        : M_top_left(left_x, top_y)
-        , M_size(length, width) {
-    }
-
+           const double & width);
     /*!
       \brief constructor with variables
       \param top_left top left point
@@ -95,21 +88,14 @@ public:
      */
     Rect2D(const Vector2D & top_left,
            const double & length,
-           const double & width)
-        : M_top_left(top_left)
-        , M_size(length, width) {
-    }
-
+           const double & width);
     /*!
       \brief constructor with variables
       \param top_left top left point
       \param size XY range
      */
     Rect2D(const Vector2D & top_left,
-           const Size2D & size)
-        : M_top_left(top_left)
-        , M_size(size) {
-    }
+           const Size2D & size);
 
     /*!
       \brief constructor with 2 points.
@@ -120,17 +106,7 @@ public:
       the assigned values are normalized automatically.
     */
     Rect2D(const Vector2D & top_left,
-           const Vector2D & bottom_right)
-        : M_top_left(top_left)
-        , M_size(bottom_right.x - top_left.x,
-                 top_left.y - bottom_right.y) {
-        if (bottom_right.x - top_left.x < 0.0) {
-            M_top_left.x = bottom_right.x;
-        }
-        if (bottom_right.y - top_left.y > 0.0) {
-            M_top_left.y = bottom_right.y;
-        }
-    }
+           const Vector2D & bottom_right);
 
     /*!
       \brief create rectangle with center point and size.
@@ -141,12 +117,7 @@ public:
     static
     Rect2D from_center(const Vector2D & center,
                        const double & length,
-                       const double & width) {
-        return Rect2D(center.x - length * 0.5,
-                      center.y + width * 0.5,
-                      length,
-                      width);
-    }
+                       const double & width);
 
     /*!
       \brief create rectangle with center point and size.
@@ -159,12 +130,7 @@ public:
     Rect2D from_center(const double & center_x,
                        const double & center_y,
                        const double & length,
-                       const double & width) {
-        return Rect2D(center_x - length * 0.5,
-                      center_y + width * 0.5,
-                      length,
-                      width);
-    }
+                       const double & width);
 
     /*!
       \brief create rectangle with 2 corner points. just call one of constructor.
@@ -173,9 +139,7 @@ public:
     */
     static
     Rect2D from_corners(const Vector2D & top_left,
-                        const Vector2D & bottom_right) {
-        return Rect2D(top_left, bottom_right);
-    }
+                        const Vector2D & bottom_right);
 
     /*!
       \brief assign new values
@@ -188,11 +152,7 @@ public:
     Rect2D & assign(const double & left_x,
                     const double & top_y,
                     const double & length,
-                    const double & width) {
-        M_top_left.assign(left_x, top_y);
-        M_size.assign(length, width);
-        return *this;
-    }
+                    const double & width);
 
     /*!
       \brief assign new values
@@ -204,11 +164,7 @@ public:
     const
     Rect2D & assign(const Vector2D & top_left,
                     const double & length,
-                    const double & width) {
-        M_top_left = top_left;
-        M_size.assign(length, width);
-        return *this;
-    }
+                    const double & width);
 
     /*!
       \brief assign new values
@@ -218,11 +174,7 @@ public:
      */
     const
     Rect2D & assign(const Vector2D & top_left,
-                    const Size2D & size) {
-        M_top_left = top_left;
-        M_size = size;
-        return *this;
-    }
+                    const Size2D & size);
 
     /*!
       \brief set a new top left corner point
@@ -232,10 +184,7 @@ public:
      */
     const
     Rect2D & setTopLeft(const double & x,
-                        const double & y) {
-        M_top_left.assign(x, y);
-        return *this;
-    }
+                        const double & y);
 
     /*!
       \brief set a new top left corner point
@@ -243,10 +192,7 @@ public:
       \return const referenct to itself
      */
     const
-    Rect2D & setTopLeft(const Vector2D & point) {
-        M_top_left = point;
-        return *this;
-    }
+    Rect2D & setTopLeft(const Vector2D & point);
 
     /*!
       \brief set a new center point. only top left corner is moved.
@@ -255,11 +201,7 @@ public:
       \return const referenct to itself
      */
     const
-    Rect2D & setCenter(const Vector2D & point) {
-        M_top_left.assign(point.x - M_size.length() * 0.5,
-                          point.y - M_size.width() * 0.5);
-        return *this;
-    }
+    Rect2D & setCenter(const Vector2D & point);
 
     /*!
       \brief set a new x-range
@@ -267,10 +209,7 @@ public:
       \return const referenct to itself
      */
     const
-    Rect2D & setLength(const double & length) {
-        M_size.setLength(length);
-        return *this;
-    }
+    Rect2D & setLength(const double & length);
 
     /*!
       \brief set a new y-range
@@ -278,10 +217,7 @@ public:
       \return const referenct to itself
      */
     const
-    Rect2D & setWidth(const double & width) {
-        M_size.setWidth(width);
-        return *this;
-    }
+    Rect2D & setWidth(const double & width);
 
     /*!
       \brief set a new size
@@ -291,10 +227,7 @@ public:
      */
     const
     Rect2D & setSize(const double & length,
-                     const double & width) {
-        M_size.assign(length, width);
-        return *this;
-    }
+                     const double & width);
 
     /*!
       \brief set a new size
@@ -302,171 +235,126 @@ public:
       \return const referenct to itself
      */
     const
-    Rect2D & setSize(const Size2D & size) {
-        M_size = size;
-        return *this;
-    }
+    Rect2D & setSize(const Size2D & size);
 
     /*!
       \brief check if point is within this region.
       \param point considered point
       \return true or false
      */
-    bool contains(const Vector2D & point) const {
-        return (left() <= point.x
-                && point.x <= right()
-                && top() >= point.y
-                && point.y >= bottom());
-    }
+    bool contains(const Vector2D & point) const;
 
     /*!
       \brief get the left x coordinate of this rectangle.
       \return x coordinate value
     */
     const
-    double & left() const {
-        return M_top_left.x;
-    }
+    double & left() const;
 
     /*!
       \brief get the right x coordinate of this rectangle.
       \return x coordinate value
     */
-    double right() const {
-        return left() + size().length();
-    }
+    double right() const;
 
     /*!
       \brief get the top y coordinate of this rectangle.
       \return y coordinate value
     */
     const
-    double & top() const {
-        return M_top_left.y;
-    }
+    double & top() const;
 
     /*!
       \brief get the bottom y coordinate of this rectangle.
       \return y coordinate value
     */
-    double bottom() const {
-        return top() - size().width();
-    }
+    double bottom() const;
 
     /*!
       \brief get minimum value of x coordinate of this rectangle
       \return x coordinate value (equivalent to left())
     */
-    double minX() const {
-        return left();
-    }
+    double minX() const;
 
     /*!
       \brief get maximum value of x coordinate of this rectangle
       \return x coordinate value (equivalent to right())
     */
-    double maxX() const {
-        return right();
-    }
+    double maxX() const;
 
     /*!
       \brief get minimum value of y coordinate of this rectangle
       \return y coordinate value (equivalent to top())
     */
-    double minY() const {
-        return bottom();
-    }
+    double minY() const;
 
     /*!
       \brief get maximum value of y coordinate of this rectangle
       \return y coordinate value (equivalent to bottom())
     */
-    double maxY() const {
-        return top();
-    }
+    double maxY() const;
 
     /*!
       \brief get the XY range of this rectangle
       \return size object
     */
     const
-    Size2D & size() const {
-        return M_size;
-    }
+    Size2D & size() const;
 
     /*!
       \brief get center point
       \return coordinate value by vector object
      */
-    Vector2D center() const {
-        return Vector2D((left() + right()) * 0.5,
-                        (top() + bottom()) * 0.5);
-    }
+    Vector2D center() const;
 
     /*!
       \brief get the top-left corner point
       \return coordiante value by vector object
     */
     const
-    Vector2D & topLeft() const {
-        return M_top_left;
-    }
+    Vector2D & topLeft() const;
 
     /*!
       \brief get the top-right corner point
       \return coordiante value by vector object
     */
-    Vector2D topRight() const {
-        return Vector2D(right(), top());
-    }
+    Vector2D topRight() const;
 
     /*!
       \brief get the bottom-left corner point
       \return coordiante value by vector object
     */
-    Vector2D bottomLeft() const {
-        return Vector2D(left(), bottom());
-    }
+    Vector2D bottomLeft() const;
 
     /*!
       \brief get the bottom-right corner point
       \return coordiante value by vector object
     */
-    Vector2D bottomRight() const {
-        return Vector2D(right(), bottom());
-    }
+    Vector2D bottomRight() const;
 
     /*!
       \brief get the left edge line
       \return line object
     */
-    Line2D leftEdge() const {
-        return Line2D(topLeft(), bottomLeft());
-    }
+    Line2D leftEdge() const;
 
     /*!
       \brief get the right edge line
       \return line object
     */
-    Line2D rightEdge() const {
-        return Line2D(topRight(), bottomRight());
-    }
+    Line2D rightEdge() const;
 
     /*!
       \brief get the top edge line
       \return line object
     */
-    Line2D topEdge() const {
-        return Line2D(topLeft(), topRight());
-    }
+    Line2D topEdge() const;
 
     /*!
       \brief get the bottom edge line
       \return line object
     */
-    Line2D bottomEdge() const {
-        return Line2D(bottomLeft(), bottomRight());
-    }
+    Line2D bottomEdge() const;
 
     /*!
       \brief calculate intersection point with line.
@@ -510,6 +398,7 @@ public:
     int rotateAndintersect(const Segment2D & segment, Vector2D center, float angle ,
                            Vector2D * sol1,
                            Vector2D * sol2) const;
+
     int rotateAndintersect(const Circle2D & circle, Vector2D center, float angle ,
                            Vector2D * sol1,
                            Vector2D * sol2,
