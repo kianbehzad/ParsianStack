@@ -31,6 +31,7 @@
 #define RCSC_GEOM_POLYGON2D_H
 
 #include <vector>
+#include <iostream>
 
 namespace rcsc {
 
@@ -161,6 +162,6 @@ public:
     Polygon2D getScissoredConnectedPolygon( const Rect2D & r ) const;
 };
 
-}
+} // end of namespace
 
 #endif

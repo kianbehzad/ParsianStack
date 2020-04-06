@@ -574,4 +574,4 @@ Polygon2D::getScissoredConnectedPolygon( const Rect2D & r ) const
     return Polygon2D( clipped_p_4 );
 }
 
-}
+} // end of namespace

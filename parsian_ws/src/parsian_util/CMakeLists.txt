@@ -54,7 +54,7 @@ add_library(libgeom SHARED
 #        src/geom/geom.cpp
         src/geom/line_2d.cpp
         src/geom/matrix_2d.cpp
-#        src/geom/polygon_2d.cpp
+        src/geom/polygon_2d.cpp
         src/geom/ray_2d.cpp
         src/geom/rect_2d.cpp
         src/geom/region_2d.cpp
