@@ -73,19 +73,19 @@ ament_export_dependencies(
 )
 
 # create libmath library
-#add_library(libmath
-#        src/math/mathtools.cpp
-#        src/math/matrix.cpp
-#        )
-#ament_target_dependencies(libmath rclcpp)
-#target_link_libraries(libmath ${QT_LIBRARIES} libgeom)
-#ament_export_interfaces(export_libmath HAS_LIBRARY_TARGET)
-#ament_export_libraries(libmath)
-#ament_export_include_directories(include)
-#ament_export_dependencies(
-#        ament_cmake
-#        rclcpp
-#)
+add_library(libmath
+        src/math/mathtools.cpp
+        src/math/matrix.cpp
+        )
+ament_target_dependencies(libmath rclcpp)
+target_link_libraries(libmath ${QT_LIBRARIES} libgeom)
+ament_export_interfaces(export_libmath HAS_LIBRARY_TARGET)
+ament_export_libraries(libmath)
+ament_export_include_directories(include)
+ament_export_dependencies(
+        ament_cmake
+        rclcpp
+)
 
 
 
@@ -116,14 +116,14 @@ install(
         INCLUDES DESTINATION include
 )
 # install libmath
-#install(
-#        TARGETS libmath
-#        EXPORT export_libmath
-#        LIBRARY DESTINATION lib
-#        ARCHIVE DESTINATION lib
-#        RUNTIME DESTINATION bin
-#        INCLUDES DESTINATION include
-#)
+install(
+        TARGETS libmath
+        EXPORT export_libmath
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+)
 
 
 

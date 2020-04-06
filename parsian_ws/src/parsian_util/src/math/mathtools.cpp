@@ -1,6 +1,5 @@
 #include "parsian_util/math/mathtools.h"
-#include <QtAlgorithms>
-#include <QDebug>
+
 
 
 double AvgWithoutOutliers(QList<double> data , double accuracy) {
