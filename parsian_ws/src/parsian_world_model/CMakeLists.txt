@@ -39,6 +39,19 @@ include_directories(
 add_executable(worldmodel
         src/worldmodel/worldmodel_exec.cpp
         src/worldmodel/worldmodel_node.cpp
+
+        src/worldmodel/util/balltracker.cpp
+        src/worldmodel/util/kalman.cpp
+        src/worldmodel/util/robottracker.cpp
+        src/worldmodel/util/tracker.cpp
+        src/worldmodel/wm/ball.cpp
+        src/worldmodel/wm/halfworld.cpp
+        src/worldmodel/wm/movingobject.cpp
+        src/worldmodel/wm/rawobject.cpp
+        src/worldmodel/wm/robot.cpp
+        src/worldmodel/wm/visionbelief.cpp
+        src/worldmodel/wm/visionclient.cpp
+        src/worldmodel/wm/worldmodel.cpp
         )
 ament_target_dependencies(worldmodel rclcpp parsian_msgs parsian_util)
 target_link_libraries(worldmodel ${QT_LIBRARIES})
