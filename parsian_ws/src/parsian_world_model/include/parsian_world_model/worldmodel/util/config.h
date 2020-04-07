@@ -8,7 +8,7 @@
 class CameraConfig
 {
 public:
-    int camn_num;
+    int cam_num;
     bool camera_0;
     bool camera_1;
     bool camera_2;
