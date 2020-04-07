@@ -14,7 +14,10 @@
 #include "parsian_msgs/msg/ssl_vision_geometry.hpp"
 #include "parsian_msgs/msg/parsian_robot_command.hpp"
 #include "parsian_msgs/msg/parsian_world_model.hpp"
+
 #include "parsian_world_model/worldmodel/util/config.h"
+#include "parsian_world_model/worldmodel/wm/worldmodel.h"
+
 #include "parsian_util/core/knowledge.h"
 
 #include "rclcpp/rclcpp.hpp"
@@ -46,8 +49,8 @@ private:
 
     rclcpp::Publisher<parsian_msgs::msg::ParsianWorldModel>::SharedPtr worldmodel_publisher;
 
-
-
+    std::shared_ptr<WorldModel> wm;
+    int frame, packs;
 };
 
 

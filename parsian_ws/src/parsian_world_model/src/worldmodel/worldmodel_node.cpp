@@ -10,6 +10,8 @@ bool extern_isOurColorYellow;
 
 WorldModelNode::WorldModelNode(const rclcpp::NodeOptions & options) : Node("worldmodel_node", options)
 {
+    //feature initialization
+    wm.reset(new WorldModel);
 
     // set up parameter client
     auto parameters_client = std::make_shared<rclcpp::SyncParametersClient>(this);
@@ -26,7 +28,7 @@ WorldModelNode::WorldModelNode(const rclcpp::NodeOptions & options) : Node("worl
     parameter_event_sub = parameters_client->on_parameter_event(params_change_callback);
 
     //get initial parameters
-    extern_cameraConfig.camn_num = parameters_client->get_parameter("cam_num", extern_cameraConfig.camn_num);
+    extern_cameraConfig.cam_num = parameters_client->get_parameter("cam_num", extern_cameraConfig.cam_num);
     extern_cameraConfig.camera_0 = parameters_client->get_parameter("camera_0", extern_cameraConfig.camera_1);
     extern_cameraConfig.camera_1 = parameters_client->get_parameter("camera_1", extern_cameraConfig.camera_1);
     extern_cameraConfig.camera_2 = parameters_client->get_parameter("camera_2", extern_cameraConfig.camera_2);
@@ -38,6 +40,10 @@ WorldModelNode::WorldModelNode(const rclcpp::NodeOptions & options) : Node("worl
     extern_isSimulation = parameters_client->get_parameter("is_simulation", extern_isSimulation);
     extern_isOurSideLeft = parameters_client->get_parameter("is_our_side_left", extern_isOurSideLeft);
     extern_isOurColorYellow = parameters_client->get_parameter("is_our_color_yellow", extern_isOurColorYellow);
+
+    //set up world-model publisher
+    worldmodel_publisher = this->create_publisher<parsian_msgs::msg::ParsianWorldModel>("/world_model", 5);
+
 
     // set up vision_detection callback
     vision_detection_subscription = this->create_subscription<parsian_msgs::msg::SSLVisionDetection>("/vision_detection", 8, std::bind(&WorldModelNode::vision_detection_callback, this, _1));
@@ -53,7 +59,20 @@ WorldModelNode::WorldModelNode(const rclcpp::NodeOptions & options) : Node("worl
 
 void WorldModelNode::vision_detection_callback(const parsian_msgs::msg::SSLVisionDetection::SharedPtr msg)
 {
-
+    wm->updateDetection(msg);
+    wm->execute();
+    frame ++;
+    packs ++;
+    if (packs >= extern_cameraConfig.cam_num) {
+        packs = 0;
+        wm->merge(frame);
+        parsian_msgs::msg::ParsianWorldModel::SharedPtr temp = wm->getParsianWorldModel();
+        temp->header.stamp = rclcpp::Node::now();
+        temp->header.frame_id = std::to_string(msg->frame_number);
+        temp->is_left = extern_isOurSideLeft;
+        temp->is_yellow = extern_isOurColorYellow;
+        worldmodel_publisher->publish(*temp);
+    }
 }
 
 void WorldModelNode::vision_geometry_callback(const parsian_msgs::msg::SSLVisionGeometry::SharedPtr msg)
@@ -63,7 +82,9 @@ void WorldModelNode::vision_geometry_callback(const parsian_msgs::msg::SSLVision
 
 void WorldModelNode::command_callback(const parsian_msgs::msg::ParsianRobotCommand::SharedPtr msg)
 {
-
+    wm->vForwardCmd[msg->robot_id] = msg->vel_f;
+    wm->vNormalCmd [msg->robot_id] = msg->vel_n;
+    wm->vAngCmd    [msg->robot_id] = msg->vel_w;
 }
 
 void WorldModelNode::define_params_change_callback_lambda_function()
@@ -77,6 +98,7 @@ void WorldModelNode::define_params_change_callback_lambda_function()
             if(changed_parameter.name == "is_simulation")
             {
                 extern_isSimulation = changed_parameter.value.bool_value;
+                wm->setMode(extern_isSimulation);
             }
             else if(changed_parameter.name == "is_our_side_left")
             {
@@ -88,7 +110,7 @@ void WorldModelNode::define_params_change_callback_lambda_function()
             }
             else if(changed_parameter.name == "cam_num")
             {
-                extern_cameraConfig.camn_num = changed_parameter.value.integer_value;
+                extern_cameraConfig.cam_num = changed_parameter.value.integer_value;
             }
             else if(changed_parameter.name == "camera_0")
             {
