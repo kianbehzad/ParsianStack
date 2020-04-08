@@ -5,10 +5,10 @@
 
 #include <QDebug>
 #include <QApplication>
-#include <QPushButton>
 
 #include "rclcpp/rclcpp.hpp"
 #include "parsian_gui/interface/interface_node.h"
+#include "parsian_gui/interface/application/main_window.h"
 
 
 struct NodeInThread
@@ -36,10 +36,10 @@ int main(int argc, char * argv[])
     node_thread.detach();
 
     //create interface application
-    QApplication app{argc, argv};
-    QPushButton* button = new QPushButton();
-    button->show();
-    app.exec();
+    QApplication a{argc, argv};
+    MainWindow w{node_in_thread.interface_node.get()};
+    w.show();
+    a.exec();
 
 
 

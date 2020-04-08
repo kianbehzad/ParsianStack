@@ -15,6 +15,9 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+#Qt MOC
+set(CMAKE_AUTOMOC ON)
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -36,6 +39,9 @@ include_directories(
 add_executable(interface
         src/interface/interface_exec.cpp
         src/interface/interface_node.cpp
+
+        src/interface/application/main_window.cpp
+        include/parsian_gui/interface/application/main_window.h # for Qt MOC
         )
 ament_target_dependencies(interface rclcpp parsian_msgs)
 target_link_libraries(interface ${QT_LIBRARIES})
