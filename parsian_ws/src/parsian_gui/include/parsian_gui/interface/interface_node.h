@@ -16,8 +16,6 @@
 #include <QDebug>
 #include <QString>
 
-#include "parsian_gui/interface/application/aplication_thread.h"
-
 #include "rclcpp/rclcpp.hpp"
 
 using std::placeholders::_1;
@@ -31,7 +29,6 @@ public:
     InterfaceNode(int argc, char * argv[], const rclcpp::NodeOptions & options);
 
 private:
-    AplicationThread* aplication_thread;
 
 
 };

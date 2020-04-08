@@ -36,8 +36,6 @@ include_directories(
 add_executable(interface
         src/interface/interface_exec.cpp
         src/interface/interface_node.cpp
-
-        src/interface/application/aplication_thread.cpp
         )
 ament_target_dependencies(interface rclcpp parsian_msgs)
 target_link_libraries(interface ${QT_LIBRARIES})
