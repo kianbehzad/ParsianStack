@@ -18,6 +18,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(parsian_msgs REQUIRED)
 find_package(Qt4 REQUIRED COMPONENTS QtCore)
 
 # Qt4 configuration
@@ -35,8 +36,10 @@ include_directories(
 add_executable(interface
         src/interface/interface_exec.cpp
         src/interface/interface_node.cpp
+
+        src/interface/application/aplication_thread.cpp
         )
-ament_target_dependencies(interface rclcpp)
+ament_target_dependencies(interface rclcpp parsian_msgs)
 target_link_libraries(interface ${QT_LIBRARIES})
 
 

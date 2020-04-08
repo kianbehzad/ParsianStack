@@ -7,5 +7,9 @@ InterfaceNode::InterfaceNode(int argc, char * argv[], const rclcpp::NodeOptions 
 //            qDebug() << argv[i+1];
 //    }
 
+    //create application
+    aplication_thread = new AplicationThread{this};
+    std::thread my_thread{*aplication_thread};
+    my_thread.detach();
 
 }

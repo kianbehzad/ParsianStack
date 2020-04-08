@@ -11,10 +11,12 @@
 #include <string>
 #include <functional>
 #include <vector>
+#include <thread>
 
 #include <QDebug>
 #include <QString>
 
+#include "parsian_gui/interface/application/aplication_thread.h"
 
 #include "rclcpp/rclcpp.hpp"
 
@@ -29,6 +31,8 @@ public:
     InterfaceNode(int argc, char * argv[], const rclcpp::NodeOptions & options);
 
 private:
+    AplicationThread* aplication_thread;
+
 
 };
 
