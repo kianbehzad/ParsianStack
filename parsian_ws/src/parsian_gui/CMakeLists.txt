@@ -19,7 +19,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(parsian_msgs REQUIRED)
-find_package(Qt4 REQUIRED COMPONENTS QtCore)
+find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
 
 # Qt4 configuration
 include(${QT_USE_FILE})

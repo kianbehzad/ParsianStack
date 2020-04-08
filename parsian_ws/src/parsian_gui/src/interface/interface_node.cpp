@@ -6,5 +6,6 @@ InterfaceNode::InterfaceNode(int argc, char * argv[], const rclcpp::NodeOptions 
 //        if(strcmp(argv[i], "--params-file") == 0)
 //            qDebug() << argv[i+1];
 //    }
+    qDebug() << "kiannn";
 
 }
