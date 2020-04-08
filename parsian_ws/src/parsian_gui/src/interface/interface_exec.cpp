@@ -13,33 +13,31 @@
 
 struct NodeInThread
 {
-    NodeInThread(int _argc, char * _argv[]){
-        argc = _argc; argv = _argv;
+    NodeInThread(int argc, char * argv[]){
+        rclcpp::init(argc, argv);
+        interface_node = std::make_shared<InterfaceNode>(rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true));
     }
     void operator()(){
-        rclcpp::init(argc, argv);
-        interface_node = std::make_shared<InterfaceNode>(argc, argv, rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true));
         rclcpp::spin(interface_node);
         rclcpp::shutdown();
     }
 
     std::shared_ptr<InterfaceNode> interface_node;
-    int argc;
-    char ** argv;
 };
 
 int main(int argc, char * argv[])
 {
-    // run interface node in a seperate thread
+    // run interface-node in another thread
     NodeInThread node_in_thread{argc, argv};
     std::thread node_thread{node_in_thread};
     node_thread.detach();
 
     //create interface application
     QApplication a{argc, argv};
-    MainWindow w{node_in_thread.interface_node.get()};
+    MainWindow w{argc, argv, node_in_thread.interface_node};
     w.show();
     a.exec();
+
 
 
 

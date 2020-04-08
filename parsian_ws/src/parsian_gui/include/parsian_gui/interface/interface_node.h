@@ -26,7 +26,7 @@ using namespace std::chrono_literals;
 class InterfaceNode : public rclcpp::Node
 {
 public:
-    InterfaceNode(int argc, char * argv[], const rclcpp::NodeOptions & options);
+    InterfaceNode(const rclcpp::NodeOptions & options);
 
 private:
 
