@@ -20,14 +20,17 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(parsian_msgs REQUIRED)
 find_package(parsian_util REQUIRED)
-find_package(Qt4 REQUIRED COMPONENTS QtNetwork QtCore)
 find_package(Protobuf REQUIRED)
 
-# Qt4 configuration
-include(${QT_USE_FILE})
-file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.hpp)
-qt4_wrap_cpp(QT_MOC_HPP ${QT_MOC})
-file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.cpp)
+# find Qt5
+if(APPLE AND EXISTS /usr/local/opt/qt)
+  # Homebrew installs Qt5 (up to at least 5.9.1) in
+  # /usr/local/qt5, ensure it can be found by CMake since
+  # it is not in the default /usr/local prefix.
+  list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt")
+endif()
+find_package(Qt5 COMPONENTS Core Widgets OpenGL Network REQUIRED)
+list(APPEND QT5_LIBRARIES Qt5::Core Qt5::Widgets Qt5::OpenGL Qt5::Network)
 
 # compile proto files
 set(proto_dir ${PROJECT_SOURCE_DIR}/proto/)
@@ -61,7 +64,7 @@ add_executable(grsim
         include/parsian_protobuf_wrapper/proto/grSim_Replacement.pb.cc
         )
 ament_target_dependencies(grsim rclcpp parsian_msgs parsian_util)
-target_link_libraries(grsim ${QT_LIBRARIES} ${PROTOBUF_LIBRARIES})
+target_link_libraries(grsim ${QT5_LIBRARIES} ${PROTOBUF_LIBRARIES})
 
 
 # vision node
@@ -81,7 +84,7 @@ add_executable(vision
         include/parsian_protobuf_wrapper/proto/messages_robocup_ssl_refbox_log.pb.cc
         )
 ament_target_dependencies(vision rclcpp parsian_msgs parsian_util)
-target_link_libraries(vision ${QT_LIBRARIES} ${PROTOBUF_LIBRARIES})
+target_link_libraries(vision ${QT5_LIBRARIES} ${PROTOBUF_LIBRARIES})
 
 
 

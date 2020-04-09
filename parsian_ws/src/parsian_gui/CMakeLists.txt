@@ -22,13 +22,17 @@ set(CMAKE_AUTOMOC ON)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(parsian_msgs REQUIRED)
-find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
 
-# Qt4 configuration
-include(${QT_USE_FILE})
-file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.hpp)
-qt4_wrap_cpp(QT_MOC_HPP ${QT_MOC})
-file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.cpp)
+# find Qt5
+if(APPLE AND EXISTS /usr/local/opt/qt)
+  # Homebrew installs Qt5 (up to at least 5.9.1) in
+  # /usr/local/qt5, ensure it can be found by CMake since
+  # it is not in the default /usr/local prefix.
+  list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt")
+endif()
+find_package(Qt5 COMPONENTS Core Widgets OpenGL Network REQUIRED)
+list(APPEND QT5_LIBRARIES Qt5::Core Qt5::Widgets Qt5::OpenGL Qt5::Network)
+
 
 # include paths
 include_directories(
@@ -44,7 +48,7 @@ add_executable(interface
         include/parsian_gui/interface/application/main_window.h # for Qt MOC
         )
 ament_target_dependencies(interface rclcpp parsian_msgs)
-target_link_libraries(interface ${QT_LIBRARIES})
+target_link_libraries(interface ${QT5_LIBRARIES})
 
 
 # install nodes
