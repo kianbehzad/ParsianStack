@@ -48,6 +48,8 @@ add_executable(interface
         include/parsian_gui/interface/application/main_window.h # for Qt MOC
         src/interface/application/widgets/base_widget.cpp
         include/parsian_gui/interface/application/widgets/base_widget.h # for Qt MOC
+        src/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.cpp
+        include/parsian_gui/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.h # for Qt MOC
         )
 ament_target_dependencies(interface rclcpp parsian_msgs)
 target_link_libraries(interface ${QT5_LIBRARIES})

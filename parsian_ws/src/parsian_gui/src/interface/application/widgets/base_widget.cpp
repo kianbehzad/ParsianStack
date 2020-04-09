@@ -8,4 +8,8 @@ BaseWidget::BaseWidget(InterfaceNode* node_, std::vector<std::string> argv_, QWi
 {
 }
 
+BaseWidget::~BaseWidget()
+{
+
+}
 

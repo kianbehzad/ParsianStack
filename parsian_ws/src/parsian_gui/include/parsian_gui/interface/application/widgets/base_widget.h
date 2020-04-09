@@ -19,6 +19,7 @@ class BaseWidget : public QWidget
     Q_OBJECT
 public:
     explicit BaseWidget(InterfaceNode* node_, std::vector<std::string> argv_, QWidget *parent = 0);
+    ~BaseWidget();
     virtual void struct_widget() = 0;
 
 
