@@ -14,6 +14,9 @@
 
 #include "parsian_gui/interface/interface_node.h"
 
+#include "rclcpp/rclcpp.hpp"
+
+
 class BaseWidget : public QWidget
 {
     Q_OBJECT

@@ -22,6 +22,7 @@ set(CMAKE_AUTOMOC ON)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(parsian_msgs REQUIRED)
+find_package(yaml REQUIRED)
 
 # find Qt5
 if(APPLE AND EXISTS /usr/local/opt/qt)
@@ -52,7 +53,7 @@ add_executable(interface
         include/parsian_gui/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.h # for Qt MOC
         )
 ament_target_dependencies(interface rclcpp parsian_msgs)
-target_link_libraries(interface ${QT5_LIBRARIES})
+target_link_libraries(interface ${QT5_LIBRARIES} yaml)
 
 
 # install nodes
