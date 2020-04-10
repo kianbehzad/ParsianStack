@@ -9,7 +9,6 @@
 #include <string>
 #include <fstream>
 #include <stdio.h>
-#include <yaml.h>
 
 #include <QWidget>
 #include <QString>
@@ -23,11 +22,10 @@
 
 #include "parsian_gui/interface/application/widgets/base_widget.h"
 
+#include "rcl_yaml_param_parser/parser.h"
+#include "rclcpp/parameter_map.hpp"
 
-struct ParsedYaml{
-    QMap<QString, QString> params;
-    QString node_name;
-};
+
 
 class DynamicReconfigureWidget : public BaseWidget
 {
@@ -39,8 +37,6 @@ public:
 
 private:
     void yaml_parser(std::string file_path);
-    ParsedYaml parse_one_node(yaml_parser_t& parser, yaml_token_t& token);
-    QList<ParsedYaml> parsed_yaml;
 
 
 };

@@ -22,7 +22,6 @@ set(CMAKE_AUTOMOC ON)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(parsian_msgs REQUIRED)
-find_package(yaml REQUIRED)
 
 # find Qt5
 if(APPLE AND EXISTS /usr/local/opt/qt)
