@@ -14,6 +14,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QPushButton>
 #include <QCheckBox>
 #include <QIntValidator>
 #include <QDoubleValidator>
@@ -46,10 +47,14 @@ private:
     QHBoxLayout* lay;
     QLabel* label_param_name;
     QLineEdit* edit_param_value;
+    QPushButton* button_submit_edit_param;
     QCheckBox* check_bool_param_value;
     QIntValidator* int_validator_param_value;
     QDoubleValidator* double_validator_param_value;
 
+public slots:
+    void button_submit_pressed_handle();
+    void check_bool_stateChanged_handle(int state);
 
 };
 

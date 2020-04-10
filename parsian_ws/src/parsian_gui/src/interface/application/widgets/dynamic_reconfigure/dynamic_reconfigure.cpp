@@ -39,11 +39,17 @@ DynamicReconfigureWidget::~DynamicReconfigureWidget()
 
 void DynamicReconfigureWidget::struct_widget()
 {
-    ParamWidget* param_widget = new ParamWidget(node);
-    rclcpp::Parameter param = parsed["/worldmodel_node"][0];
-    param_widget->struct_widget(param);
-    QHBoxLayout* lay = new QHBoxLayout(this);
-    lay->addWidget(param_widget);
+    ParamWidget* param_widget1 = new ParamWidget(node);
+    rclcpp::Parameter param1 = parsed["/worldmodel_node"][0];
+    param_widget1->struct_widget(param1);
+
+    ParamWidget* param_widget2 = new ParamWidget(node);
+    rclcpp::Parameter param2 = parsed["/worldmodel_node"][3];
+    param_widget2->struct_widget(param2);
+
+    QVBoxLayout* lay = new QVBoxLayout(this);
+    lay->addWidget(param_widget1);
+    lay->addWidget(param_widget2);
     this->setLayout(lay);
 
 }

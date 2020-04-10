@@ -10,9 +10,15 @@ ParamWidget::ParamWidget(InterfaceNode* node_, QWidget *parent) : QWidget(parent
     lay = new QHBoxLayout();
     label_param_name = new QLabel();
     edit_param_value = new QLineEdit();
+    button_submit_edit_param = new QPushButton();
     check_bool_param_value = new QCheckBox();
     int_validator_param_value = new QIntValidator();
     double_validator_param_value = new QDoubleValidator();
+
+    button_submit_edit_param->setText("submit");
+
+    connect(this->check_bool_param_value, SIGNAL(stateChanged(int)), this, SLOT(check_bool_stateChanged_handle(int)));
+    connect(this->button_submit_edit_param, SIGNAL(pressed()), this, SLOT(button_submit_pressed_handle()));
 
     lay->addWidget(label_param_name);
 
@@ -47,6 +53,7 @@ void ParamWidget::struct_widget(const rclcpp::Parameter parameter_)
             edit_param_value->setText(QString::number(value));
 
             lay->addWidget(edit_param_value);
+            lay->addWidget(button_submit_edit_param);
             break;
         }
         case rclcpp::ParameterType::PARAMETER_DOUBLE:
@@ -57,6 +64,7 @@ void ParamWidget::struct_widget(const rclcpp::Parameter parameter_)
             edit_param_value->setText(QString::number(value));
 
             lay->addWidget(edit_param_value);
+            lay->addWidget(button_submit_edit_param);
             break;
         }
         case rclcpp::ParameterType::PARAMETER_STRING:
@@ -66,6 +74,7 @@ void ParamWidget::struct_widget(const rclcpp::Parameter parameter_)
             edit_param_value->setText(value);
 
             lay->addWidget(edit_param_value);
+            lay->addWidget(button_submit_edit_param);
             break;
         }
         case rclcpp::ParameterType::PARAMETER_BOOL:
@@ -98,6 +107,24 @@ rclcpp::ParameterType ParamWidget::get_type()
 {
     return type;
 }
+
+void ParamWidget::button_submit_pressed_handle()
+{
+    qDebug() << "here";
+}
+
+void ParamWidget::check_bool_stateChanged_handle(int state)
+{
+    if(state == Qt::Checked)
+    {
+        check_bool_param_value->setText("True");
+    }
+    else if(state == Qt::Unchecked)
+    {
+        check_bool_param_value->setText("False");
+    }
+}
+
 
 
 
