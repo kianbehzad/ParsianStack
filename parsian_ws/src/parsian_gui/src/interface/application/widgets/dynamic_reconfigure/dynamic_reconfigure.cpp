@@ -39,16 +39,25 @@ DynamicReconfigureWidget::~DynamicReconfigureWidget()
 
 void DynamicReconfigureWidget::struct_widget()
 {
+    ParamWidget* param_widget = new ParamWidget(node);
+    rclcpp::Parameter param = parsed["/worldmodel_node"][0];
+    param_widget->struct_widget(param);
+    QHBoxLayout* lay = new QHBoxLayout(this);
+    lay->addWidget(param_widget);
+    this->setLayout(lay);
 
 }
 
 void DynamicReconfigureWidget::yaml_parser(std::string file_path) {
 
-    rcutils_allocator_t tt = rcutils_get_default_allocator();
-    rcl_params_t *test = rcl_yaml_node_struct_init(tt);
-    qDebug() << rcl_parse_yaml_file(file_path.c_str(), test);
-    std::unordered_map<std::string, std::vector<rclcpp::Parameter>> pamap = rclcpp::parameter_map_from(test);
+    rcutils_allocator_t alocator = rcutils_get_default_allocator();
+    rcl_params_t *param_st = rcl_yaml_node_struct_init(alocator);
+    rcl_parse_yaml_file(file_path.c_str(), param_st);
+    parsed = rclcpp::parameter_map_from(param_st);
+
 }
+
+
 
 
 

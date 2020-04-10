@@ -14,13 +14,13 @@
 #include <QString>
 #include <QDebug>
 #include <QVBoxLayout>
-#include <QPushButton>
 #include <QMap>
 #include <QList>
 #include <QFile>
 #include <QDir>
 
 #include "parsian_gui/interface/application/widgets/base_widget.h"
+#include "parsian_gui/interface/application/widgets/dynamic_reconfigure/param_widget.h"
 
 #include "rcl_yaml_param_parser/parser.h"
 #include "rclcpp/parameter_map.hpp"
@@ -37,6 +37,10 @@ public:
 
 private:
     void yaml_parser(std::string file_path);
+    std::unordered_map<std::string, std::vector<rclcpp::Parameter>> parsed;
+
+
+
 
 
 };
