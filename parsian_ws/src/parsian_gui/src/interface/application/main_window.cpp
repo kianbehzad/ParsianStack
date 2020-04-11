@@ -9,12 +9,16 @@ MainWindow::MainWindow(int _argc, char * _argv[], std::shared_ptr<InterfaceNode>
     for(int i{}; i < _argc; i++)
         argv.push_back(_argv[i]);
 
+    //get dir path
+    qss_directory_path = ament_index_cpp::get_package_share_directory("parsian_gui");
+    qss_directory_path = QDir(QString::fromStdString(qss_directory_path)).filePath("qss").toStdString();
+
     // set up world_model callback (just a sample - no usage)
     worldmodel_subscription = interface_node->create_subscription<parsian_msgs::msg::ParsianWorldModel>("/world_model", 10, std::bind(&MainWindow::worldmodel_callback, this, _1));
 
 
     // struct widgets
-    dynamic_reconfigure_widget = new DynamicReconfigureWidget(interface_node.get(), argv, this);
+    dynamic_reconfigure_widget = new DynamicReconfigureWidget(interface_node.get(), qss_directory_path, argv, this);
     dynamic_reconfigure_widget->struct_widget();
 
     // add widgets

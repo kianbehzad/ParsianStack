@@ -7,8 +7,6 @@
 
 ParamWidget::ParamWidget(InterfaceNode* node_, std::shared_ptr<rclcpp::SyncParametersClient> remote_param_client_, QWidget *parent) : QWidget(parent), node{node_}, remote_param_client{remote_param_client_}
 {
-    std::cout << remote_param_client_ << std::endl;
-    std::cout << remote_param_client << std::endl;
     lay = new QHBoxLayout();
     label_param_name = new QLabel();
     edit_param_value = new QLineEdit();
@@ -112,7 +110,8 @@ rclcpp::ParameterType ParamWidget::get_type()
 
 void ParamWidget::button_submit_pressed_handle()
 {
-    qDebug() << "here";
+    std::string current_text = edit_param_value->text().toStdString();
+    auto set_parameters_results = remote_param_client->set_parameters({rclcpp::Parameter(get_name().toStdString(), current_text),});
 }
 
 void ParamWidget::check_bool_stateChanged_handle(int state)

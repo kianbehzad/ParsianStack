@@ -4,7 +4,7 @@
 
 #include "parsian_gui/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.h"
 
-DynamicReconfigureWidget::DynamicReconfigureWidget(InterfaceNode* node_, std::vector<std::string> argv_, QWidget *parent) : BaseWidget(node_, argv_, parent)
+DynamicReconfigureWidget::DynamicReconfigureWidget(InterfaceNode* node_, std::string qss_directory_path_, std::vector<std::string> argv_, QWidget *parent) : BaseWidget(node_, qss_directory_path_, argv_, parent)
 {
     // finding parameter file
     std::string file_path{};
