@@ -28,6 +28,13 @@ DynamicReconfigureWidget::DynamicReconfigureWidget(InterfaceNode* node_, std::ve
     //remove file
     QFile::remove(QString::fromStdString(copy_path));
 
+    // make remote parameter clients
+    client_node = rclcpp::Node::make_shared("set_and_get_parameters_async");
+    define_parameter_clients();
+
+
+
+
 
 }
 
@@ -39,17 +46,22 @@ DynamicReconfigureWidget::~DynamicReconfigureWidget()
 
 void DynamicReconfigureWidget::struct_widget()
 {
-    ParamWidget* param_widget1 = new ParamWidget(node);
-    rclcpp::Parameter param1 = parsed["/worldmodel_node"][0];
+    ParamWidget* param_widget1 = new ParamWidget(node, parameter_client["/grsim_node"]);
+    rclcpp::Parameter param1 = parsed["/grsim_node"][0];
     param_widget1->struct_widget(param1);
 
-    ParamWidget* param_widget2 = new ParamWidget(node);
-    rclcpp::Parameter param2 = parsed["/worldmodel_node"][3];
+    ParamWidget* param_widget2 = new ParamWidget(node, parameter_client["/grsim_node"]);
+    rclcpp::Parameter param2 = parsed["/grsim_node"][2];
     param_widget2->struct_widget(param2);
+
+//    ParamWidget* param_widget3 = new ParamWidget(node, parameter_client["/grsim_node"]);
+//    rclcpp::Parameter param3 = parsed["/grsim_node"][2];
+//    param_widget3->struct_widget(param3);
 
     QVBoxLayout* lay = new QVBoxLayout(this);
     lay->addWidget(param_widget1);
     lay->addWidget(param_widget2);
+//    lay->addWidget(param_widget3);
     this->setLayout(lay);
 
 }
@@ -60,6 +72,23 @@ void DynamicReconfigureWidget::yaml_parser(std::string file_path) {
     rcl_params_t *param_st = rcl_yaml_node_struct_init(alocator);
     rcl_parse_yaml_file(file_path.c_str(), param_st);
     parsed = rclcpp::parameter_map_from(param_st);
+
+}
+
+void DynamicReconfigureWidget::define_parameter_clients()
+{
+    for(const auto& node_param : parsed)
+    {
+        std::string node_name = node_param.first;
+        parameter_client[node_name] = std::make_shared<rclcpp::SyncParametersClient>(client_node, node_name);
+        while (!parameter_client[node_name]->wait_for_service(1s)) {
+            if (!rclcpp::ok()) {
+                RCLCPP_ERROR(node->get_logger(), "[dynamic-reconfigure] couldnt get %s remote param!", node_name.c_str());
+                rclcpp::shutdown();
+            }
+            RCLCPP_WARN(node->get_logger(), "[dynamic-reconfigure] %s remote param not available, waiting again...", node_name.c_str());
+        }
+    }
 
 }
 

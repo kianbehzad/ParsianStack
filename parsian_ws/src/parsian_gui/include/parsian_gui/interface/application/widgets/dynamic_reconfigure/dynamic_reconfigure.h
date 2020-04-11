@@ -9,6 +9,7 @@
 #include <string>
 #include <fstream>
 #include <stdio.h>
+#include <map>
 
 #include <QWidget>
 #include <QString>
@@ -36,8 +37,15 @@ public:
     virtual void struct_widget();
 
 private:
+    // map node nomes to their parameter client
+    std::map<std::string, std::shared_ptr<rclcpp::SyncParametersClient>> parameter_client;
+    void define_parameter_clients();
+
     void yaml_parser(std::string file_path);
     std::unordered_map<std::string, std::vector<rclcpp::Parameter>> parsed;
+
+    // node for changing params
+    std::shared_ptr<rclcpp::Node> client_node;
 
 
 

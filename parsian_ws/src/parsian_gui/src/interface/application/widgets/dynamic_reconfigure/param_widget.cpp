@@ -5,8 +5,10 @@
 
 
 
-ParamWidget::ParamWidget(InterfaceNode* node_, QWidget *parent) : QWidget(parent), node{node_}
+ParamWidget::ParamWidget(InterfaceNode* node_, std::shared_ptr<rclcpp::SyncParametersClient> remote_param_client_, QWidget *parent) : QWidget(parent), node{node_}, remote_param_client{remote_param_client_}
 {
+    std::cout << remote_param_client_ << std::endl;
+    std::cout << remote_param_client << std::endl;
     lay = new QHBoxLayout();
     label_param_name = new QLabel();
     edit_param_value = new QLineEdit();
@@ -117,10 +119,12 @@ void ParamWidget::check_bool_stateChanged_handle(int state)
 {
     if(state == Qt::Checked)
     {
+        auto set_parameters_results = remote_param_client->set_parameters({rclcpp::Parameter(get_name().toStdString(), true),});
         check_bool_param_value->setText("True");
     }
     else if(state == Qt::Unchecked)
     {
+        auto set_parameters_results = remote_param_client->set_parameters({rclcpp::Parameter(get_name().toStdString(), false),});
         check_bool_param_value->setText("False");
     }
 }

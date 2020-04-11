@@ -29,13 +29,15 @@ int main(int argc, char * argv[])
 {
     // run interface-node in another thread
     NodeInThread node_in_thread{argc, argv};
-    std::thread node_thread{node_in_thread};
-    node_thread.detach();
+
 
     //create interface application
     QApplication a{argc, argv};
     MainWindow w{argc, argv, node_in_thread.interface_node};
     w.show();
+
+    std::thread node_thread{node_in_thread};
+    node_thread.detach();
     a.exec();
 
 
