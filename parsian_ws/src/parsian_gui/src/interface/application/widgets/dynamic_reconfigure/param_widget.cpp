@@ -7,16 +7,37 @@
 
 ParamWidget::ParamWidget(InterfaceNode* node_, std::shared_ptr<rclcpp::SyncParametersClient> remote_param_client_, QWidget *parent) : QWidget(parent), node{node_}, remote_param_client{remote_param_client_}
 {
+    //getting style sheets
+    QString qss_file_path = QDir(QString::fromStdString(extern_qss_directory_path)).filePath("param_widget.qss");
+    File.setFileName(qss_file_path);
+    if(!File.open(QFile::ReadOnly))
+        RCLCPP_WARN(node->get_logger(), "[dynamic-reconfigure][param_widget] could not open param_widget.qss file!");
+    FormStyleSheet = QLatin1String(File.readAll());
+    this->setStyleSheet(FormStyleSheet);
+    File.close();
+
+    //define variables
+    this->setObjectName("param_widget");
     lay = new QHBoxLayout();
+
     label_param_name = new QLabel();
+    label_param_name->setObjectName("label_param_name");
+
     edit_param_value = new QLineEdit();
+    edit_param_value->setObjectName("edit_param_value");
+
     button_submit_edit_param = new QPushButton();
+    button_submit_edit_param->setObjectName("button_submit_edit_param");
+    button_submit_edit_param->setText("submit");
+
     check_bool_param_value = new QCheckBox();
+    check_bool_param_value->setObjectName("check_bool_param_value");
+
     int_validator_param_value = new QIntValidator();
     double_validator_param_value = new QDoubleValidator();
 
-    button_submit_edit_param->setText("submit");
 
+    //connections
     connect(this->check_bool_param_value, SIGNAL(stateChanged(int)), this, SLOT(check_bool_stateChanged_handle(int)));
     connect(this->button_submit_edit_param, SIGNAL(pressed()), this, SLOT(button_submit_pressed_handle()));
 

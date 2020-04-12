@@ -11,6 +11,8 @@
 #include <QWidget>
 #include <QString>
 #include <QDebug>
+#include <QFile>
+#include <QDir>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -39,6 +41,10 @@ public:
     rclcpp::Parameter get_parameter();
 
 private:
+    //STYLESHEET
+    QFile File;
+    QString FormStyleSheet;
+
     InterfaceNode* node;
     std::shared_ptr<rclcpp::SyncParametersClient> remote_param_client;
     rclcpp::Parameter parameter;
