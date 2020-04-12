@@ -64,25 +64,26 @@ void DynamicReconfigureWidget::struct_widget()
 {
 
     tab_widget = new QTabWidget();
-    for(const auto& node_ : parsed)
-    {
-        std::string node_name  = node_.first;
-
-        scroll_for_params.append(new QScrollArea);
-        widget_for_params.append(new QWidget);
-        layout_for_params.append(new QVBoxLayout);
-
-        for(const auto& param : node_.second)
+    for(const auto& node_ : parsed) {
+        std::string node_name = node_.first;
+        if (parameter_client[node_name]->service_is_ready())
         {
-            ParamWidget* tmp = new ParamWidget(node, parameter_client[node_name]);
-            tmp->struct_widget(param);
-            layout_for_params.last()->addWidget(tmp);
+
+            scroll_for_params.append(new QScrollArea);
+            widget_for_params.append(new QWidget);
+            layout_for_params.append(new QVBoxLayout);
+
+            for (const auto &param : node_.second) {
+                ParamWidget *tmp = new ParamWidget(node, parameter_client[node_name]);
+                tmp->struct_widget(param);
+                layout_for_params.last()->addWidget(tmp);
+            }
+
+            widget_for_params.last()->setLayout(layout_for_params.last());
+            scroll_for_params.last()->setWidget(widget_for_params.last());
+
+            tab_widget->addTab(scroll_for_params.last(), QString::fromStdString(node_name));
         }
-
-        widget_for_params.last()->setLayout(layout_for_params.last());
-        scroll_for_params.last()->setWidget(widget_for_params.last());
-
-        tab_widget->addTab(scroll_for_params.last(), QString::fromStdString(node_name));
     }
 
     layout_main = new QHBoxLayout();
@@ -107,7 +108,7 @@ void DynamicReconfigureWidget::define_parameter_clients()
     {
         std::string node_name = node_param.first;
         parameter_client[node_name] = std::make_shared<rclcpp::SyncParametersClient>(client_node, node_name);
-        while (!parameter_client[node_name]->wait_for_service(1s)) {
+        if (!parameter_client[node_name]->wait_for_service(1s)) {
             if (!rclcpp::ok()) {
                 RCLCPP_ERROR(node->get_logger(), "[dynamic-reconfigure] couldnt get %s remote param!", node_name.c_str());
                 rclcpp::shutdown();
