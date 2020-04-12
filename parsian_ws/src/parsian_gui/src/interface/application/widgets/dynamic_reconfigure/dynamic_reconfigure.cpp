@@ -46,23 +46,73 @@ DynamicReconfigureWidget::~DynamicReconfigureWidget()
 
 void DynamicReconfigureWidget::struct_widget()
 {
-    ParamWidget* param_widget1 = new ParamWidget(node, parameter_client["/grsim_node"]);
-    rclcpp::Parameter param1 = parsed["/grsim_node"][0];
-    param_widget1->struct_widget(param1);
 
-    ParamWidget* param_widget2 = new ParamWidget(node, parameter_client["/grsim_node"]);
-    rclcpp::Parameter param2 = parsed["/grsim_node"][1];
-    param_widget2->struct_widget(param2);
+    tab_widget = new QTabWidget();
+    for(const auto& node_ : parsed)
+    {
+        std::string node_name  = node_.first;
 
-    ParamWidget* param_widget3 = new ParamWidget(node, parameter_client["/grsim_node"]);
-    rclcpp::Parameter param3 = parsed["/grsim_node"][2];
-    param_widget3->struct_widget(param3);
+        scroll_for_params.append(new QScrollArea);
+        widget_for_params.append(new QWidget);
+        layout_for_params.append(new QVBoxLayout);
 
-    QVBoxLayout* lay = new QVBoxLayout(this);
-    lay->addWidget(param_widget1);
-    lay->addWidget(param_widget2);
-    lay->addWidget(param_widget3);
-    this->setLayout(lay);
+        for(const auto& param : node_.second)
+        {
+            std::string param_name  = param.get_name();
+            ParamWidget* tmp = new ParamWidget(node, parameter_client[param_name]);
+            tmp->struct_widget(param);
+            layout_for_params.last()->addWidget(tmp);
+        }
+
+        widget_for_params.last()->setLayout(layout_for_params.last());
+        scroll_for_params.last()->setWidget(widget_for_params.last());
+
+        tab_widget->addTab(scroll_for_params.last(), QString::fromStdString(node_name));
+    }
+
+    layout_main = new QHBoxLayout();
+    layout_main->addWidget(tab_widget);
+
+    this->setLayout(layout_main);
+
+//    QVBoxLayout* m_layout = new QVBoxLayout();
+//    QScrollArea* m_area = new QScrollArea;
+//    QWidget* m_contents = new QWidget;
+//    QVBoxLayout* m_contentsLayout = new QVBoxLayout{m_contents};
+//    std::vector<QSpinBox*> m_spinBoxes;
+//    for(int i{};i<10;i++)
+//        m_spinBoxes.push_back(new QSpinBox);
+//
+//    m_layout->addWidget(m_area);
+//    m_area->setWidget(m_contents);
+//    for (auto & spinbox : m_spinBoxes)
+//        m_contentsLayout->addWidget(spinbox);
+//    m_contentsLayout->setSizeConstraint(QLayout::SetMinimumSize);
+//
+//    this->setLayout(m_layout);
+
+//    QHBoxLayout* out_lay = new QHBoxLayout();
+//    QScrollArea* scroll = new QScrollArea();
+//    QWidget* widget = new QWidget();
+//    QVBoxLayout* lay = new QVBoxLayout();
+//
+//    ParamWidget* param_widget1 = new ParamWidget(node, parameter_client["/grsim_node"]);
+//    rclcpp::Parameter param1 = parsed["/grsim_node"][0];
+//    param_widget1->struct_widget(param1);
+//
+//    ParamWidget* param_widget2 = new ParamWidget(node, parameter_client["/grsim_node"]);
+//    rclcpp::Parameter param2 = parsed["/grsim_node"][1];
+//    param_widget2->struct_widget(param2);
+//
+//    lay->addWidget(param_widget1);
+//    lay->addWidget(param_widget2);
+//
+//    widget->setLayout(lay);
+//
+//    scroll->setWidget(widget);
+//    out_lay->addWidget(scroll);
+//    this->setLayout(out_lay);
+
 
 }
 

@@ -15,6 +15,8 @@
 #include <QString>
 #include <QDebug>
 #include <QVBoxLayout>
+#include <QScrollArea>
+#include <QTabWidget>
 #include <QMap>
 #include <QList>
 #include <QFile>
@@ -46,6 +48,14 @@ private:
 
     // node for changing params
     std::shared_ptr<rclcpp::Node> client_node;
+
+    // widgets
+    QHBoxLayout* layout_main;
+    QTabWidget* tab_widget;
+    QList<QScrollArea*> scroll_for_params;
+    QList<QWidget*> widget_for_params;
+    QList<QVBoxLayout*> layout_for_params;
+
 
 
 
