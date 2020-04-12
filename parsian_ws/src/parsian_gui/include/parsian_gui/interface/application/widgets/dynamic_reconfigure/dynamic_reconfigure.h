@@ -32,7 +32,7 @@ class DynamicReconfigureWidget : public BaseWidget
 {
     Q_OBJECT
 public:
-    explicit DynamicReconfigureWidget(InterfaceNode* node_, std::string qss_directory_path_, std::vector<std::string> argv_, QWidget *parent = 0);
+    explicit DynamicReconfigureWidget(InterfaceNode* node_, QWidget *parent = 0);
     ~DynamicReconfigureWidget();
     virtual void struct_widget();
 

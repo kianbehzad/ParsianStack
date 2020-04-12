@@ -19,6 +19,7 @@
 #include <QIntValidator>
 #include <QDoubleValidator>
 
+#include "parsian_gui/interface/application/extern_variables.h"
 #include "parsian_gui/interface/interface_node.h"
 
 #include "rclcpp/rclcpp.hpp"

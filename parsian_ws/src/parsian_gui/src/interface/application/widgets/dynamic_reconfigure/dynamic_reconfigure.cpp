@@ -4,14 +4,14 @@
 
 #include "parsian_gui/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.h"
 
-DynamicReconfigureWidget::DynamicReconfigureWidget(InterfaceNode* node_, std::string qss_directory_path_, std::vector<std::string> argv_, QWidget *parent) : BaseWidget(node_, qss_directory_path_, argv_, parent)
+DynamicReconfigureWidget::DynamicReconfigureWidget(InterfaceNode* node_, QWidget *parent) : BaseWidget(node_, parent)
 {
     // finding parameter file
     std::string file_path{};
-    for(int i{}; i < argv.size(); i++)
-        if(argv[i] == "--params-file") {
-            if (i + 1 <= argv.size())
-                file_path = argv[i + 1];
+    for(int i{}; i < extern_argv.size(); i++)
+        if(extern_argv[i] == "--params-file") {
+            if (i + 1 <= extern_argv.size())
+                file_path = extern_argv[i + 1];
             else
                 RCLCPP_WARN(node->get_logger(), "[dynamic-reconfigure] parameter yaml file not found!");
         }
@@ -29,7 +29,7 @@ DynamicReconfigureWidget::DynamicReconfigureWidget(InterfaceNode* node_, std::st
     QFile::remove(QString::fromStdString(copy_path));
 
     // make remote parameter clients
-    client_node = rclcpp::Node::make_shared("set_and_get_parameters_async");
+    client_node = rclcpp::Node::make_shared("set_parameters");
     define_parameter_clients();
 
 
@@ -54,14 +54,14 @@ void DynamicReconfigureWidget::struct_widget()
     rclcpp::Parameter param2 = parsed["/grsim_node"][2];
     param_widget2->struct_widget(param2);
 
-//    ParamWidget* param_widget3 = new ParamWidget(node, parameter_client["/grsim_node"]);
-//    rclcpp::Parameter param3 = parsed["/grsim_node"][2];
-//    param_widget3->struct_widget(param3);
+    ParamWidget* param_widget3 = new ParamWidget(node, parameter_client["/grsim_node"]);
+    rclcpp::Parameter param3 = parsed["/grsim_node"][2];
+    param_widget3->struct_widget(param3);
 
     QVBoxLayout* lay = new QVBoxLayout(this);
     lay->addWidget(param_widget1);
     lay->addWidget(param_widget2);
-//    lay->addWidget(param_widget3);
+    lay->addWidget(param_widget3);
     this->setLayout(lay);
 
 }

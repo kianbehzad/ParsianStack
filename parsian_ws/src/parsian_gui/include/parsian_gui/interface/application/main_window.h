@@ -16,6 +16,7 @@
 #include <QDir>
 
 #include "parsian_gui/interface/interface_node.h"
+#include "parsian_gui/interface/application/extern_variables.h"
 #include "parsian_gui/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.h"
 #include "parsian_msgs/msg/parsian_world_model.hpp"
 
@@ -36,8 +37,6 @@ private:
     void worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::SharedPtr msg);
     rclcpp::Subscription<parsian_msgs::msg::ParsianWorldModel>::SharedPtr worldmodel_subscription;
 
-    std::vector<std::string> argv;
-    std::string qss_directory_path;
 
     // widgets
     DynamicReconfigureWidget* dynamic_reconfigure_widget;
