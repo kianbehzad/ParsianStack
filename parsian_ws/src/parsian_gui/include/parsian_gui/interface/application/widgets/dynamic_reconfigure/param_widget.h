@@ -21,6 +21,7 @@
 #include <QCheckBox>
 #include <QIntValidator>
 #include <QDoubleValidator>
+#include <QSpacerItem>
 
 #include "parsian_gui/interface/application/extern_variables.h"
 #include "parsian_gui/interface/interface_node.h"
@@ -53,7 +54,9 @@ private:
     QString name;
 
     //gui
-    QHBoxLayout* lay;
+    QHBoxLayout* inner_layout;
+    QHBoxLayout* outer_layout;
+    QWidget* bounding_widget;
     QLabel* label_param_name;
     QLineEdit* edit_param_value;
     QPushButton* button_submit_edit_param;

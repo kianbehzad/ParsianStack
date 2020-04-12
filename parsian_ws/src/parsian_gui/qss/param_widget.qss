@@ -1,3 +1,8 @@
+QWidget#bounding_widget
+{
+  border-bottom: 2px solid black;
+}
+
 QLabel#label_param_name
 {
   background-color: white;

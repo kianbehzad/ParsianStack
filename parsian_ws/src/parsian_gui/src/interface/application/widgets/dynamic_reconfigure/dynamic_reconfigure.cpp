@@ -60,8 +60,8 @@ void DynamicReconfigureWidget::struct_widget()
 
     QVBoxLayout* lay = new QVBoxLayout(this);
     lay->addWidget(param_widget1);
-//    lay->addWidget(param_widget2);
-//    lay->addWidget(param_widget3);
+    lay->addWidget(param_widget2);
+    lay->addWidget(param_widget3);
     this->setLayout(lay);
 
 }

@@ -17,14 +17,19 @@ ParamWidget::ParamWidget(InterfaceNode* node_, std::shared_ptr<rclcpp::SyncParam
     File.close();
 
     //define variables
-    this->setObjectName("param_widget");
-    lay = new QHBoxLayout();
+    inner_layout = new QHBoxLayout();
+    outer_layout = new QHBoxLayout();
+    bounding_widget = new QWidget();
+
+    bounding_widget->setObjectName("bounding_widget");
 
     label_param_name = new QLabel();
     label_param_name->setObjectName("label_param_name");
+    label_param_name->setAlignment(Qt::AlignCenter);
 
     edit_param_value = new QLineEdit();
     edit_param_value->setObjectName("edit_param_value");
+    edit_param_value->setAlignment(Qt::AlignCenter);
     edit_param_value->setProperty("is_edited", false);
     edit_param_value->style()->unpolish(edit_param_value);
     edit_param_value->style()->polish(edit_param_value);
@@ -46,24 +51,34 @@ ParamWidget::ParamWidget(InterfaceNode* node_, std::shared_ptr<rclcpp::SyncParam
     connect(this->button_submit_edit_param, SIGNAL(pressed()), this, SLOT(button_submit_pressed_handle()));
     connect(this->edit_param_value, SIGNAL(textEdited(QString)), this, SLOT(edit_param_textEdited_handle(QString)));
 
-    this->setContentsMargins(0, 0, 0, 0);
-//    lay->setSpacing(0);
-    lay->setContentsMargins(0, 0, 0, 0);
+//    inner_layout->setSpacing(0);
+//    inner_layout->setContentsMargins(0, 0, 0, 0);
+//    bounding_widget->setContentsMargins(0, 0, 0, 0);
+//    outer_layout->setSpacing(0);
+//    outer_layout->setContentsMargins(0, 0, 0, 0);
+//    this->setContentsMargins(0, 0, 0, 0);
+
     int size = 40;
-    this->setFixedHeight(size + 5);
+//    this->setFixedHeight(size + 25);
+//    bounding_widget->setFixedHeight(size + 5);
     label_param_name->setFixedHeight(size);
+    label_param_name->setMinimumWidth(250);
     edit_param_value->setFixedHeight(size);
+    edit_param_value->setMinimumWidth(200);
     button_submit_edit_param->setFixedHeight(size);
     check_bool_param_value->setFixedHeight(size);
 
-    lay->addWidget(label_param_name);
+    inner_layout->addWidget(label_param_name);
 
-    this->setLayout(lay);
+    bounding_widget->setLayout(inner_layout);
+    outer_layout->addWidget(bounding_widget);
+    this->setLayout(outer_layout);
+
 }
 
 ParamWidget::~ParamWidget()
 {
-    delete lay;
+    delete inner_layout;
     delete label_param_name;
     delete edit_param_value;
     delete check_bool_param_value;
@@ -88,8 +103,8 @@ void ParamWidget::struct_widget(const rclcpp::Parameter parameter_)
             edit_param_value->setValidator(int_validator_param_value);
             edit_param_value->setText(QString::number(value));
 
-            lay->addWidget(edit_param_value);
-            lay->addWidget(button_submit_edit_param);
+            inner_layout->addWidget(edit_param_value);
+            inner_layout->addWidget(button_submit_edit_param);
             break;
         }
         case rclcpp::ParameterType::PARAMETER_DOUBLE:
@@ -99,8 +114,8 @@ void ParamWidget::struct_widget(const rclcpp::Parameter parameter_)
             edit_param_value->setValidator(double_validator_param_value);
             edit_param_value->setText(QString::number(value));
 
-            lay->addWidget(edit_param_value);
-            lay->addWidget(button_submit_edit_param);
+            inner_layout->addWidget(edit_param_value);
+            inner_layout->addWidget(button_submit_edit_param);
             break;
         }
         case rclcpp::ParameterType::PARAMETER_STRING:
@@ -109,8 +124,8 @@ void ParamWidget::struct_widget(const rclcpp::Parameter parameter_)
 
             edit_param_value->setText(value);
 
-            lay->addWidget(edit_param_value);
-            lay->addWidget(button_submit_edit_param);
+            inner_layout->addWidget(edit_param_value);
+            inner_layout->addWidget(button_submit_edit_param);
             break;
         }
         case rclcpp::ParameterType::PARAMETER_BOOL:
@@ -121,7 +136,8 @@ void ParamWidget::struct_widget(const rclcpp::Parameter parameter_)
             QString text = (value) ? "True" : "False";
             check_bool_param_value->setText(text);
 
-            lay->addWidget(check_bool_param_value);
+            inner_layout->addItem(new QSpacerItem(0,5, QSizePolicy::Expanding, QSizePolicy::Expanding));
+            inner_layout->addWidget(check_bool_param_value);
             break;
         }
 
