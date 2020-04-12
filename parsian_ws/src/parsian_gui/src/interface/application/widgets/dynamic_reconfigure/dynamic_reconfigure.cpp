@@ -51,7 +51,7 @@ void DynamicReconfigureWidget::struct_widget()
     param_widget1->struct_widget(param1);
 
     ParamWidget* param_widget2 = new ParamWidget(node, parameter_client["/grsim_node"]);
-    rclcpp::Parameter param2 = parsed["/grsim_node"][2];
+    rclcpp::Parameter param2 = parsed["/grsim_node"][1];
     param_widget2->struct_widget(param2);
 
     ParamWidget* param_widget3 = new ParamWidget(node, parameter_client["/grsim_node"]);
@@ -60,8 +60,8 @@ void DynamicReconfigureWidget::struct_widget()
 
     QVBoxLayout* lay = new QVBoxLayout(this);
     lay->addWidget(param_widget1);
-    lay->addWidget(param_widget2);
-    lay->addWidget(param_widget3);
+//    lay->addWidget(param_widget2);
+//    lay->addWidget(param_widget3);
     this->setLayout(lay);
 
 }

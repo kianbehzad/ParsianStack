@@ -1,0 +1,62 @@
+QLabel#label_param_name
+{
+  background-color: white;
+  font-weight: bold;
+  font: 18pt "Arial";
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+QLineEdit#edit_param_value[is_edited=true]
+{
+  color: red;
+  font-weight: bold;
+  font: 18pt "Arial";
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+QLineEdit#edit_param_value[is_edited=false]
+{
+  color: green;
+  font-weight: bold;
+  font: 18pt "Arial";
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+QPushButton#button_submit_edit_param
+{
+  height: 30px;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 25px;
+  color: black;
+  font: 18pt "Arial";
+  border: 2px solid black;
+  border-radius: 10px;
+}
+QPushButton:hover#button_submit_edit_param
+{
+  height: 30px;
+  padding: 10px;
+  color: qlineargradient(spread:pad, x1:0 y1:0, x2:1 y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+  background: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 purple, stop:1 #9933ff);
+  border: 2px solid black;
+  border-radius: 10px;
+  color: white;
+  font: 18pt "Arial";
+}
+QPushButton:pressed#button_submit_edit_param
+{
+  height: 30px;
+  padding: 10px;
+  color: qlineargradient(spread:pad, x1:0 y1:0, x2:1 y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+  background: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #9933ff, stop:1 purple);
+  border: 2px solid white;
+  border-radius: 10px;
+  color: white;
+  font: 18pt "Arial";
+}
+

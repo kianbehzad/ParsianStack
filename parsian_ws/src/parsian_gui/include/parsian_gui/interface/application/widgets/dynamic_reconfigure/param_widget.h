@@ -13,6 +13,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QDir>
+#include <QStyle>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -63,6 +64,7 @@ private:
 public slots:
     void button_submit_pressed_handle();
     void check_bool_stateChanged_handle(int state);
+    void edit_param_textEdited_handle(QString text);
 
 };
 

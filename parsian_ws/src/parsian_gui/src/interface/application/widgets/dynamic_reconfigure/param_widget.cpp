@@ -25,6 +25,10 @@ ParamWidget::ParamWidget(InterfaceNode* node_, std::shared_ptr<rclcpp::SyncParam
 
     edit_param_value = new QLineEdit();
     edit_param_value->setObjectName("edit_param_value");
+    edit_param_value->setProperty("is_edited", false);
+    edit_param_value->style()->unpolish(edit_param_value);
+    edit_param_value->style()->polish(edit_param_value);
+    edit_param_value->update();
 
     button_submit_edit_param = new QPushButton();
     button_submit_edit_param->setObjectName("button_submit_edit_param");
@@ -40,6 +44,17 @@ ParamWidget::ParamWidget(InterfaceNode* node_, std::shared_ptr<rclcpp::SyncParam
     //connections
     connect(this->check_bool_param_value, SIGNAL(stateChanged(int)), this, SLOT(check_bool_stateChanged_handle(int)));
     connect(this->button_submit_edit_param, SIGNAL(pressed()), this, SLOT(button_submit_pressed_handle()));
+    connect(this->edit_param_value, SIGNAL(textEdited(QString)), this, SLOT(edit_param_textEdited_handle(QString)));
+
+    this->setContentsMargins(0, 0, 0, 0);
+//    lay->setSpacing(0);
+    lay->setContentsMargins(0, 0, 0, 0);
+    int size = 40;
+    this->setFixedHeight(size + 5);
+    label_param_name->setFixedHeight(size);
+    edit_param_value->setFixedHeight(size);
+    button_submit_edit_param->setFixedHeight(size);
+    check_bool_param_value->setFixedHeight(size);
 
     lay->addWidget(label_param_name);
 
@@ -133,6 +148,10 @@ void ParamWidget::button_submit_pressed_handle()
 {
     std::string current_text = edit_param_value->text().toStdString();
     auto set_parameters_results = remote_param_client->set_parameters({rclcpp::Parameter(get_name().toStdString(), current_text),});
+    edit_param_value->setProperty("is_edited", false);
+    edit_param_value->style()->unpolish(edit_param_value);
+    edit_param_value->style()->polish(edit_param_value);
+    edit_param_value->update();
 }
 
 void ParamWidget::check_bool_stateChanged_handle(int state)
@@ -147,6 +166,14 @@ void ParamWidget::check_bool_stateChanged_handle(int state)
         auto set_parameters_results = remote_param_client->set_parameters({rclcpp::Parameter(get_name().toStdString(), false),});
         check_bool_param_value->setText("False");
     }
+}
+
+void ParamWidget::edit_param_textEdited_handle(QString text)
+{
+    edit_param_value->setProperty("is_edited", true);
+    edit_param_value->style()->unpolish(edit_param_value);
+    edit_param_value->style()->polish(edit_param_value);
+    edit_param_value->update();
 }
 
 

@@ -61,6 +61,10 @@ ament_target_dependencies(interface rclcpp ament_index_cpp parsian_msgs)
 target_link_libraries(interface ${QT5_LIBRARIES} yaml)
 
 
+# install resources
+install(DIRECTORY qss
+        DESTINATION share/${PROJECT_NAME})
+
 # install nodes
 install(TARGETS
         interface
