@@ -37,7 +37,7 @@ ParamWidget::ParamWidget(std::shared_ptr<rclcpp::SyncParametersClient> remote_pa
 
     button_submit_edit_param = new QPushButton();
     button_submit_edit_param->setObjectName("button_submit_edit_param");
-    button_submit_edit_param->setText("submit");
+    button_submit_edit_param->setText("ok");
 
     check_bool_param_value = new QCheckBox();
     check_bool_param_value->setObjectName("check_bool_param_value");
@@ -57,6 +57,22 @@ ParamWidget::ParamWidget(std::shared_ptr<rclcpp::SyncParametersClient> remote_pa
     connect(this->check_bool_param_value, SIGNAL(stateChanged(int)), this, SLOT(check_bool_stateChanged_handle(int)));
     connect(this->button_submit_edit_param, SIGNAL(pressed()), this, SLOT(button_submit_pressed_handle()));
     connect(this->edit_param_value, SIGNAL(textEdited(QString)), this, SLOT(edit_param_textEdited_handle(QString)));
+
+    // set margin height and ...
+    label_param_name->setFixedWidth(200);
+    edit_param_value->setFixedWidth(100);
+    button_submit_edit_param->setFixedWidth(50);
+
+    label_param_name->setFixedHeight(35);
+    edit_param_value->setFixedHeight(35);
+    button_submit_edit_param->setFixedHeight(35);
+
+    this->setContentsMargins(0, 0, 0, 0);
+    inner_layout->setContentsMargins(0, 0, 0, 0);
+    inner_layout->setSpacing(0);
+    bounding_widget->setContentsMargins(0, 0, 0, 0);
+    outer_layout->setContentsMargins(0, 0, 0, 0);
+    outer_layout->setSpacing(0);
 
 
 

@@ -91,6 +91,20 @@ void DynamicReconfigureWidget::struct_widget()
 
     this->setLayout(layout_main);
 
+    // set margin height and ...
+    layout_main->setSpacing(0);
+    layout_main->setContentsMargins(0, 0, 0, 0);
+    tab_widget->setContentsMargins(0, 0, 0, 0);
+    for(const auto& scroll : scroll_for_params)
+        scroll->setContentsMargins(0, 0, 0, 0);
+    for(const auto& widg : widget_for_params)
+        widg->setContentsMargins(0, 0, 0, 0);
+    for(const auto& lay : layout_for_params) {
+        lay->setContentsMargins(0, 0, 0, 0);
+        lay->setSpacing(0);
+    }
+    this->setMaximumWidth(400);
+
 }
 
 void DynamicReconfigureWidget::yaml_parser(std::string file_path) {
