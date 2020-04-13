@@ -18,7 +18,6 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QCheckBox>
 #include <QIntValidator>
 #include <QDoubleValidator>
 #include <QSpacerItem>
@@ -58,14 +57,14 @@ private:
     QWidget* bounding_widget;
     QLabel* label_param_name;
     QLineEdit* edit_param_value;
+    QPushButton* button_bool_param_value;
     QPushButton* button_submit_edit_param;
-    QCheckBox* check_bool_param_value;
     QIntValidator* int_validator_param_value;
     QDoubleValidator* double_validator_param_value;
 
 public slots:
     void button_submit_pressed_handle();
-    void check_bool_stateChanged_handle(int state);
+    void button_bool_preesed_handle();
     void edit_param_textEdited_handle(QString text);
 
 };

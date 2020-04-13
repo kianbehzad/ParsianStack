@@ -2,6 +2,8 @@ QWidget#bounding_widget
 {
 }
 
+
+
 QLabel#label_param_name
 {
   padding: 5px;
@@ -12,8 +14,11 @@ QLabel#label_param_name
   border-radius: 10px;
 }
 
+
+
 QLineEdit#edit_param_value[is_edited=true]
 {
+  background-color: white;
   padding: 5px;
   color: red;
   font-weight: bold;
@@ -21,9 +26,9 @@ QLineEdit#edit_param_value[is_edited=true]
   border: 2px solid black;
   border-radius: 10px;
 }
-
 QLineEdit#edit_param_value[is_edited=false]
 {
+  background-color: white;
   padding: 5px;
   color: green;
   font-weight: bold;
@@ -31,6 +36,39 @@ QLineEdit#edit_param_value[is_edited=false]
   border: 2px solid black;
   border-radius: 10px;
 }
+QLineEdit:hover#edit_param_value
+{
+  border: 3px solid black;
+}
+
+
+QPushButton#button_bool_param_value[is_edited=true]
+{
+  background-color: white;
+  padding: 5px;
+  color: red;
+  font-weight: bold;
+  font: 12pt "Arial";
+  border: 2px solid black;
+  border-radius: 10px;
+}
+QPushButton#button_bool_param_value[is_edited=false]
+{
+  background-color: white;
+  padding: 5px;
+  color: green;
+  font-weight: bold;
+  font: 12pt "Arial";
+  border: 2px solid black;
+  border-radius: 10px;
+}
+QPushButton:hover#button_bool_param_value
+{
+  font: 13pt "Arial";
+  border: 3px solid black;
+}
+
+
 
 QPushButton#button_submit_edit_param
 {

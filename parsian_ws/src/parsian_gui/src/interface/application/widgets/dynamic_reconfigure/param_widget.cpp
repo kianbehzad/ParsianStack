@@ -35,12 +35,12 @@ ParamWidget::ParamWidget(std::shared_ptr<rclcpp::SyncParametersClient> remote_pa
     edit_param_value->style()->polish(edit_param_value);
     edit_param_value->update();
 
+    button_bool_param_value = new QPushButton();
+    button_bool_param_value->setObjectName("button_bool_param_value");
+
     button_submit_edit_param = new QPushButton();
     button_submit_edit_param->setObjectName("button_submit_edit_param");
     button_submit_edit_param->setText("ok");
-
-    check_bool_param_value = new QCheckBox();
-    check_bool_param_value->setObjectName("check_bool_param_value");
 
     int_validator_param_value = new QIntValidator();
     double_validator_param_value = new QDoubleValidator();
@@ -54,17 +54,19 @@ ParamWidget::ParamWidget(std::shared_ptr<rclcpp::SyncParametersClient> remote_pa
 
 
     //connections
-    connect(this->check_bool_param_value, SIGNAL(stateChanged(int)), this, SLOT(check_bool_stateChanged_handle(int)));
+    connect(this->button_bool_param_value, SIGNAL(pressed()), this, SLOT(button_bool_preesed_handle()));
     connect(this->button_submit_edit_param, SIGNAL(pressed()), this, SLOT(button_submit_pressed_handle()));
     connect(this->edit_param_value, SIGNAL(textEdited(QString)), this, SLOT(edit_param_textEdited_handle(QString)));
 
     // set margin height and ...
     label_param_name->setFixedWidth(200);
     edit_param_value->setFixedWidth(100);
+    button_bool_param_value->setFixedWidth(100);
     button_submit_edit_param->setFixedWidth(50);
 
     label_param_name->setFixedHeight(35);
     edit_param_value->setFixedHeight(35);
+    button_bool_param_value->setFixedHeight(35);
     button_submit_edit_param->setFixedHeight(35);
 
     this->setContentsMargins(0, 0, 0, 0);
@@ -83,7 +85,7 @@ ParamWidget::~ParamWidget()
     delete label_param_name;
     delete edit_param_value;
     delete button_submit_edit_param;
-    delete check_bool_param_value;
+    delete button_bool_param_value;
     delete int_validator_param_value;
     delete double_validator_param_value;
     delete inner_layout;
@@ -138,12 +140,16 @@ void ParamWidget::struct_widget(const rclcpp::Parameter parameter_)
         {
             bool value = parameter.get_value<rclcpp::ParameterType::PARAMETER_BOOL>();
 
-            check_bool_param_value->setChecked(value);
             QString text = (value) ? "True" : "False";
-            check_bool_param_value->setText(text);
+            button_bool_param_value->setText(text);
 
-            inner_layout->addItem(new QSpacerItem(0,5, QSizePolicy::Expanding, QSizePolicy::Expanding));
-            inner_layout->addWidget(check_bool_param_value);
+            button_bool_param_value->setProperty("is_edited", false);
+            button_bool_param_value->style()->unpolish(button_bool_param_value);
+            button_bool_param_value->style()->polish(button_bool_param_value);
+            button_bool_param_value->update();
+
+            inner_layout->addWidget(button_bool_param_value);
+            inner_layout->addWidget(button_submit_edit_param);
             break;
         }
 
@@ -168,26 +174,34 @@ rclcpp::ParameterType ParamWidget::get_type()
 
 void ParamWidget::button_submit_pressed_handle()
 {
-    std::string current_text = edit_param_value->text().toStdString();
+    std::string current_text;
+    if(get_type() == rclcpp::ParameterType::PARAMETER_BOOL)
+        current_text = button_bool_param_value->text().toStdString();
+    else
+        current_text = edit_param_value->text().toStdString();
     auto set_parameters_results = remote_param_client->set_parameters({rclcpp::Parameter(get_name().toStdString(), current_text),});
     edit_param_value->setProperty("is_edited", false);
     edit_param_value->style()->unpolish(edit_param_value);
     edit_param_value->style()->polish(edit_param_value);
     edit_param_value->update();
+
+    button_bool_param_value->setProperty("is_edited", false);
+    button_bool_param_value->style()->unpolish(button_bool_param_value);
+    button_bool_param_value->style()->polish(button_bool_param_value);
+    button_bool_param_value->update();
 }
 
-void ParamWidget::check_bool_stateChanged_handle(int state)
+void ParamWidget::button_bool_preesed_handle()
 {
-    if(state == Qt::Checked)
-    {
-        auto set_parameters_results = remote_param_client->set_parameters({rclcpp::Parameter(get_name().toStdString(), true),});
-        check_bool_param_value->setText("True");
-    }
-    else if(state == Qt::Unchecked)
-    {
-        auto set_parameters_results = remote_param_client->set_parameters({rclcpp::Parameter(get_name().toStdString(), false),});
-        check_bool_param_value->setText("False");
-    }
+    if(button_bool_param_value->text() == "True")
+        button_bool_param_value->setText("False");
+    else
+        button_bool_param_value->setText("True");
+
+    button_bool_param_value->setProperty("is_edited", true);
+    button_bool_param_value->style()->unpolish(button_bool_param_value);
+    button_bool_param_value->style()->polish(button_bool_param_value);
+    button_bool_param_value->update();
 }
 
 void ParamWidget::edit_param_textEdited_handle(QString text)
