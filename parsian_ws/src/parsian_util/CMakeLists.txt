@@ -18,6 +18,17 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(parsian_msgs REQUIRED)
+
+# find Qt5
+if(APPLE AND EXISTS /usr/local/opt/qt)
+  # Homebrew installs Qt5 (up to at least 5.9.1) in
+  # /usr/local/qt5, ensure it can be found by CMake since
+  # it is not in the default /usr/local prefix.
+  list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt")
+endif()
+find_package(Qt5 COMPONENTS Core Widgets OpenGL Network REQUIRED)
+list(APPEND QT5_LIBRARIES Qt5::Core Qt5::Widgets Qt5::OpenGL Qt5::Network)
 
 
 # include paths
@@ -25,12 +36,53 @@ include_directories(
         include
 )
 
+# create libgeom library
+add_library(libgeom SHARED
+        src/geom/angle_deg.cpp
+        src/geom/circle_2d.cpp
+        src/geom/line_2d.cpp
+        src/geom/matrix_2d.cpp
+        src/geom/polygon_2d.cpp
+        src/geom/ray_2d.cpp
+        src/geom/rect_2d.cpp
+        src/geom/region_2d.cpp
+        src/geom/sector_2d.cpp
+        src/geom/segment_2d.cpp
+        src/geom/size_2d.cpp
+        src/geom/triangle_2d.cpp
+        src/geom/vector_2d.cpp
+        )
+ament_target_dependencies(libgeom rclcpp parsian_msgs)
+ament_export_interfaces(export_libgeom HAS_LIBRARY_TARGET)
+ament_export_libraries(libgeom)
+ament_export_include_directories(include)
+ament_export_dependencies(
+        ament_cmake
+        rclcpp
+)
+
+# create libmath library
+add_library(libmath
+        src/math/mathtools.cpp
+        src/math/matrix.cpp
+        )
+ament_target_dependencies(libmath rclcpp)
+target_link_libraries(libmath ${QT5_LIBRARIES} libgeom)
+ament_export_interfaces(export_libmath HAS_LIBRARY_TARGET)
+ament_export_libraries(libmath)
+ament_export_include_directories(include)
+ament_export_dependencies(
+        ament_cmake
+        rclcpp
+)
 
 # create libknowledge library
-add_library(libknowledge SHARED
+add_library(libknowledge
         src/core/knowledge.cpp
+        src/core/field.cpp
         )
-ament_target_dependencies(libknowledge rclcpp)
+ament_target_dependencies(libknowledge rclcpp parsian_msgs)
+target_link_libraries(libmath ${QT5_LIBRARIES} libgeom)
 ament_export_interfaces(export_libknowledge HAS_LIBRARY_TARGET)
 ament_export_libraries(libknowledge)
 ament_export_include_directories(include)
@@ -40,11 +92,34 @@ ament_export_dependencies(
 )
 
 
-# install libknowledge
+
+# install include directory
 install(
         DIRECTORY include/
         DESTINATION include
 )
+
+
+
+# install libgeom
+install(
+        TARGETS libgeom
+        EXPORT export_libgeom
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+)
+# install libmath
+install(
+        TARGETS libmath
+        EXPORT export_libmath
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+)
+# install libknowledge
 install(
         TARGETS libknowledge
         EXPORT export_libknowledge
@@ -53,6 +128,8 @@ install(
         RUNTIME DESTINATION bin
         INCLUDES DESTINATION include
 )
+
+
 
 # install launch files
 install(DIRECTORY tools/launch

@@ -6,3 +6,17 @@ vision_node:
   ros__parameters:
     vision_multicast_port: 50055
     vision_multicast_ip: "224.5.23.2"
+worldmodel_node:
+  ros__parameters:
+    is_simulation: True
+    is_our_side_left: True
+    is_our_color_yellow: True
+    cam_num: 4
+    camera_0: True
+    camera_1: True
+    camera_2: True
+    camera_3: True
+    camera_4: True
+    camera_5: True
+    camera_6: True
+    camera_7: True

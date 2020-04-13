@@ -3,6 +3,8 @@ build-*/
 .DS_Store
 .idea/
 
+CMakeLists.txt.user
+
 build/
 install/
 log/
