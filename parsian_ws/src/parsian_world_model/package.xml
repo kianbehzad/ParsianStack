@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>parsian_util</name>
+  <name>parsian_world_model</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="kian.behzad@gmail.com">kian</maintainer>
-  <license>TODO: License declaration</license>
+  <description>Read Vision Data and run filter and merge algorithem on data to send complete worldmodel</description>
+  <maintainer email="kian.behzad@gmail.com">kian behzad</maintainer>
+  <license>LGPLv3</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
@@ -15,6 +15,7 @@
   <exec_depend>rclcpp</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>parsian_msgs</exec_depend>
+  <exec_depend>parsian_util</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

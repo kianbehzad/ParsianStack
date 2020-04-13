@@ -30,6 +30,8 @@ PARSIAN_ROOT="$PARSIAN_ROOT/parsian_ws"
 			;;
 		rebuild)
 			rm -rf build
+			rm -rf install
+			rm -rf log
 			colcon build
 			;;
 		*)
