@@ -22,6 +22,7 @@
 #include <QFile>
 #include <QDir>
 
+#include "parsian_gui/interface/application/extern_variables.h"
 #include "parsian_gui/interface/application/widgets/base_widget.h"
 #include "parsian_gui/interface/application/widgets/dynamic_reconfigure/param_widget.h"
 
@@ -34,7 +35,7 @@ class DynamicReconfigureWidget : public BaseWidget
 {
     Q_OBJECT
 public:
-    explicit DynamicReconfigureWidget(InterfaceNode* node_, QWidget *parent = 0);
+    explicit DynamicReconfigureWidget(QWidget *parent = 0);
     ~DynamicReconfigureWidget();
     virtual void struct_widget();
 

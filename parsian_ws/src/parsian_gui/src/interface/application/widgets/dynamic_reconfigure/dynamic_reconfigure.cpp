@@ -4,7 +4,7 @@
 
 #include "parsian_gui/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.h"
 
-DynamicReconfigureWidget::DynamicReconfigureWidget(InterfaceNode* node_, QWidget *parent) : BaseWidget(node_, parent)
+DynamicReconfigureWidget::DynamicReconfigureWidget(QWidget *parent) : BaseWidget(parent)
 {
     // finding parameter file
     std::string file_path{};
@@ -13,7 +13,7 @@ DynamicReconfigureWidget::DynamicReconfigureWidget(InterfaceNode* node_, QWidget
             if (i + 1 <= extern_argv.size())
                 file_path = extern_argv[i + 1];
             else
-                RCLCPP_WARN(node->get_logger(), "[dynamic-reconfigure] parameter yaml file not found!");
+                RCLCPP_WARN(extern_interface_node->get_logger(), "[dynamic-reconfigure] parameter yaml file not found!");
         }
     // make a temp copy of file
     std::string directory_path = QFileInfo(QString::fromStdString(file_path)).absoluteDir().absolutePath().toStdString();
@@ -74,7 +74,7 @@ void DynamicReconfigureWidget::struct_widget()
             layout_for_params.append(new QVBoxLayout);
 
             for (const auto &param : node_.second) {
-                ParamWidget *tmp = new ParamWidget(node, parameter_client[node_name]);
+                ParamWidget *tmp = new ParamWidget(parameter_client[node_name]);
                 tmp->struct_widget(param);
                 layout_for_params.last()->addWidget(tmp);
             }
@@ -110,10 +110,10 @@ void DynamicReconfigureWidget::define_parameter_clients()
         parameter_client[node_name] = std::make_shared<rclcpp::SyncParametersClient>(client_node, node_name);
         if (!parameter_client[node_name]->wait_for_service(1s)) {
             if (!rclcpp::ok()) {
-                RCLCPP_ERROR(node->get_logger(), "[dynamic-reconfigure] couldnt get %s remote param!", node_name.c_str());
+                RCLCPP_ERROR(extern_interface_node->get_logger(), "[dynamic-reconfigure] couldnt get %s remote param!", node_name.c_str());
                 rclcpp::shutdown();
             }
-            RCLCPP_WARN(node->get_logger(), "[dynamic-reconfigure] %s remote param not available, waiting again...", node_name.c_str());
+            RCLCPP_WARN(extern_interface_node->get_logger(), "[dynamic-reconfigure] %s remote param not available, waiting again...", node_name.c_str());
         }
     }
 

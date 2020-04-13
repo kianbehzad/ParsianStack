@@ -32,8 +32,6 @@ public:
     ~MainWindow();
 
 private:
-    std::shared_ptr<InterfaceNode> interface_node;
-
     void worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::SharedPtr msg);
     rclcpp::Subscription<parsian_msgs::msg::ParsianWorldModel>::SharedPtr worldmodel_subscription;
 

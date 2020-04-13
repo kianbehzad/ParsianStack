@@ -62,7 +62,7 @@ target_link_libraries(interface ${QT5_LIBRARIES} yaml)
 
 
 # install resources
-install(DIRECTORY qss
+install(DIRECTORY resources
         DESTINATION share/${PROJECT_NAME})
 
 # install nodes

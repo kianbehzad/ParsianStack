@@ -33,7 +33,7 @@ class ParamWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ParamWidget(InterfaceNode* node_, std::shared_ptr<rclcpp::SyncParametersClient> remote_param_client_, QWidget *parent = 0);
+    explicit ParamWidget(std::shared_ptr<rclcpp::SyncParametersClient> remote_param_client_, QWidget *parent = 0);
     ~ParamWidget();
 
     void struct_widget(const rclcpp::Parameter parameter_);
@@ -47,7 +47,6 @@ private:
     QFile File;
     QString FormStyleSheet;
 
-    InterfaceNode* node;
     std::shared_ptr<rclcpp::SyncParametersClient> remote_param_client;
     rclcpp::Parameter parameter;
     rclcpp::ParameterType type;

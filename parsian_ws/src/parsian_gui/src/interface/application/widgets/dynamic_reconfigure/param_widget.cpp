@@ -5,21 +5,21 @@
 
 
 
-ParamWidget::ParamWidget(InterfaceNode* node_, std::shared_ptr<rclcpp::SyncParametersClient> remote_param_client_, QWidget *parent) : QWidget(parent), node{node_}, remote_param_client{remote_param_client_}
+ParamWidget::ParamWidget(std::shared_ptr<rclcpp::SyncParametersClient> remote_param_client_, QWidget *parent) : QWidget(parent), remote_param_client{remote_param_client_}
 {
-    //getting style sheets
-    QString qss_file_path = QDir(QString::fromStdString(extern_qss_directory_path)).filePath("param_widget.qss");
+    // getting style sheets
+    QString qss_file_path = QDir(QString::fromStdString(extern_resources_directory_path)).filePath("param_widget.qss");
     File.setFileName(qss_file_path);
     if(!File.open(QFile::ReadOnly))
-        RCLCPP_WARN(node->get_logger(), "[dynamic-reconfigure][param_widget] could not open param_widget.qss file!");
+        RCLCPP_WARN(extern_interface_node->get_logger(), "[dynamic-reconfigure][param_widget] could not open param_widget.qss file!");
     FormStyleSheet = QLatin1String(File.readAll());
     this->setStyleSheet(FormStyleSheet);
     File.close();
 
-    //define variables
+    // define variables
     inner_layout = new QHBoxLayout();
-    outer_layout = new QHBoxLayout();
     bounding_widget = new QWidget();
+    outer_layout = new QHBoxLayout();
 
     bounding_widget->setObjectName("bounding_widget");
 
@@ -46,44 +46,34 @@ ParamWidget::ParamWidget(InterfaceNode* node_, std::shared_ptr<rclcpp::SyncParam
     double_validator_param_value = new QDoubleValidator();
 
 
+    // create layouts and widget
+    inner_layout->addWidget(label_param_name);
+    bounding_widget->setLayout(inner_layout);
+    outer_layout->addWidget(bounding_widget);
+    this->setLayout(outer_layout);
+
+
     //connections
     connect(this->check_bool_param_value, SIGNAL(stateChanged(int)), this, SLOT(check_bool_stateChanged_handle(int)));
     connect(this->button_submit_edit_param, SIGNAL(pressed()), this, SLOT(button_submit_pressed_handle()));
     connect(this->edit_param_value, SIGNAL(textEdited(QString)), this, SLOT(edit_param_textEdited_handle(QString)));
 
-//    inner_layout->setSpacing(0);
-//    inner_layout->setContentsMargins(0, 0, 0, 0);
-//    bounding_widget->setContentsMargins(0, 0, 0, 0);
-//    outer_layout->setSpacing(0);
-//    outer_layout->setContentsMargins(0, 0, 0, 0);
-//    this->setContentsMargins(0, 0, 0, 0);
 
-    int size = 40;
-//    this->setFixedHeight(size + 25);
-//    bounding_widget->setFixedHeight(size + 5);
-    label_param_name->setFixedHeight(size);
-    label_param_name->setMinimumWidth(250);
-    edit_param_value->setFixedHeight(size);
-    edit_param_value->setMinimumWidth(200);
-    button_submit_edit_param->setFixedHeight(size);
-    check_bool_param_value->setFixedHeight(size);
-
-    inner_layout->addWidget(label_param_name);
-
-    bounding_widget->setLayout(inner_layout);
-    outer_layout->addWidget(bounding_widget);
-    this->setLayout(outer_layout);
 
 }
 
 ParamWidget::~ParamWidget()
 {
-    delete inner_layout;
     delete label_param_name;
     delete edit_param_value;
+    delete button_submit_edit_param;
     delete check_bool_param_value;
     delete int_validator_param_value;
     delete double_validator_param_value;
+    delete inner_layout;
+    delete bounding_widget;
+    delete outer_layout;
+
 }
 
 void ParamWidget::struct_widget(const rclcpp::Parameter parameter_)
@@ -141,7 +131,7 @@ void ParamWidget::struct_widget(const rclcpp::Parameter parameter_)
             break;
         }
 
-        default: RCLCPP_WARN(this->node->get_logger(), "[dynamic-reconfigure] could not get the %s type", name.toStdString().c_str()); break;
+        default: RCLCPP_WARN(extern_interface_node->get_logger(), "[dynamic-reconfigure] could not get the %s type", name.toStdString().c_str()); break;
     }
 }
 

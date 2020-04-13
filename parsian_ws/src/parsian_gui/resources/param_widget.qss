@@ -1,10 +1,10 @@
 QWidget#bounding_widget
 {
-  border-bottom: 2px solid black;
 }
 
 QLabel#label_param_name
 {
+  padding: 10px;
   background-color: white;
   font-weight: bold;
   font: 18pt "Arial";
@@ -14,6 +14,7 @@ QLabel#label_param_name
 
 QLineEdit#edit_param_value[is_edited=true]
 {
+  padding: 10px;
   color: red;
   font-weight: bold;
   font: 18pt "Arial";
@@ -23,6 +24,7 @@ QLineEdit#edit_param_value[is_edited=true]
 
 QLineEdit#edit_param_value[is_edited=false]
 {
+  padding: 10px;
   color: green;
   font-weight: bold;
   font: 18pt "Arial";
@@ -32,7 +34,6 @@ QLineEdit#edit_param_value[is_edited=false]
 
 QPushButton#button_submit_edit_param
 {
-  height: 30px;
   padding: 10px;
   background-color: white;
   border: 1px solid white;
@@ -44,7 +45,6 @@ QPushButton#button_submit_edit_param
 }
 QPushButton:hover#button_submit_edit_param
 {
-  height: 30px;
   padding: 10px;
   color: qlineargradient(spread:pad, x1:0 y1:0, x2:1 y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
   background: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 purple, stop:1 #9933ff);
@@ -55,7 +55,6 @@ QPushButton:hover#button_submit_edit_param
 }
 QPushButton:pressed#button_submit_edit_param
 {
-  height: 30px;
   padding: 10px;
   color: qlineargradient(spread:pad, x1:0 y1:0, x2:1 y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
   background: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #9933ff, stop:1 purple);
