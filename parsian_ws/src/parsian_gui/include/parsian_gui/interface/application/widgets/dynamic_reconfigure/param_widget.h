@@ -20,7 +20,7 @@
 #include <QPushButton>
 #include <QIntValidator>
 #include <QDoubleValidator>
-#include <QSpacerItem>
+#include <QTimer>
 
 #include "parsian_gui/interface/application/extern_variables.h"
 #include "parsian_gui/interface/interface_node.h"
@@ -51,6 +51,9 @@ private:
     rclcpp::ParameterType type;
     QString name;
 
+    QTimer* timer_update_param;
+    bool is_edited;
+
     //gui
     QHBoxLayout* inner_layout;
     QHBoxLayout* outer_layout;
@@ -66,6 +69,7 @@ public slots:
     void button_submit_pressed_handle();
     void button_bool_preesed_handle();
     void edit_param_textEdited_handle(QString text);
+    void timer_update_timeout_handle();
 
 };
 

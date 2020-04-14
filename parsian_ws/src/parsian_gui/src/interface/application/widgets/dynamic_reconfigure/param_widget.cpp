@@ -52,11 +52,15 @@ ParamWidget::ParamWidget(std::shared_ptr<rclcpp::SyncParametersClient> remote_pa
     outer_layout->addWidget(bounding_widget);
     this->setLayout(outer_layout);
 
+    timer_update_param = new QTimer();
+    timer_update_param->start(2000);
+
 
     //connections
     connect(this->button_bool_param_value, SIGNAL(pressed()), this, SLOT(button_bool_preesed_handle()));
     connect(this->button_submit_edit_param, SIGNAL(pressed()), this, SLOT(button_submit_pressed_handle()));
     connect(this->edit_param_value, SIGNAL(textEdited(QString)), this, SLOT(edit_param_textEdited_handle(QString)));
+    connect(this->timer_update_param, SIGNAL(timeout()), this, SLOT(timer_update_timeout_handle()));
 
     // set margin height and ...
     label_param_name->setFixedWidth(200);
@@ -189,6 +193,8 @@ void ParamWidget::button_submit_pressed_handle()
     button_bool_param_value->style()->unpolish(button_bool_param_value);
     button_bool_param_value->style()->polish(button_bool_param_value);
     button_bool_param_value->update();
+
+    is_edited = false;
 }
 
 void ParamWidget::button_bool_preesed_handle()
@@ -202,6 +208,8 @@ void ParamWidget::button_bool_preesed_handle()
     button_bool_param_value->style()->unpolish(button_bool_param_value);
     button_bool_param_value->style()->polish(button_bool_param_value);
     button_bool_param_value->update();
+
+    is_edited = true;
 }
 
 void ParamWidget::edit_param_textEdited_handle(QString text)
@@ -210,8 +218,49 @@ void ParamWidget::edit_param_textEdited_handle(QString text)
     edit_param_value->style()->unpolish(edit_param_value);
     edit_param_value->style()->polish(edit_param_value);
     edit_param_value->update();
+
+    is_edited = true;
 }
 
+void ParamWidget::timer_update_timeout_handle()
+{
+    if(is_edited) return;
+
+    for (auto & parameter : remote_param_client->get_parameters({get_name().toStdString()}))
+    {
+        switch (parameter.get_type())
+        {
+            case rclcpp::ParameterType::PARAMETER_INTEGER:
+            {
+                int value = parameter.get_value<rclcpp::ParameterType::PARAMETER_INTEGER>();
+                edit_param_value->setText(QString::number(value));
+                break;
+            }
+            case rclcpp::ParameterType::PARAMETER_DOUBLE:
+            {
+                double value = parameter.get_value<rclcpp::ParameterType::PARAMETER_DOUBLE>();
+                edit_param_value->setText(QString::number(value));
+                break;
+            }
+            case rclcpp::ParameterType::PARAMETER_STRING:
+            {
+                QString value =  QString::fromStdString(parameter.get_value<rclcpp::ParameterType::PARAMETER_STRING>());
+                edit_param_value->setText(value);
+                break;
+            }
+            case rclcpp::ParameterType::PARAMETER_BOOL:
+            {
+                bool value = parameter.get_value<rclcpp::ParameterType::PARAMETER_BOOL>();
+                QString text = (value) ? "True" : "False";
+                button_bool_param_value->setText(text);
+                break;
+            }
+
+            default: RCLCPP_WARN(extern_interface_node->get_logger(), "[dynamic-reconfigure] could not get the %s type", name.toStdString().c_str()); break;
+        }
+    }
+
+}
 
 
 
