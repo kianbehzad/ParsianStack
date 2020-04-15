@@ -23,6 +23,8 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(parsian_msgs REQUIRED)
 find_package(ament_index_cpp REQUIRED)
+find_package(GLUT REQUIRED)
+find_package(OpenGL REQUIRED)
 
 
 # find Qt5
@@ -41,6 +43,35 @@ include_directories(
         include
 )
 
+# wrap ui files
+qt5_wrap_ui(UIC_SOURCES
+        resources/plotter.ui
+        )
+set(DYNAMIC_RECONFIGURE_SRCS
+        src/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.cpp
+        include/parsian_gui/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.h # for Qt MOC
+        src/interface/application/widgets/dynamic_reconfigure/param_widget.cpp
+        include/parsian_gui/interface/application/widgets/dynamic_reconfigure/param_widget.h # for Qt MOC
+        )
+
+set(PLOTTER_SRCS
+        src/interface/application/widgets/plotter/leaffilterproxymodel.cpp
+        include/parsian_gui/interface/application/widgets/plotter/leaffilterproxymodel.h # for Qt MOC
+        src/interface/application/widgets/plotter/guitimer.cpp
+        include/parsian_gui/interface/application/widgets/plotter/guitimer.h # for Qt MOC
+        src/interface/application/widgets/plotter/plot.cpp
+        include/parsian_gui/interface/application/widgets/plotter/plot.h # for Qt MOC
+        src/interface/application/widgets/plotter/plotter.cpp
+        include/parsian_gui/interface/application/widgets/plotter/plotter.h # for Qt MOC
+        src/interface/application/widgets/plotter/plotterwidget.cpp
+        include/parsian_gui/interface/application/widgets/plotter/plotterwidget.h # for Qt MOC
+        src/interface/application/widgets/plotter/texturecache.cpp
+        include/parsian_gui/interface/application/widgets/plotter/texturecache.h # for Qt MOC
+        src/interface/application/widgets/plotter/timer.cpp
+        include/parsian_gui/interface/application/widgets/plotter/timer.h # for Qt MOC
+        )
+
+
 # interface node
 add_executable(interface
         src/interface/interface_exec.cpp
@@ -52,13 +83,12 @@ add_executable(interface
         src/interface/application/widgets/base_widget.cpp
         include/parsian_gui/interface/application/widgets/base_widget.h # for Qt MOC
 
-        src/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.cpp
-        include/parsian_gui/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.h # for Qt MOC
-        src/interface/application/widgets/dynamic_reconfigure/param_widget.cpp
-        include/parsian_gui/interface/application/widgets/dynamic_reconfigure/param_widget.h # for Qt MOC
+        ${UIC_SOURCES}
+        ${DYNAMIC_RECONFIGURE_SRCS}
+        ${PLOTTER_SRCS}
         )
 ament_target_dependencies(interface rclcpp ament_index_cpp parsian_msgs)
-target_link_libraries(interface ${QT5_LIBRARIES} yaml)
+target_link_libraries(interface ${QT5_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} yaml)
 
 
 # install resources

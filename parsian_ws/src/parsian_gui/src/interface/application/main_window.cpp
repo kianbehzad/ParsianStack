@@ -27,11 +27,12 @@ MainWindow::MainWindow(int _argc, char * _argv[], std::shared_ptr<InterfaceNode>
 
 
     // struct widgets
-    dynamic_reconfigure_widget = new DynamicReconfigureWidget(this);
+    dynamic_reconfigure_widget = new DynamicReconfigureWidget();
     dynamic_reconfigure_widget->struct_widget();
+    plotter = new Plotter;
 
     // add widgets
-    this->setCentralWidget(dynamic_reconfigure_widget);
+    this->setCentralWidget(plotter);
 
 }
 

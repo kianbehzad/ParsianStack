@@ -18,6 +18,7 @@
 #include "parsian_gui/interface/interface_node.h"
 #include "parsian_gui/interface/application/extern_variables.h"
 #include "parsian_gui/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.h"
+#include "parsian_gui/interface/application/widgets/plotter/plotter.h"
 #include "parsian_msgs/msg/parsian_world_model.hpp"
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
@@ -38,6 +39,7 @@ private:
 
     // widgets
     DynamicReconfigureWidget* dynamic_reconfigure_widget;
+    Plotter* plotter;
 
 };
 
