@@ -11,6 +11,8 @@ std::shared_ptr<InterfaceNode> extern_interface_node;
 
 MainWindow::MainWindow(int _argc, char * _argv[], std::shared_ptr<InterfaceNode> interface_node_, QWidget *parent) : QMainWindow(parent)
 {
+    qRegisterMetaType<QVector<int>>("QVector<int>");
+
     // store argv
     for(int i{}; i < _argc; i++)
         extern_argv.push_back(_argv[i]);
