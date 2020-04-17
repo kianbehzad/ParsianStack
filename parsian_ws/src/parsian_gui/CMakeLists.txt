@@ -26,7 +26,6 @@ find_package(ament_index_cpp REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
 
-
 # find Qt5
 if(APPLE AND EXISTS /usr/local/opt/qt)
   # Homebrew installs Qt5 (up to at least 5.9.1) in

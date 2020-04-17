@@ -30,12 +30,36 @@
 #include <QStringBuilder>
 #include <unordered_map>
 
+enum class SpecialFieldNames: int {
+    none = 0,
+    v_f = 1,
+    v_s = 2,
+    v_x = 3,
+    v_y = 4,
+    v_d_x = 5,
+    v_d_y = 6,
+    v_ctrl_out_f = 7,
+    v_ctrl_out_s = 8,
+    max = 9
+};
+static const std::unordered_map<std::string, SpecialFieldNames> fieldNameMap = {
+        std::make_pair("x", SpecialFieldNames::v_f),
+        std::make_pair("y", SpecialFieldNames::v_s),
+        std::make_pair("v_x", SpecialFieldNames::v_x),
+        std::make_pair("v_y", SpecialFieldNames::v_y),
+        std::make_pair("v_desired_x", SpecialFieldNames::v_d_x),
+        std::make_pair("v_desired_y", SpecialFieldNames::v_d_y),
+        std::make_pair("v_ctrl_out_f", SpecialFieldNames::v_ctrl_out_f),
+        std::make_pair("v_ctrl_out_s", SpecialFieldNames::v_ctrl_out_s),
+};
+
 Plotter::Plotter() :
     QWidget(nullptr, Qt::Window),
     ui(new Ui::Plotter),
     m_startTime(0),
     m_freeze(false)
 {
+
     setWindowIcon(QIcon("icon:plotter.svg"));
     ui->setupUi(this);
 
@@ -98,6 +122,10 @@ Plotter::Plotter() :
 
     loadSelection();
     cnt = 0;
+
+    // worldmodel callback
+    worldmodel_subscription = extern_interface_node->create_subscription<parsian_msgs::msg::ParsianWorldModel>("/world_model", 10, std::bind(&Plotter::worldmodel_callback, this, _1));
+
 }
 
 Plotter::~Plotter()
@@ -218,68 +246,159 @@ void Plotter::setFreeze(bool freeze)
     ui->btnFreeze->setChecked(freeze); // update button
 }
 
-//void Plotter::handleStatus(WorldModel *_status)
-//{
-//    const WorldModel wm(*_status);
-//    // don't consume cpu while closed
-//    if (!isVisible()) {
-//        return;
-//    }
-//
-//    m_guiTimer->requestTriggering();
-//
-//    m_time = cnt++;//status.header().seq();
-//    // normalize time to be able to store it in floats
-//    if (m_startTime == 0) {
-//        m_startTime = m_time;
-//    }
-//
-//    // handle each message
-//    //    if (status.has_detection()) {
-//    //        const Frame& raw = status.detection();
-//    //        if (status.has_ball()) {
-//    //            parseMessage(status.ball(), QStringLiteral("Ball.raw"), m_time);
-//
-//    //        }
-//
-//    //        for (int i = 0; i < status.robots_yellow_size(); i++) {
-//    //            const RRobot& robot = status.robots_yellow(i);
-//    //            const QString rawParent = QString(QStringLiteral("Yellow.%1.raw")).arg(robot.id());
-//    //            parseMessage(robot, rawParent, m_time);
-//    //        }
-//
-//    //        for (int i = 0; i < status.robots_blue_size(); i++) {
-//    //            const RRobot& robot = status.robots_yellow(i);
-//    //            const QString rawParent = QString(QStringLiteral("Blue.%1.raw")).arg(robot.id());
-//    //            parseMessage(robot, rawParent, m_time);
-//    //        }
-//    //    }
-//
-//
-//    //    if (status.has_worldmodel()) {
-//    //        const WorldModel &wm = status.worldmodel();
-//    if (wm.has_ball()) {
-//        parseMessage(wm.ball(), QStringLiteral("Ball"), m_time);
-//
-//    }
-//
-//    for (int i = 0; i < wm.our_robots_size(); i++) {
-//        const MovingObject &robot = wm.our_robots(i);
-//        parseMessage(robot, QString(QStringLiteral("Our.%1")).arg(robot.id()), m_time);
-//    }
-//
-//    for (int i = 0; i < wm.opp_robots_size(); i++) {
-//        const MovingObject &robot = wm.opp_robots(i);
-//        parseMessage(robot, QString(QStringLiteral("Opp.%1")).arg(robot.id()), m_time);
-//    }
-//
-//    //    }
-//
+void Plotter::worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::SharedPtr msg)
+{
+
+    // don't consume cpu while closed
+    if (!isVisible()) {
+        return;
+    }
+
+    m_guiTimer->requestTriggering();
+
+    m_time = cnt++;//status.header().seq();
+    // normalize time to be able to store it in floats
+    if (m_startTime == 0) {
+        m_startTime = m_time;
+    }
+
+
+    parseParsianRobot(msg->ball, QStringLiteral("Ball"), m_time);
+    for(int i{}; i < msg->our.size(); i++)
+        parseParsianRobot(msg->our[i], QString(QStringLiteral("Blue.%1")).arg(msg->our[i].id), m_time);
+    for(int i{}; i < msg->opp.size(); i++)
+        parseParsianRobot(msg->opp[i], QString(QStringLiteral("Yellow.%1")).arg(msg->opp[i].id), m_time);
+
+
 //    // don't move plots during freeze
-//    if (!m_freeze) {
-//        ui->widget->update(m_time);
+    if (!m_freeze) {
+        ui->widget->update(m_time);
+    }
+}
+
+void Plotter::parseParsianRobot(const parsian_msgs::msg::ParsianRobot& rob, const QString& parent, float time)
+{
+    float specialFields[static_cast<int>(SpecialFieldNames::max)];
+    for (int i = 0; i < static_cast<int>(SpecialFieldNames::max); ++i) {
+        specialFields[i] = NAN;
+    }
+    const int extraFields = 4;
+    if (!m_itemLookup.contains(parent)) {
+        m_itemLookup[parent] = QVector<QStandardItem *>(5 + extraFields, nullptr);
+    }
+    // just a performance optimization
+    QVector<QStandardItem *> &childLookup = m_itemLookup[parent];
+
+//    // ID
+//    {
+//        const std::string &name = "ID";
+//        const float value = rob.id;
+//        if (fieldNameMap.count(name) > 0) {
+//            SpecialFieldNames fn = fieldNameMap.at(name);
+//            specialFields[static_cast<int>(fn)] = value;
+//        }
+//        addPoint(name, parent, time, value, childLookup, 0);
 //    }
-//}
+    // pos
+    parseVector2D(rob.pos, QString("%1.%2").arg(parent).arg("pos"), time);
+    // vel
+    parseVector2D(rob.vel, QString("%1.%2").arg(parent).arg("vel"), time);
+    // acc
+    parseVector2D(rob.acc, QString("%1.%2").arg(parent).arg("acc"), time);
+    // dir
+    parseVector2D(rob.dir, QString("%1.%2").arg(parent).arg("dir"), time);
+    // angular_vel
+    {
+        const std::string &name = "angular_vel";
+        const float value = rob.angular_vel;
+        if (fieldNameMap.count(name) > 0) {
+            SpecialFieldNames fn = fieldNameMap.at(name);
+            specialFields[static_cast<int>(fn)] = value;
+        }
+        addPoint(name, parent, time, value, childLookup, 5);
+    }
+
+    // precompute strings
+    static const std::string staticVLocal("v_local");
+    static const std::string staticVDesired("v_desired");
+    static const std::string staticVCtrlOut("v_ctrl_out");
+    static const std::string staticVGlobal("v_global");
+
+    // add length of speed vectors
+    tryAddLength(staticVLocal, parent, time,
+                 specialFields[static_cast<int>(SpecialFieldNames::v_f)],
+                 specialFields[static_cast<int>(SpecialFieldNames::v_s)],
+                 childLookup, 5+0);
+    tryAddLength(staticVDesired, parent, time,
+                 specialFields[static_cast<int>(SpecialFieldNames::v_d_x)],
+                 specialFields[static_cast<int>(SpecialFieldNames::v_d_y)],
+                 childLookup, 5+1);
+    tryAddLength(staticVCtrlOut, parent, time,
+                 specialFields[static_cast<int>(SpecialFieldNames::v_ctrl_out_f)],
+                 specialFields[static_cast<int>(SpecialFieldNames::v_ctrl_out_f)],
+                 childLookup, 5+2);
+    tryAddLength(staticVGlobal, parent, time,
+                 specialFields[static_cast<int>(SpecialFieldNames::v_x)],
+                 specialFields[static_cast<int>(SpecialFieldNames::v_y)],
+                 childLookup, 5+3);
+
+
+}
+
+void Plotter::parseVector2D(const parsian_msgs::msg::Vector2D& vec, const QString& parent, float time)
+{
+    float specialFields[static_cast<int>(SpecialFieldNames::max)];
+    for (int i = 0; i < static_cast<int>(SpecialFieldNames::max); ++i) {
+        specialFields[i] = NAN;
+    }
+    const int extraFields = 4;
+    if (!m_itemLookup.contains(parent)) {
+        m_itemLookup[parent] = QVector<QStandardItem *>(2 + extraFields, nullptr);
+    }
+    QVector<QStandardItem *> &childLookup = m_itemLookup[parent];
+    // ball->pos->x
+    {
+        const std::string &name = "x";
+        const float value = vec.x;
+        if (fieldNameMap.count(name) > 0) {
+            SpecialFieldNames fn = fieldNameMap.at(name);
+            specialFields[static_cast<int>(fn)] = value;
+        }
+        addPoint(name, parent, time, value, childLookup, 0);
+    }
+    // ball->pos->y
+    {
+        const std::string &name = "y";
+        const float value = vec.y;
+        if (fieldNameMap.count(name) > 0) {
+            SpecialFieldNames fn = fieldNameMap.at(name);
+            specialFields[static_cast<int>(fn)] = value;
+        }
+        addPoint(name, parent, time, value, childLookup, 1);
+    }
+    // precompute strings
+    static const std::string staticVLocal("v_local");
+    static const std::string staticVDesired("v_desired");
+    static const std::string staticVCtrlOut("v_ctrl_out");
+    static const std::string staticVGlobal("v_global");
+    // add length of speed vectors
+    tryAddLength(staticVLocal, parent, m_time,
+                 specialFields[static_cast<int>(SpecialFieldNames::v_f)],
+                 specialFields[static_cast<int>(SpecialFieldNames::v_s)],
+                 childLookup, 2+0);
+    tryAddLength(staticVDesired, parent, m_time,
+                 specialFields[static_cast<int>(SpecialFieldNames::v_d_x)],
+                 specialFields[static_cast<int>(SpecialFieldNames::v_d_y)],
+                 childLookup, 2+1);
+    tryAddLength(staticVCtrlOut, parent, m_time,
+                 specialFields[static_cast<int>(SpecialFieldNames::v_ctrl_out_f)],
+                 specialFields[static_cast<int>(SpecialFieldNames::v_ctrl_out_f)],
+                 childLookup, 2+2);
+    tryAddLength(staticVGlobal, parent, m_time,
+                 specialFields[static_cast<int>(SpecialFieldNames::v_x)],
+                 specialFields[static_cast<int>(SpecialFieldNames::v_y)],
+                 childLookup, 2+3);
+}
 
 QStandardItem* Plotter::getItem(const QString &name)
 {
@@ -327,29 +446,9 @@ void Plotter::invalidatePlots()
     }
 }
 
-enum class SpecialFieldNames: int {
-    none = 0,
-    v_f = 1,
-    v_s = 2,
-    v_x = 3,
-    v_y = 4,
-    v_d_x = 5,
-    v_d_y = 6,
-    v_ctrl_out_f = 7,
-    v_ctrl_out_s = 8,
-    max = 9
-};
 
-static const std::unordered_map<std::string, SpecialFieldNames> fieldNameMap = {
-    std::make_pair("x", SpecialFieldNames::v_f),
-    std::make_pair("y", SpecialFieldNames::v_s),
-    std::make_pair("v_x", SpecialFieldNames::v_x),
-    std::make_pair("v_y", SpecialFieldNames::v_y),
-    std::make_pair("v_desired_x", SpecialFieldNames::v_d_x),
-    std::make_pair("v_desired_y", SpecialFieldNames::v_d_y),
-    std::make_pair("v_ctrl_out_f", SpecialFieldNames::v_ctrl_out_f),
-    std::make_pair("v_ctrl_out_s", SpecialFieldNames::v_ctrl_out_s),
-};
+
+
 
 //void Plotter::parseMessage(const google::protobuf::Message &message, const QString &parent, float time)
 //{
@@ -360,6 +459,7 @@ static const std::unordered_map<std::string, SpecialFieldNames> fieldNameMap = {
 //    for (int i = 0; i < static_cast<int>(SpecialFieldNames::max); ++i) {
 //        specialFields[i] = NAN;
 //    }
+//
 //
 //    const int extraFields = 4;
 //    if (!m_itemLookup.contains(parent)) {
@@ -373,7 +473,7 @@ static const std::unordered_map<std::string, SpecialFieldNames> fieldNameMap = {
 //
 //        // check type and that the field exists
 //        if (field->cpp_type() == google::protobuf::FieldDescriptor::CPPTYPE_FLOAT
-//                && refl->HasField(message, field)
+//            && refl->HasField(message, field)
 //                ) {
 //            const std::string &name = field->name();
 //            const float value = refl->GetFloat(message, field); // MAHI / 100
@@ -384,13 +484,13 @@ static const std::unordered_map<std::string, SpecialFieldNames> fieldNameMap = {
 //            addPoint(name, parent, time, value, childLookup, i);
 //        } else if (field->cpp_type() == google::protobuf::FieldDescriptor::CPPTYPE_BOOL
 //                   && refl->HasField(message, field)
-//                   ) {
+//                ) {
 //            const std::string &name = field->name();
 //            const float value = refl->GetBool(message,field) ? 1 : 0;
 //            addPoint(name, parent, time, value, childLookup, i);
 //        } else if (field->cpp_type() == google::protobuf::FieldDescriptor::CPPTYPE_MESSAGE
 //                   && refl->HasField(message, field)
-//                   ) {
+//                ) {
 //            parseMessage(refl->GetMessage(message, field), QString("%1.%2").arg(parent).arg(field->name().c_str()), time);
 //        }
 //    }
@@ -400,24 +500,23 @@ static const std::unordered_map<std::string, SpecialFieldNames> fieldNameMap = {
 //    static const std::string staticVDesired("v_desired");
 //    static const std::string staticVCtrlOut("v_ctrl_out");
 //    static const std::string staticVGlobal("v_global");
-//
 //    // add length of speed vectors
 //    tryAddLength(staticVLocal, parent, time,
 //                 specialFields[static_cast<int>(SpecialFieldNames::v_f)],
-//            specialFields[static_cast<int>(SpecialFieldNames::v_s)],
-//            childLookup, desc->field_count()+0);
+//                 specialFields[static_cast<int>(SpecialFieldNames::v_s)],
+//                 childLookup, desc->field_count()+0);
 //    tryAddLength(staticVDesired, parent, time,
 //                 specialFields[static_cast<int>(SpecialFieldNames::v_d_x)],
-//            specialFields[static_cast<int>(SpecialFieldNames::v_d_y)],
-//            childLookup, desc->field_count()+1);
+//                 specialFields[static_cast<int>(SpecialFieldNames::v_d_y)],
+//                 childLookup, desc->field_count()+1);
 //    tryAddLength(staticVCtrlOut, parent, time,
 //                 specialFields[static_cast<int>(SpecialFieldNames::v_ctrl_out_f)],
-//            specialFields[static_cast<int>(SpecialFieldNames::v_ctrl_out_f)],
-//            childLookup, desc->field_count()+2);
+//                 specialFields[static_cast<int>(SpecialFieldNames::v_ctrl_out_f)],
+//                 childLookup, desc->field_count()+2);
 //    tryAddLength(staticVGlobal, parent, time,
 //                 specialFields[static_cast<int>(SpecialFieldNames::v_x)],
-//            specialFields[static_cast<int>(SpecialFieldNames::v_y)],
-//            childLookup, desc->field_count()+3);
+//                 specialFields[static_cast<int>(SpecialFieldNames::v_y)],
+//                 childLookup, desc->field_count()+3);
 //}
 
 void Plotter::tryAddLength(const std::string &name, const QString &parent, float time, float value1, float value2,
@@ -451,7 +550,7 @@ void Plotter::addPoint(const std::string &name, const QString &parent, float tim
 
     if (plot == nullptr) { // create new plot
         const QString fullName = parent % QStringLiteral(".") % QString::fromStdString(name);
-        plot = new Plot(fullName, this);
+        plot = new Plot(fullName);
         item->setCheckable(true);
         if (m_selection.contains(fullName)) {
             addPlot(plot); // manually add plot as itemChanged won't add it
