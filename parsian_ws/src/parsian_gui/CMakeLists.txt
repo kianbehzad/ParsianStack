@@ -45,6 +45,7 @@ include_directories(
 # wrap ui files
 qt5_wrap_ui(UIC_SOURCES
         resources/plotter.ui
+        resources/mainwindow.ui
         )
 set(DYNAMIC_RECONFIGURE_SRCS
         src/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.cpp

@@ -23,6 +23,10 @@
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
 
+//forward declaration
+namespace Ui {
+    class MainWindow;
+}
 
 class MainWindow : public QMainWindow
 {
@@ -33,13 +37,15 @@ public:
     ~MainWindow();
 
 private:
-    void worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::SharedPtr msg);
-    rclcpp::Subscription<parsian_msgs::msg::ParsianWorldModel>::SharedPtr worldmodel_subscription;
-
+    Ui::MainWindow *ui;
 
     // widgets
     DynamicReconfigureWidget* dynamic_reconfigure_widget;
     Plotter* plotter;
+
+public slots:
+    void handle_current_changed(int index);
+
 
 };
 

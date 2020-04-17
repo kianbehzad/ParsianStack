@@ -33,7 +33,7 @@ DynamicReconfigureWidget::DynamicReconfigureWidget(QWidget *parent) : BaseWidget
     define_parameter_clients();
 
 
-
+    this->struct_widget();
 
 
 }

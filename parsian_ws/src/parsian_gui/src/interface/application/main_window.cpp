@@ -2,14 +2,15 @@
 // Created by kian behzad on 4/8/20.
 //
 #include "parsian_gui/interface/application/main_window.h"
-
+//forward declaration
+#include "ui_mainwindow.h"
 
 //define extern variables
 std::vector<std::string> extern_argv;
 std::string extern_resources_directory_path;
 std::shared_ptr<InterfaceNode> extern_interface_node;
 
-MainWindow::MainWindow(int _argc, char * _argv[], std::shared_ptr<InterfaceNode> interface_node_, QWidget *parent) : QMainWindow(parent)
+MainWindow::MainWindow(int _argc, char * _argv[], std::shared_ptr<InterfaceNode> interface_node_, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     qRegisterMetaType<QVector<int>>("QVector<int>");
 
@@ -24,27 +25,26 @@ MainWindow::MainWindow(int _argc, char * _argv[], std::shared_ptr<InterfaceNode>
     extern_interface_node = interface_node_;
 
 
-    // set up world_model callback (just a sample - no usage)
-    worldmodel_subscription = extern_interface_node->create_subscription<parsian_msgs::msg::ParsianWorldModel>("/world_model", 10, std::bind(&MainWindow::worldmodel_callback, this, _1));
-
-
-    // struct widgets
-    dynamic_reconfigure_widget = new DynamicReconfigureWidget();
-    dynamic_reconfigure_widget->struct_widget();
-    plotter = new Plotter;
-
-    // add widgets
-    this->setCentralWidget(plotter);
+    ui->setupUi(this);
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(handle_current_changed(int)));
 
 }
 
 MainWindow::~MainWindow()
 {
-    delete  dynamic_reconfigure_widget;
 }
 
-void MainWindow::worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::SharedPtr msg)
+void MainWindow::handle_current_changed(int index)
 {
+    for(int i{}; i < ui->tabWidget->count(); i++)
+        if(i != index)
+        {
+            ui->tabWidget->widget(i)->setUpdatesEnabled(false);
+            ui->tabWidget->widget(i)->setEnabled(false);
+        }
+    ui->tabWidget->widget(index)->setUpdatesEnabled(false);
+    ui->tabWidget->widget(index)->setEnabled(false);
 }
+
 
 
