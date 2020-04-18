@@ -46,9 +46,9 @@ namespace rcsc {
                        const double & max_r,
                        const AngleDeg & start,
                        const AngleDeg & end)
-        : M_center(c)
-        , M_min_radius(min_r), M_max_radius(max_r)
-        , M_angle_left_start(start), M_angle_right_end(end) {
+            : M_center(c)
+            , M_min_radius(min_r), M_max_radius(max_r)
+            , M_angle_left_start(start), M_angle_right_end(end) {
         if (min_r < 0.0) {
             std::cerr << "Sector2D::Sector2D() radius must be positive value."
                       << std::endl;

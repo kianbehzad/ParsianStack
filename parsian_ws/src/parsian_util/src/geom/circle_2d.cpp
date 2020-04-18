@@ -52,11 +52,11 @@ namespace {
   \param val input value
   \return squared value
  */
-inline
-double
-SQUARE(const double & val) {
-    return val * val;
-}
+    inline
+    double
+    SQUARE(const double & val) {
+        return val * val;
+    }
 
 /*-------------------------------------------------------------------*/
 /*!
@@ -68,27 +68,27 @@ SQUARE(const double & val) {
   \param sol2 reference to the result variable
   \return number of solution
  */
-inline
-int
-QUADRATIC_FOMULA(const double & a,
-                 const double & b,
-                 const double & c,
-                 double & sol1,
-                 double & sol2) {
-    double d = SQUARE(b) - 4.0 * a * c;
-    // ignore small noise
-    if (std::fabs(d) < 0.001) {
-        sol1 = -b / (2.0 * a);
-        return 1;
-    } else if (d < 0.0) {
-        return 0;
-    } else {
-        d = std::sqrt(d);
-        sol1 = (-b + d) / (2.0 * a);
-        sol2 = (-b - d) / (2.0 * a);
-        return 2;
+    inline
+    int
+    QUADRATIC_FOMULA(const double & a,
+                     const double & b,
+                     const double & c,
+                     double & sol1,
+                     double & sol2) {
+        double d = SQUARE(b) - 4.0 * a * c;
+        // ignore small noise
+        if (std::fabs(d) < 0.001) {
+            sol1 = -b / (2.0 * a);
+            return 1;
+        } else if (d < 0.0) {
+            return 0;
+        } else {
+            d = std::sqrt(d);
+            sol1 = (-b + d) / (2.0 * a);
+            sol2 = (-b - d) / (2.0 * a);
+            return 2;
+        }
     }
-}
 
 } // end of namespace
 
@@ -142,6 +142,8 @@ namespace rcsc {
     int Circle2D::intersection(const Line2D & line, Vector2D * sol1, Vector2D * sol2) const {
         if (std::fabs(line.a()) < EPSILOON) {
             if (std::fabs(line.b()) < EPSILOON) {
+//            std::cerr << "Circle2D::intersection() illegal line."
+//                      << std::endl;
                 return 0;
             }
 

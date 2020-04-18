@@ -34,6 +34,94 @@
 #endif
 
 #include "parsian_util/geom/vector_2d.h"
+#include "parsian_util/geom/segment_2d.h"
+#include "parsian_util/geom/circle_2d.h"
+
+
+int sign(double d1) {
+    return (d1 > 0) ? 1 : -1;
+}
+
+double max(double d1, double d2) {
+    return (d1 > d2) ? d1 : d2;
+}
+
+double min(double d1, double d2) {
+    return (d1 < d2) ? d1 : d2;
+}
+
+
+namespace rcsc {
+    Vector2D intersect_ellipse_dir(Vector2D dir, Vector2D center, double a, double b, double e) {
+        Vector2D d = dir;
+        d.x = d.x * b / a;
+        Segment2D s = Segment2D(center + Vector2D(0.0, e), center + dir * 2.0 * b + Vector2D(0.0, e));
+        Vector2D sol1, sol2;
+        int n = Circle2D(center, b).intersection(s, &sol1, &sol2);
+        if (sol1.valid()) {
+            sol1.x = (sol1.x - center.x) * a / b + center.x;
+        }
+        return sol1;
+    }
+
+
+    bool intersect_ellipse_line(Vector2D point1, Vector2D point2, Vector2D center, double _a, double _b, Vector2D * sol1, Vector2D * sol2) {
+        double h = center.x;
+        double k = center.y;
+        double a = _a;
+        double b = _b;
+        double x1 = point1.x;
+        double y1 = point1.y;
+        double x2 = point2.x;
+        double y2 = point2.y;
+        double xi1, xi2, yi1, yi2;
+
+        float aa, bb, cc, m;
+        //
+        if (x1 != x2) {
+            m = (y2 - y1) / (x2 - x1);
+            float c = y1 - m * x1;
+            //
+            aa = b * b + a * a * m * m;
+            bb = 2 * a * a * c * m - 2 * a * a * k * m - 2 * h * b * b;
+            cc = b * b * h * h + a * a * c * c - 2 * a * a * k * c + a * a * k * k - a * a * b * b;
+        } else {
+            //
+            // vertical line case
+            //
+            aa = a * a;
+            bb = -2.0 * k * a * a;
+            cc = -a * a * b * b + b * b * (x1 - h) * (x1 - h);
+        }
+
+        float d = bb * bb - 4 * aa * cc;
+        //
+        // intersection points : (xi1,yi1) and (xi2,yi2)
+        //
+        if (d > 0.0) {
+            if (x1 != x2) {
+                xi1 = (-bb + sqrt(d)) / (2 * aa);
+                xi2 = (-bb - sqrt(d)) / (2 * aa);
+                yi1 = y1 + m * (xi1 - x1);
+                yi2 = y1 + m * (xi2 - x1);
+            } else {
+                yi1 = (-bb + sqrt(d)) / (2 * aa);
+                yi2 = (-bb - sqrt(d)) / (2 * aa);
+                xi1 = x1;
+                xi2 = x1;
+            }
+        } else {
+            return false; // no intersections
+        }
+        sol1->x = xi1;
+        sol1->y = yi1;
+        sol2->x = xi2;
+        sol2->y = yi2;
+        return true;
+    }
+
+}
+
 
 namespace rcsc {
 
@@ -345,16 +433,4 @@ namespace rcsc {
 
 
 } // end of namespace
-
-int sign(double d1) {
-    return (d1 > 0) ? 1 : -1;
-}
-
-double max(double d1, double d2) {
-    return (d1 > d2) ? d1 : d2;
-}
-
-double min(double d1, double d2) {
-    return (d1 < d2) ? d1 : d2;
-}
 
