@@ -27,6 +27,12 @@ MainWindow::MainWindow(int _argc, char * _argv[], std::shared_ptr<InterfaceNode>
 
     ui->setupUi(this);
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(handle_current_changed(int)));
+//    QWidget *temp = ui->tabWidget->widget(0);
+//    QString text = ui->tabWidget->tabText(0);
+//    ui->tabWidget->widget(0)->setUpdatesEnabled(false);
+//    ui->tabWidget->removeTab(0);
+//    ui->tabWidget->insertTab(0, new QWidget, text);
+//    delete temp;
 
 }
 
@@ -36,14 +42,33 @@ MainWindow::~MainWindow()
 
 void MainWindow::handle_current_changed(int index)
 {
+    disconnect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(handle_current_changed(int)));
+
+    if(index > ui->tabWidget->count() || index < 0)
+        return;
+
+    QString text = ui->tabWidget->tabText(index);
     for(int i{}; i < ui->tabWidget->count(); i++)
-        if(i != index)
-        {
-            ui->tabWidget->widget(i)->setUpdatesEnabled(false);
-            ui->tabWidget->widget(i)->setEnabled(false);
-        }
-    ui->tabWidget->widget(index)->setUpdatesEnabled(false);
-    ui->tabWidget->widget(index)->setEnabled(false);
+    {
+        QWidget *temp = ui->tabWidget->widget(i);
+        QString tmptext = ui->tabWidget->tabText(i);
+        ui->tabWidget->widget(i)->setUpdatesEnabled(false);
+        ui->tabWidget->removeTab(i);
+        if(index != i)
+            ui->tabWidget->insertTab(i, new QWidget, tmptext);
+        delete temp;
+    }
+    if(text == "plotter")
+        ui->tabWidget->insertTab(index, new Plotter, "plotter");
+    else if(text == "graphic")
+        ui->tabWidget->insertTab(index, new QWidget, "graphic");
+    else
+        ui->tabWidget->insertTab(index, new QWidget, "nothing");
+    ui->tabWidget->setCurrentIndex(index);
+
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(handle_current_changed(int)));
+
+
 }
 
 
