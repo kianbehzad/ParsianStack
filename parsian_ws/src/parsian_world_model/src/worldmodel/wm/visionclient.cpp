@@ -15,7 +15,7 @@ CVisionClient::~CVisionClient() {
 
 void CVisionClient::parse(const parsian_msgs::msg::SSLVisionDetection::SharedPtr& packet) {
     lastCamera = -1;
-    float ourTeamSide = (extern_isOurSideLeft == true) ? -1.0f : 1.0f;
+    float ourTeamSide = (extern_isOurSideLeft == true) ? 1.0f : -1.0f;
     v[packet->camera_id].updated = false;
 
 
