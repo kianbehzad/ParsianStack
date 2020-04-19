@@ -24,6 +24,7 @@
 #include <QDialog>
 #include <QSet>
 #include <QStandardItemModel>
+#include <QTimer>
 
 #include "parsian_gui/interface/application/extern_variables.h"
 #include "parsian_msgs/msg/parsian_world_model.hpp"
@@ -71,6 +72,8 @@ private slots:
     void itemChanged(QStandardItem *item);
     void invalidatePlots();
 
+    void update_timeout_handle();//kian
+
 private:
     bool eventFilter(QObject *obj, QEvent *event) override;
 
@@ -78,14 +81,15 @@ private:
     QStandardItem* getItem(const QString &name);
     void addRootItem(const QString &name, const QString &displayName);
 //    void parseMessage(const google::protobuf::Message &message, const QString &parent, float time);
-    void parseVector2D(const parsian_msgs::msg::Vector2D& vec, const QString& parent, float time);
-    void parseParsianRobot(const parsian_msgs::msg::ParsianRobot& rob, const QString& parent, float time);
+    void parseVector2D(const parsian_msgs::msg::Vector2D& vec, const QString& parent, float time);//kian
+    void parseParsianRobot(const parsian_msgs::msg::ParsianRobot& rob, const QString& parent, float time);//kian
     void addPoint(const std::string &name, const QString &parent, float time, float value, QVector<QStandardItem *> &childLookup, int descriptorIndex);
     void tryAddLength(const std::string &name, const QString &parent, float time, float value1, float value2, QVector<QStandardItem *> &childLookup, int descriptorIndex);
 
 private:
-    void worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::SharedPtr msg);
-    rclcpp::Subscription<parsian_msgs::msg::ParsianWorldModel>::SharedPtr worldmodel_subscription;
+    void worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::SharedPtr msg);//kian
+    rclcpp::Subscription<parsian_msgs::msg::ParsianWorldModel>::SharedPtr worldmodel_subscription;//kian
+    QTimer* update_timer;//kian
 
 
     enum ItemRole {

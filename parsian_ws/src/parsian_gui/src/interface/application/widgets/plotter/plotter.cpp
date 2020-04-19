@@ -60,7 +60,7 @@ Plotter::Plotter() :
     m_freeze(false)
 {
 
-    setWindowIcon(QIcon("icon:plotter.svg"));
+//    setWindowIcon(QIcon("icon:plotter.svg"));
     ui->setupUi(this);
 
     // proxy model for tree filtering
@@ -73,8 +73,8 @@ Plotter::Plotter() :
 
     // root items in the plotter
     addRootItem(QStringLiteral("Ball"), QStringLiteral("Ball"));
-    addRootItem(QStringLiteral("Yellow"), QStringLiteral("Yellow robots"));
-    addRootItem(QStringLiteral("Blue"), QStringLiteral("Blue robots"));
+    addRootItem(QStringLiteral("Our"), QStringLiteral("Our"));
+    addRootItem(QStringLiteral("Opp"), QStringLiteral("Opp"));
 
     ui->tree->expandAll(); // expands the root items, thus childs are immediatelly visible once added
     connect(&m_model, SIGNAL(itemChanged(QStandardItem*)), SLOT(itemChanged(QStandardItem*)));
@@ -126,6 +126,9 @@ Plotter::Plotter() :
     // worldmodel callback
     worldmodel_subscription = extern_interface_node->create_subscription<parsian_msgs::msg::ParsianWorldModel>("/world_model", 10, std::bind(&Plotter::worldmodel_callback, this, _1));
 
+    update_timer = new QTimer();
+    connect(update_timer, SIGNAL(timeout()), this, SLOT(update_timeout_handle()));
+    update_timer->start(1.0/60.0);
 }
 
 Plotter::~Plotter()
@@ -133,6 +136,7 @@ Plotter::~Plotter()
     delete ui;
     qDeleteAll(m_plots);
     qDeleteAll(m_frozenPlots);
+    delete update_timer;
 }
 
 void Plotter::closeEvent(QCloseEvent *event)
@@ -246,6 +250,22 @@ void Plotter::setFreeze(bool freeze)
     ui->btnFreeze->setChecked(freeze); // update button
 }
 
+void Plotter::update_timeout_handle()
+{
+    // don't consume cpu while closed
+    if (!isVisible()) {
+        return;
+    }
+
+    m_guiTimer->requestTriggering();
+
+    //    // don't move plots during freeze
+    if (!m_freeze) {
+        ui->widget->update(m_time);
+    }
+
+}
+
 void Plotter::worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::SharedPtr msg)
 {
 
@@ -254,7 +274,7 @@ void Plotter::worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::Sh
         return;
     }
 
-    m_guiTimer->requestTriggering();
+//    m_guiTimer->requestTriggering();//kian
 
     m_time = cnt++;//status.header().seq();
     // normalize time to be able to store it in floats
@@ -265,15 +285,15 @@ void Plotter::worldmodel_callback(const parsian_msgs::msg::ParsianWorldModel::Sh
 
     parseParsianRobot(msg->ball, QStringLiteral("Ball"), m_time);
     for(int i{}; i < msg->our.size(); i++)
-        parseParsianRobot(msg->our[i], QString(QStringLiteral("Blue.%1")).arg(msg->our[i].id), m_time);
+        parseParsianRobot(msg->our[i], QString(QStringLiteral("Our.%1")).arg(msg->our[i].id), m_time);
     for(int i{}; i < msg->opp.size(); i++)
-        parseParsianRobot(msg->opp[i], QString(QStringLiteral("Yellow.%1")).arg(msg->opp[i].id), m_time);
+        parseParsianRobot(msg->opp[i], QString(QStringLiteral("Opp.%1")).arg(msg->opp[i].id), m_time);
 
 
-//    // don't move plots during freeze
-    if (!m_freeze) {
-        ui->widget->update(m_time);
-    }
+////    // don't move plots during freeze
+//    if (!m_freeze) {
+//        ui->widget->update(m_time);
+//    }
 }
 
 void Plotter::parseParsianRobot(const parsian_msgs::msg::ParsianRobot& rob, const QString& parent, float time)
