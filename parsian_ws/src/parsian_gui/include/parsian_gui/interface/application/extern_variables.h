@@ -14,5 +14,7 @@ extern std::vector<std::string> extern_argv;
 extern std::string extern_resources_directory_path;
 extern std::shared_ptr<InterfaceNode> extern_interface_node;
 
+extern bool extern_is_our_color_yellow;
+extern bool extern_is_our_side_left;
 
 #endif //PARSIAN_GUI_EXTERN_VARIABLES_H
