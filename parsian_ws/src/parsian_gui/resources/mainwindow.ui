@@ -35,7 +35,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="tabsClosable">
            <bool>false</bool>
@@ -45,7 +45,7 @@
             <string>plotter</string>
            </attribute>
           </widget>
-          <widget class="QWidget" name="graphic">
+          <widget class="GLSoccerView" name="graphic">
            <attribute name="title">
             <string>graphic</string>
            </attribute>
@@ -81,6 +81,12 @@
    <class>DynamicReconfigureWidget</class>
    <extends>QWidget</extends>
    <header>parsian_gui/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>GLSoccerView</class>
+   <extends>QWidget</extends>
+   <header>parsian_gui/interface/application/widgets/graphical_client/soccerview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

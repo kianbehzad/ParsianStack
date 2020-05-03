@@ -22,6 +22,7 @@ set(CMAKE_AUTOMOC ON)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(parsian_msgs REQUIRED)
+find_package(parsian_util REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
@@ -71,6 +72,13 @@ set(PLOTTER_SRCS
         include/parsian_gui/interface/application/widgets/plotter/timer.h # for Qt MOC
         )
 
+set(GRAPHICAL_CLIENT_SRCS
+        src/interface/application/widgets/graphical_client/gltext.cpp
+        src/interface/application/widgets/graphical_client/field.cpp
+        src/interface/application/widgets/graphical_client/soccerview.cpp
+        include/parsian_gui/interface/application/widgets/graphical_client/soccerview.h # for Qt MOC
+        )
+
 
 # interface node
 add_executable(interface
@@ -86,8 +94,9 @@ add_executable(interface
         ${UIC_SOURCES}
         ${DYNAMIC_RECONFIGURE_SRCS}
         ${PLOTTER_SRCS}
+        ${GRAPHICAL_CLIENT_SRCS}
         )
-ament_target_dependencies(interface rclcpp ament_index_cpp parsian_msgs)
+ament_target_dependencies(interface rclcpp ament_index_cpp parsian_msgs parsian_util)
 target_link_libraries(interface ${QT5_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} yaml)
 
 
