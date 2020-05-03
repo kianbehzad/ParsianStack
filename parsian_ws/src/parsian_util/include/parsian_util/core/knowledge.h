@@ -7,6 +7,8 @@
 
 namespace knowledge
 {
+    const double PI = 3.14159265359;
+
     const int MAX_ROBOT_NUM = 12;
 
     const double robot_radius_old = 0.090;

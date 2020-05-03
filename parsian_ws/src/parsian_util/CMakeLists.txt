@@ -82,7 +82,7 @@ add_library(libknowledge
         src/core/field.cpp
         )
 ament_target_dependencies(libknowledge rclcpp parsian_msgs)
-target_link_libraries(libmath ${QT5_LIBRARIES} libgeom)
+target_link_libraries(libknowledge ${QT5_LIBRARIES} libgeom)
 ament_export_interfaces(export_libknowledge HAS_LIBRARY_TARGET)
 ament_export_libraries(libknowledge)
 ament_export_include_directories(include)

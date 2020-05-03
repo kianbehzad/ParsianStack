@@ -1,9 +1,9 @@
 #ifndef PARSIAN_UTIL_FIELD_H
 #define PARSIAN_UTIL_FIELD_H
 
-#include <QtCore/QString>
-#include <QtCore/QList>
-#include <QtCore/QStringList>
+#include <QString>
+#include <QList>
+#include <QStringList>
 
 #include <parsian_util/geom/geom.h>
 
@@ -24,6 +24,9 @@ public:
     double _PENALTY_WIDTH;
     double _CENTER_CIRCLE_RAD;
     double _MAX_DIST;
+
+    double _BOUNDARY_WIDTH = 250.0;
+    double _LINE_THICKNESS = 10.0;
 
 
     enum class Region {
