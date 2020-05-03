@@ -127,7 +127,7 @@ void DynamicReconfigureWidget::define_parameter_clients()
                 RCLCPP_ERROR(extern_interface_node->get_logger(), "[dynamic-reconfigure] couldnt get %s remote param!", node_name.c_str());
                 rclcpp::shutdown();
             }
-            RCLCPP_WARN(extern_interface_node->get_logger(), "[dynamic-reconfigure] %s remote param not available, waiting again...", node_name.c_str());
+            RCLCPP_WARN(extern_interface_node->get_logger(), "[dynamic-reconfigure] %s remote param not available", node_name.c_str());
         }
     }
 

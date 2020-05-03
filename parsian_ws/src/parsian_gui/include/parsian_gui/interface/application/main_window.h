@@ -19,6 +19,7 @@
 #include "parsian_gui/interface/application/extern_variables.h"
 #include "parsian_gui/interface/application/widgets/dynamic_reconfigure/dynamic_reconfigure.h"
 #include "parsian_gui/interface/application/widgets/plotter/plotter.h"
+#include "parsian_gui/interface/application/widgets/graphical_client/soccerview.h"
 #include "parsian_msgs/msg/parsian_world_model.hpp"
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
@@ -40,12 +41,15 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    // widgets
-    DynamicReconfigureWidget* dynamic_reconfigure_widget;
-    Plotter* plotter;
+    std::function<void(const rcl_interfaces::msg::ParameterEvent::SharedPtr)> params_change_callback;
+    rclcpp::Subscription<rcl_interfaces::msg::ParameterEvent>::SharedPtr parameter_event_sub;
+    void define_params_change_callback_lambda_function();
 
-public slots:
-    void handle_current_changed(int index);
+    DynamicReconfigureWidget* dynamic_reconfigure;
+
+
+//public slots:
+//    void handle_current_changed(int index);
 
 
 };

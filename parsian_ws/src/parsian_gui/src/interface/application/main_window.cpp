@@ -9,6 +9,9 @@
 std::vector<std::string> extern_argv;
 std::string extern_resources_directory_path;
 std::shared_ptr<InterfaceNode> extern_interface_node;
+bool extern_is_our_color_yellow;
+bool extern_is_our_side_left;
+
 
 MainWindow::MainWindow(int _argc, char * _argv[], std::shared_ptr<InterfaceNode> interface_node_, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -24,50 +27,97 @@ MainWindow::MainWindow(int _argc, char * _argv[], std::shared_ptr<InterfaceNode>
 
     extern_interface_node = interface_node_;
 
+    // set up worldmodel parameter client
+    auto parameters_client = std::make_shared<rclcpp::SyncParametersClient>(interface_node_.get(), "worldmodel_node");
+    if (!parameters_client->wait_for_service(1s)) {
+        if (!rclcpp::ok()) {
+            RCLCPP_ERROR(interface_node_.get()->get_logger(), "Interrupted while waiting for the parameter service. Exiting.");
+            rclcpp::shutdown();
+        }
+        RCLCPP_WARN(interface_node_.get()->get_logger(), "/worldmodel_node remote param not available");
+    }
+    else {
+        // initialize worldmodel parameters
+        extern_is_our_color_yellow = parameters_client->get_parameter("is_our_color_yellow", extern_is_our_color_yellow);
+        extern_is_our_side_left = parameters_client->get_parameter("is_our_side_left", extern_is_our_side_left);
+    }
 
-    ui->setupUi(this);
-    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(handle_current_changed(int)));
-//    QWidget *temp = ui->tabWidget->widget(0);
-//    QString text = ui->tabWidget->tabText(0);
-//    ui->tabWidget->widget(0)->setUpdatesEnabled(false);
-//    ui->tabWidget->removeTab(0);
-//    ui->tabWidget->insertTab(0, new QWidget, text);
-//    delete temp;
+    // set up parameter-change callback
+    define_params_change_callback_lambda_function();
+    parameter_event_sub = parameters_client->on_parameter_event(params_change_callback);
+
+    // using soccerview and plotter is not efficient
+//    ui->setupUi(this);
+//    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(handle_current_changed(int)));
+
+    // just run dynamic reconfigure
+    dynamic_reconfigure = new DynamicReconfigureWidget;
+    this->setCentralWidget(dynamic_reconfigure);
+
+
 
 }
 
 MainWindow::~MainWindow()
 {
+    delete dynamic_reconfigure;
 }
 
-void MainWindow::handle_current_changed(int index)
+//void MainWindow::handle_current_changed(int index)
+//{
+//    disconnect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(handle_current_changed(int)));
+//
+//    if(index > ui->tabWidget->count() || index < 0)
+//        return;
+//
+//    QString text = ui->tabWidget->tabText(index);
+//    for(int i{}; i < ui->tabWidget->count(); i++)
+//    {
+//        QWidget *temp = ui->tabWidget->widget(i);
+//        QString tmptext = ui->tabWidget->tabText(i);
+//        ui->tabWidget->widget(i)->setUpdatesEnabled(false);
+//        ui->tabWidget->removeTab(i);
+//        if(index != i)
+//            ui->tabWidget->insertTab(i, new QWidget, tmptext);
+//        delete temp;
+//    }
+//    if(text == "plotter")
+//        ui->tabWidget->insertTab(index, new Plotter, "plotter");
+//    else if(text == "graphic")
+//        ui->tabWidget->insertTab(index, new GLSoccerView, "graphic");
+//    else
+//        ui->tabWidget->insertTab(index, new QWidget, "nothing");
+//    ui->tabWidget->setCurrentIndex(index);
+//
+//    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(handle_current_changed(int)));
+//
+//
+//}
+
+void MainWindow::define_params_change_callback_lambda_function()
 {
-    disconnect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(handle_current_changed(int)));
-
-    if(index > ui->tabWidget->count() || index < 0)
-        return;
-
-    QString text = ui->tabWidget->tabText(index);
-    for(int i{}; i < ui->tabWidget->count(); i++)
+    params_change_callback = [this](const rcl_interfaces::msg::ParameterEvent::SharedPtr event) -> void
     {
-        QWidget *temp = ui->tabWidget->widget(i);
-        QString tmptext = ui->tabWidget->tabText(i);
-        ui->tabWidget->widget(i)->setUpdatesEnabled(false);
-        ui->tabWidget->removeTab(i);
-        if(index != i)
-            ui->tabWidget->insertTab(i, new QWidget, tmptext);
-        delete temp;
-    }
-    if(text == "plotter")
-        ui->tabWidget->insertTab(index, new Plotter, "plotter");
-    else if(text == "graphic")
-        ui->tabWidget->insertTab(index, new QWidget, "graphic");
-    else
-        ui->tabWidget->insertTab(index, new QWidget, "nothing");
-    ui->tabWidget->setCurrentIndex(index);
+        for (auto & new_parameter : event->new_parameters) {
+            //do stuff
+        }
+        for (auto & changed_parameter : event->changed_parameters) {
+            if(changed_parameter.name == "is_our_color_yellow")
+            {
+                extern_is_our_color_yellow = changed_parameter.value.bool_value;
+                RCLCPP_INFO(extern_interface_node.get()->get_logger(), "changing color, is_our_color_yellow: %d", extern_is_our_color_yellow);
+            }
+            else if(changed_parameter.name == "is_our_side_left")
+            {
+                extern_is_our_side_left = changed_parameter.value.bool_value;
+                RCLCPP_INFO(extern_interface_node.get()->get_logger(), "changing side, is_our_side_left: %d", extern_is_our_side_left);
+            }
 
-    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(handle_current_changed(int)));
-
+        }
+        for (auto & deleted_parameter : event->deleted_parameters) {
+            //do stuff
+        }
+    };
 
 }
 
