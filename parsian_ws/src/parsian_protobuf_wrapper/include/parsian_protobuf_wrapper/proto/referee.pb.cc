@@ -185,16 +185,15 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_ref
   &scc_info_SSL_Referee_TeamInfo_referee_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_referee_2eproto_once;
-static bool descriptor_table_referee_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_referee_2eproto = {
-  &descriptor_table_referee_2eproto_initialized, descriptor_table_protodef_referee_2eproto, "referee.proto", 1267,
+  false, false, descriptor_table_protodef_referee_2eproto, "referee.proto", 1267,
   &descriptor_table_referee_2eproto_once, descriptor_table_referee_2eproto_sccs, descriptor_table_referee_2eproto_deps, 3, 0,
   schemas, file_default_instances, TableStruct_referee_2eproto::offsets,
   file_level_metadata_referee_2eproto, 3, file_level_enum_descriptors_referee_2eproto, file_level_service_descriptors_referee_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_referee_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_referee_2eproto), true);
+static bool dynamic_init_dummy_referee_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_referee_2eproto)), true);
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* SSL_Referee_Stage_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_referee_2eproto);
   return file_level_enum_descriptors_referee_2eproto[0];
@@ -322,22 +321,27 @@ class SSL_Referee_TeamInfo::_Internal {
   static void set_has_goalie(HasBits* has_bits) {
     (*has_bits)[0] |= 64u;
   }
+  static bool MissingRequiredFields(const HasBits& has_bits) {
+    return ((has_bits[0] & 0x0000007f) ^ 0x0000007f) != 0;
+  }
 };
 
-SSL_Referee_TeamInfo::SSL_Referee_TeamInfo()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SSL_Referee_TeamInfo::SSL_Referee_TeamInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
+  yellow_card_times_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:SSL_Referee.TeamInfo)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:SSL_Referee.TeamInfo)
 }
 SSL_Referee_TeamInfo::SSL_Referee_TeamInfo(const SSL_Referee_TeamInfo& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_),
       yellow_card_times_(from.yellow_card_times_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_name()) {
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+    name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_name(),
+      GetArena());
   }
   ::memcpy(&score_, &from.score_,
     static_cast<size_t>(reinterpret_cast<char*>(&goalie_) -
@@ -356,12 +360,20 @@ void SSL_Referee_TeamInfo::SharedCtor() {
 SSL_Referee_TeamInfo::~SSL_Referee_TeamInfo() {
   // @@protoc_insertion_point(destructor:SSL_Referee.TeamInfo)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SSL_Referee_TeamInfo::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
+void SSL_Referee_TeamInfo::ArenaDtor(void* object) {
+  SSL_Referee_TeamInfo* _this = reinterpret_cast< SSL_Referee_TeamInfo* >(object);
+  (void)_this;
+}
+void SSL_Referee_TeamInfo::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SSL_Referee_TeamInfo::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -380,7 +392,7 @@ void SSL_Referee_TeamInfo::Clear() {
   yellow_card_times_.Clear();
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    name_.ClearNonDefaultToEmptyNoArena();
+    name_.ClearNonDefaultToEmpty();
   }
   if (cached_has_bits & 0x0000007eu) {
     ::memset(&score_, 0, static_cast<size_t>(
@@ -388,12 +400,13 @@ void SSL_Referee_TeamInfo::Clear() {
         reinterpret_cast<char*>(&score_)) + sizeof(goalie_));
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SSL_Referee_TeamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -414,7 +427,7 @@ const char* SSL_Referee_TeamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAM
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           _Internal::set_has_score(&has_bits);
-          score_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          score_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -422,7 +435,7 @@ const char* SSL_Referee_TeamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAM
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
           _Internal::set_has_red_cards(&has_bits);
-          red_cards_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          red_cards_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -432,7 +445,7 @@ const char* SSL_Referee_TeamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAM
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedUInt32Parser(_internal_mutable_yellow_card_times(), ptr, ctx);
           CHK_(ptr);
         } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32) {
-          _internal_add_yellow_card_times(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr));
+          _internal_add_yellow_card_times(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -440,7 +453,7 @@ const char* SSL_Referee_TeamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAM
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
           _Internal::set_has_yellow_cards(&has_bits);
-          yellow_cards_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          yellow_cards_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -448,7 +461,7 @@ const char* SSL_Referee_TeamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAM
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
           _Internal::set_has_timeouts(&has_bits);
-          timeouts_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          timeouts_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -456,7 +469,7 @@ const char* SSL_Referee_TeamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAM
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
           _Internal::set_has_timeout_time(&has_bits);
-          timeout_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          timeout_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -464,7 +477,7 @@ const char* SSL_Referee_TeamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAM
       case 8:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64)) {
           _Internal::set_has_goalie(&has_bits);
-          goalie_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          goalie_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -474,7 +487,9 @@ const char* SSL_Referee_TeamInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAM
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -553,7 +568,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:SSL_Referee.TeamInfo)
   return target;
@@ -703,7 +718,7 @@ void SSL_Referee_TeamInfo::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& fro
 void SSL_Referee_TeamInfo::MergeFrom(const SSL_Referee_TeamInfo& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:SSL_Referee.TeamInfo)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -711,8 +726,7 @@ void SSL_Referee_TeamInfo::MergeFrom(const SSL_Referee_TeamInfo& from) {
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x0000007fu) {
     if (cached_has_bits & 0x00000001u) {
-      _has_bits_[0] |= 0x00000001u;
-      name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+      _internal_set_name(from._internal_name());
     }
     if (cached_has_bits & 0x00000002u) {
       score_ = from.score_;
@@ -751,23 +765,22 @@ void SSL_Referee_TeamInfo::CopyFrom(const SSL_Referee_TeamInfo& from) {
 }
 
 bool SSL_Referee_TeamInfo::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000007f) != 0x0000007f) return false;
+  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
   return true;
 }
 
 void SSL_Referee_TeamInfo::InternalSwap(SSL_Referee_TeamInfo* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   yellow_card_times_.InternalSwap(&other->yellow_card_times_);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  swap(score_, other->score_);
-  swap(red_cards_, other->red_cards_);
-  swap(yellow_cards_, other->yellow_cards_);
-  swap(timeouts_, other->timeouts_);
-  swap(timeout_time_, other->timeout_time_);
-  swap(goalie_, other->goalie_);
+  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SSL_Referee_TeamInfo, goalie_)
+      + sizeof(SSL_Referee_TeamInfo::goalie_)
+      - PROTOBUF_FIELD_OFFSET(SSL_Referee_TeamInfo, score_)>(
+          reinterpret_cast<char*>(&score_),
+          reinterpret_cast<char*>(&other->score_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SSL_Referee_TeamInfo::GetMetadata() const {
@@ -788,18 +801,21 @@ class SSL_Referee_Point::_Internal {
   static void set_has_y(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
+  static bool MissingRequiredFields(const HasBits& has_bits) {
+    return ((has_bits[0] & 0x00000003) ^ 0x00000003) != 0;
+  }
 };
 
-SSL_Referee_Point::SSL_Referee_Point()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SSL_Referee_Point::SSL_Referee_Point(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:SSL_Referee.Point)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:SSL_Referee.Point)
 }
 SSL_Referee_Point::SSL_Referee_Point(const SSL_Referee_Point& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&x_, &from.x_,
     static_cast<size_t>(reinterpret_cast<char*>(&y_) -
     reinterpret_cast<char*>(&x_)) + sizeof(y_));
@@ -815,11 +831,19 @@ void SSL_Referee_Point::SharedCtor() {
 SSL_Referee_Point::~SSL_Referee_Point() {
   // @@protoc_insertion_point(destructor:SSL_Referee.Point)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SSL_Referee_Point::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void SSL_Referee_Point::ArenaDtor(void* object) {
+  SSL_Referee_Point* _this = reinterpret_cast< SSL_Referee_Point* >(object);
+  (void)_this;
+}
+void SSL_Referee_Point::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SSL_Referee_Point::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -842,12 +866,13 @@ void SSL_Referee_Point::Clear() {
         reinterpret_cast<char*>(&x_)) + sizeof(y_));
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SSL_Referee_Point::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -875,7 +900,9 @@ const char* SSL_Referee_Point::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -911,7 +938,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:SSL_Referee.Point)
   return target;
@@ -978,7 +1005,7 @@ void SSL_Referee_Point::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) 
 void SSL_Referee_Point::MergeFrom(const SSL_Referee_Point& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:SSL_Referee.Point)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1009,16 +1036,20 @@ void SSL_Referee_Point::CopyFrom(const SSL_Referee_Point& from) {
 }
 
 bool SSL_Referee_Point::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
   return true;
 }
 
 void SSL_Referee_Point::InternalSwap(SSL_Referee_Point* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  swap(x_, other->x_);
-  swap(y_, other->y_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SSL_Referee_Point, y_)
+      + sizeof(SSL_Referee_Point::y_)
+      - PROTOBUF_FIELD_OFFSET(SSL_Referee_Point, x_)>(
+          reinterpret_cast<char*>(&x_),
+          reinterpret_cast<char*>(&other->x_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SSL_Referee_Point::GetMetadata() const {
@@ -1069,6 +1100,9 @@ class SSL_Referee::_Internal {
   static void set_has_designated_position(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
   }
+  static bool MissingRequiredFields(const HasBits& has_bits) {
+    return ((has_bits[0] & 0x000001db) ^ 0x000001db) != 0;
+  }
 };
 
 const ::SSL_Referee_TeamInfo&
@@ -1083,16 +1117,16 @@ const ::SSL_Referee_Point&
 SSL_Referee::_Internal::designated_position(const SSL_Referee* msg) {
   return *msg->designated_position_;
 }
-SSL_Referee::SSL_Referee()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SSL_Referee::SSL_Referee(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:SSL_Referee)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:SSL_Referee)
 }
 SSL_Referee::SSL_Referee(const SSL_Referee& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_yellow()) {
     yellow_ = new ::SSL_Referee_TeamInfo(*from.yellow_);
   } else {
@@ -1124,14 +1158,22 @@ void SSL_Referee::SharedCtor() {
 SSL_Referee::~SSL_Referee() {
   // @@protoc_insertion_point(destructor:SSL_Referee)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SSL_Referee::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete yellow_;
   if (this != internal_default_instance()) delete blue_;
   if (this != internal_default_instance()) delete designated_position_;
 }
 
+void SSL_Referee::ArenaDtor(void* object) {
+  SSL_Referee* _this = reinterpret_cast< SSL_Referee* >(object);
+  (void)_this;
+}
+void SSL_Referee::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SSL_Referee::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1169,12 +1211,13 @@ void SSL_Referee::Clear() {
   }
   command_timestamp_ = PROTOBUF_ULONGLONG(0);
   _has_bits_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SSL_Referee::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1184,14 +1227,14 @@ const char* SSL_Referee::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           _Internal::set_has_packet_timestamp(&has_bits);
-          packet_timestamp_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          packet_timestamp_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
       // required .SSL_Referee.Stage stage = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::SSL_Referee_Stage_IsValid(val))) {
             _internal_set_stage(static_cast<::SSL_Referee_Stage>(val));
@@ -1211,7 +1254,7 @@ const char* SSL_Referee::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
       // required .SSL_Referee.Command command = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::SSL_Referee_Command_IsValid(val))) {
             _internal_set_command(static_cast<::SSL_Referee_Command>(val));
@@ -1224,7 +1267,7 @@ const char* SSL_Referee::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
           _Internal::set_has_command_counter(&has_bits);
-          command_counter_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          command_counter_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1232,7 +1275,7 @@ const char* SSL_Referee::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
           _Internal::set_has_command_timestamp(&has_bits);
-          command_timestamp_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          command_timestamp_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1263,7 +1306,9 @@ const char* SSL_Referee::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1349,7 +1394,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:SSL_Referee)
   return target;
@@ -1495,7 +1540,7 @@ void SSL_Referee::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void SSL_Referee::MergeFrom(const SSL_Referee& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:SSL_Referee)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1547,7 +1592,7 @@ void SSL_Referee::CopyFrom(const SSL_Referee& from) {
 }
 
 bool SSL_Referee::IsInitialized() const {
-  if ((_has_bits_[0] & 0x000001db) != 0x000001db) return false;
+  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
   if (_internal_has_yellow()) {
     if (!yellow_->IsInitialized()) return false;
   }
@@ -1562,17 +1607,14 @@ bool SSL_Referee::IsInitialized() const {
 
 void SSL_Referee::InternalSwap(SSL_Referee* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  swap(yellow_, other->yellow_);
-  swap(blue_, other->blue_);
-  swap(designated_position_, other->designated_position_);
-  swap(packet_timestamp_, other->packet_timestamp_);
-  swap(stage_, other->stage_);
-  swap(stage_time_left_, other->stage_time_left_);
-  swap(command_, other->command_);
-  swap(command_counter_, other->command_counter_);
-  swap(command_timestamp_, other->command_timestamp_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SSL_Referee, command_timestamp_)
+      + sizeof(SSL_Referee::command_timestamp_)
+      - PROTOBUF_FIELD_OFFSET(SSL_Referee, yellow_)>(
+          reinterpret_cast<char*>(&yellow_),
+          reinterpret_cast<char*>(&other->yellow_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SSL_Referee::GetMetadata() const {
@@ -1583,13 +1625,13 @@ void SSL_Referee::InternalSwap(SSL_Referee* other) {
 // @@protoc_insertion_point(namespace_scope)
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::SSL_Referee_TeamInfo* Arena::CreateMaybeMessage< ::SSL_Referee_TeamInfo >(Arena* arena) {
-  return Arena::CreateInternal< ::SSL_Referee_TeamInfo >(arena);
+  return Arena::CreateMessageInternal< ::SSL_Referee_TeamInfo >(arena);
 }
 template<> PROTOBUF_NOINLINE ::SSL_Referee_Point* Arena::CreateMaybeMessage< ::SSL_Referee_Point >(Arena* arena) {
-  return Arena::CreateInternal< ::SSL_Referee_Point >(arena);
+  return Arena::CreateMessageInternal< ::SSL_Referee_Point >(arena);
 }
 template<> PROTOBUF_NOINLINE ::SSL_Referee* Arena::CreateMaybeMessage< ::SSL_Referee >(Arena* arena) {
-  return Arena::CreateInternal< ::SSL_Referee >(arena);
+  return Arena::CreateMessageInternal< ::SSL_Referee >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

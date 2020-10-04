@@ -121,10 +121,8 @@ Polygon2D::vertex()
 
 */
 Rect2D
-Polygon2D::getBoundingBox() const
-{
-    if ( M_vertex.empty() )
-    {
+Polygon2D::getBoundingBox() const {
+    if (M_vertex.empty()) {
         return Rect2D();
     }
 
@@ -133,29 +131,27 @@ Polygon2D::getBoundingBox() const
     double y_min = +DBL_MAX;
     double y_max = -DBL_MAX;
 
-    for ( size_t i = 0; i < M_vertex.size(); ++i )
-    {
+    for (size_t i = 0; i < M_vertex.size(); ++i) {
         const Vector2D & p = M_vertex[i];
 
-        if ( p.x > x_max )
-        {
+        if (p.x > x_max) {
             x_max = p.x;
         }
-        if ( p.x < x_min )
-        {
+
+        if (p.x < x_min) {
             x_min = p.x;
         }
-        if ( p.y > y_max )
-        {
+
+        if (p.y > y_max) {
             y_max = p.y;
         }
-        if ( p.y < y_min )
-        {
+
+        if (p.y < y_min) {
             y_min = p.y;
         }
     }
 
-    return( Rect2D( x_min, y_max, (x_max - x_min), (y_max - y_min) ) );
+    return (Rect2D(x_min, y_min, (x_max - x_min), (y_max - y_min)));
 }
 
 /*-------------------------------------------------------------------*/
@@ -173,34 +169,30 @@ Polygon2D::xyCenter() const
 
 */
 bool
-Polygon2D::contains( const Vector2D & p,
-                     bool allow_on_segment ) const
-{
-    if ( M_vertex.empty() )
-    {
+Polygon2D::contains(const Vector2D & p,
+                    bool allow_on_segment) const {
+    if (M_vertex.empty()) {
         return false;
-    }
-    else if ( M_vertex.size() == 1 )
-    {
+    } else if (M_vertex.size() == 1) {
         return allow_on_segment && (M_vertex[0] == p);
     }
 
 
     Rect2D r = this -> getBoundingBox();
 
-    // if ( ! r.contains( p ) )
-    // {
-    //     return false;
-    // }
+    /*if ( ! r.contains( p ) )
+    {
+        return false;
+    }*/
 
 
     //
     // make virtual half line
     //
-    Segment2D line( p, Vector2D( p.x + ((r.maxX() - r.minX()
-                                         + r.maxY() - r.minY())
-                                        + (M_vertex[0] - p).r()) * 3.0,
-                                 p.y ) );
+    Segment2D line(p, Vector2D(p.x + ((r.maxX() - r.minX()
+                                       + r.maxY() - r.minY())
+                                      + (M_vertex[0] - p).r()) * 3.0,
+                               p.y));
 
     //
     // check intersection with all segments
@@ -208,64 +200,48 @@ Polygon2D::contains( const Vector2D & p,
     bool inside = false;
     double min_line_x = r.maxX() + 1.0;
 
-    for ( size_t i = 0; i < M_vertex.size(); ++i )
-    {
+    for (size_t i = 0; i < M_vertex.size(); ++i) {
         size_t p1_index = i + 1;
 
-        if ( p1_index >= M_vertex.size() )
-        {
+        if (p1_index >= M_vertex.size()) {
             p1_index = 0;
         }
 
         const Vector2D p0 = M_vertex[i];
         const Vector2D p1 = M_vertex[p1_index];
 
-        if ( ! allow_on_segment )
-        {
-            if ( Segment2D( p0, p1 ).onSegment( p ) )
-            {
+        if (! allow_on_segment) {
+            if (Segment2D(p0, p1).onSegment(p)) {
                 return false;
             }
         }
 
-        if ( allow_on_segment && p == p0 )
-        {
+        if (allow_on_segment && p == p0) {
             return true;
         }
 
-        if ( line.existIntersection( Segment2D( p0, p1 ) ) )
-        {
-            if ( p0.y == p.y
-              || p1.y == p.y )
-            {
-                if ( p0.y == p.y )
-                {
-                    if ( p0.x < min_line_x )
-                    {
+        if (line.existIntersection(Segment2D(p0, p1))) {
+            if (p0.y == p.y
+                || p1.y == p.y) {
+                if (p0.y == p.y) {
+                    if (p0.x < min_line_x) {
                         min_line_x = p0.x;
                     }
                 }
 
-                if ( p1.y == p.y )
-                {
-                    if ( p1.x < min_line_x )
-                    {
+                if (p1.y == p.y) {
+                    if (p1.x < min_line_x) {
                         min_line_x = p1.x;
                     }
                 }
 
 
-                if ( p0.y == p1.y )
-                {
+                if (p0.y == p1.y) {
                     continue;
-                }
-                else if ( p0.y < p.y
-                       || p1.y < p.y )
-                {
+                } else if (p0.y < p.y
+                           || p1.y < p.y) {
                     continue;
-                }
-                else // bottom point on the line
-                {
+                } else { // bottom point on the line
                     // no operation, don't skip
                 }
             }
@@ -283,43 +259,36 @@ Polygon2D::contains( const Vector2D & p,
 
 */
 double
-Polygon2D::dist( const Vector2D & p,
-                 bool check_as_plane ) const
-{
-    if ( this -> vertex().size() == 1 )
-    {
+Polygon2D::dist(const Vector2D & p,
+                bool check_as_plane) const {
+    if (this -> vertex().size() == 1) {
         return (this -> vertex()[0] - p).r();
     }
 
-    if ( check_as_plane && this -> contains( p ) )
-    {
+    if (check_as_plane && this -> contains(p)) {
         return 0.0;
     }
 
     double min_dist = +DBL_MAX;
 
-    for ( size_t i = 0; i + 1 < this -> vertex().size(); ++i )
-    {
-        Segment2D seg( this -> vertex()[i],
-                       this -> vertex()[i + 1] );
+    for (size_t i = 0; i + 1 < this -> vertex().size(); ++i) {
+        Segment2D seg(this -> vertex()[i],
+                      this -> vertex()[i + 1]);
 
-        double d = seg.dist( p );
+        double d = seg.dist(p);
 
-        if ( d < min_dist )
-        {
+        if (d < min_dist) {
             min_dist = d;
         }
     }
 
-    if ( this -> vertex().size() >= 3 )
-    {
-        Segment2D seg( *(this -> vertex().rbegin()),
-                       *(this -> vertex().begin()) );
+    if (this -> vertex().size() >= 3) {
+        Segment2D seg(*(this -> vertex().rbegin()),
+                      *(this -> vertex().begin()));
 
-        double d = seg.dist( p );
+        double d = seg.dist(p);
 
-        if ( d < min_dist )
-        {
+        if (d < min_dist) {
             min_dist = d;
         }
     }
@@ -344,19 +313,15 @@ Polygon2D::area() const
 
 */
 double
-Polygon2D::signedArea2() const
-{
-    if ( M_vertex.size() < 3 )
-    {
+Polygon2D::signedArea2() const {
+    if (M_vertex.size() < 3) {
         return 0.0;
     }
 
     double sum = 0.0;
-    for ( size_t i = 0; i < M_vertex.size(); ++i )
-    {
+    for (size_t i = 0; i < M_vertex.size(); ++i) {
         size_t n = i + 1;
-        if ( n == M_vertex.size() )
-        {
+        if (n == M_vertex.size()) {
             n = 0;
         }
 
@@ -393,45 +358,36 @@ Polygon2D::isClockwise() const
 */
 template< class Predicate >
 void
-scissorWithLine( const Predicate & in_region,
-                 const std::vector< Vector2D > & points,
-                 std::vector< Vector2D > * new_points,
-                 const Line2D & line )
-{
+scissorWithLine(const Predicate & in_region,
+                const std::vector< Vector2D > & points,
+                std::vector< Vector2D > * new_points,
+                const Line2D & line) {
     new_points -> clear();
 
-    std::vector< bool > in_rectangle( points.size() );
+    std::vector< bool > in_rectangle(points.size());
 
-    for ( size_t i = 0; i < points.size(); ++i )
-    {
-        in_rectangle[i] = in_region( points[i] );
+    for (size_t i = 0; i < points.size(); ++i) {
+        in_rectangle[i] = in_region(points[i]);
     }
 
-    for ( size_t i = 0; i < points.size(); ++i )
-    {
+    for (size_t i = 0; i < points.size(); ++i) {
         size_t index_0 = i;
         size_t index_1 = i + 1;
 
-        if ( index_1 >= points.size() )
-        {
+        if (index_1 >= points.size()) {
             index_1 = 0;
         }
 
         const Vector2D & p0 = points[index_0];
         const Vector2D & p1 = points[index_1];
 
-        if ( in_rectangle[index_0] )
-        {
-            if ( in_rectangle[index_1] )
-            {
-                new_points -> push_back( p1 );
-            }
-            else
-            {
-                Vector2D c = line.intersection( Line2D( p0, p1 ) );
+        if (in_rectangle[index_0]) {
+            if (in_rectangle[index_1]) {
+                new_points -> push_back(p1);
+            } else {
+                Vector2D c = line.intersection(Line2D(p0, p1));
 
-                if ( ! c.valid() )
-                {
+                if (! c.valid()) {
                     std::cerr << "internal error:"
                               << " in rcsc::Polygon2D::scissorWithLine()"
                               << std::endl;
@@ -439,17 +395,13 @@ scissorWithLine( const Predicate & in_region,
                     std::abort();
                 }
 
-                new_points -> push_back( c );
+                new_points -> push_back(c);
             }
-        }
-        else
-        {
-            if ( in_rectangle[index_1] )
-            {
-                Vector2D c = line.intersection( Line2D( p0, p1 ) );
+        } else {
+            if (in_rectangle[index_1]) {
+                Vector2D c = line.intersection(Line2D(p0, p1));
 
-                if ( ! c.valid() )
-                {
+                if (! c.valid()) {
                     std::cerr << "internal error:"
                               << " in rcsc::Polygon2D::scissorWithLine()"
                               << std::endl;
@@ -457,11 +409,9 @@ scissorWithLine( const Predicate & in_region,
                     std::abort();
                 }
 
-                new_points -> push_back( c );
-                new_points -> push_back( p1 );
-            }
-            else
-            {
+                new_points -> push_back(c);
+                new_points -> push_back(p1);
+            } else {
                 // noting to do
             }
         }
@@ -542,10 +492,8 @@ public:
 
 */
 Polygon2D
-Polygon2D::getScissoredConnectedPolygon( const Rect2D & r ) const
-{
-    if ( M_vertex.empty() )
-    {
+Polygon2D::getScissoredConnectedPolygon(const Rect2D & r) const {
+    if (M_vertex.empty()) {
         return Polygon2D();
     }
 
@@ -555,23 +503,23 @@ Polygon2D::getScissoredConnectedPolygon( const Rect2D & r ) const
     std::vector< Vector2D > clipped_p_3;
     std::vector< Vector2D > clipped_p_4;
 
-    scissorWithLine< XLessEqual >( XLessEqual( r.maxX() ),
-                                   p, &clipped_p_1,
-                                   Line2D( Vector2D( r.maxX(), 0.0 ), 90.0 ) );
+    scissorWithLine< XLessEqual >(XLessEqual(r.maxX()),
+                                  p, &clipped_p_1,
+                                  Line2D(Vector2D(r.maxX(), 0.0), 90.0));
 
-    scissorWithLine< YLessEqual >( YLessEqual( r.maxY() ),
-                                   clipped_p_1, &clipped_p_2,
-                                   Line2D( Vector2D( 0.0, r.maxY() ), 0.0 ) );
+    scissorWithLine< YLessEqual >(YLessEqual(r.maxY()),
+                                  clipped_p_1, &clipped_p_2,
+                                  Line2D(Vector2D(0.0, r.maxY()), 0.0));
 
-    scissorWithLine< XMoreEqual >( XMoreEqual( r.minX() ),
-                                   clipped_p_2, &clipped_p_3,
-                                   Line2D( Vector2D( r.minX(), 0.0 ), 90.0 ) );
+    scissorWithLine< XMoreEqual >(XMoreEqual(r.minX()),
+                                  clipped_p_2, &clipped_p_3,
+                                  Line2D(Vector2D(r.minX(), 0.0), 90.0));
 
-    scissorWithLine< YMoreEqual >( YMoreEqual( r.minY() ),
-                                   clipped_p_3, &clipped_p_4,
-                                   Line2D( Vector2D( 0.0, r.minY() ), 0.0 ) );
+    scissorWithLine< YMoreEqual >(YMoreEqual(r.minY()),
+                                  clipped_p_3, &clipped_p_4,
+                                  Line2D(Vector2D(0.0, r.minY()), 0.0));
 
-    return Polygon2D( clipped_p_4 );
+    return Polygon2D(clipped_p_4);
 }
 
 } // end of namespace

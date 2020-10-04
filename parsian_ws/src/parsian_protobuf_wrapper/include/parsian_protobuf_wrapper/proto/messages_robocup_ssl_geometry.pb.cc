@@ -296,16 +296,15 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_mes
   &scc_info_Vector2f_messages_5frobocup_5fssl_5fgeometry_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_messages_5frobocup_5fssl_5fgeometry_2eproto_once;
-static bool descriptor_table_messages_5frobocup_5fssl_5fgeometry_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_messages_5frobocup_5fssl_5fgeometry_2eproto = {
-  &descriptor_table_messages_5frobocup_5fssl_5fgeometry_2eproto_initialized, descriptor_table_protodef_messages_5frobocup_5fssl_5fgeometry_2eproto, "messages_robocup_ssl_geometry.proto", 954,
+  false, false, descriptor_table_protodef_messages_5frobocup_5fssl_5fgeometry_2eproto, "messages_robocup_ssl_geometry.proto", 954,
   &descriptor_table_messages_5frobocup_5fssl_5fgeometry_2eproto_once, descriptor_table_messages_5frobocup_5fssl_5fgeometry_2eproto_sccs, descriptor_table_messages_5frobocup_5fssl_5fgeometry_2eproto_deps, 6, 0,
   schemas, file_default_instances, TableStruct_messages_5frobocup_5fssl_5fgeometry_2eproto::offsets,
   file_level_metadata_messages_5frobocup_5fssl_5fgeometry_2eproto, 6, file_level_enum_descriptors_messages_5frobocup_5fssl_5fgeometry_2eproto, file_level_service_descriptors_messages_5frobocup_5fssl_5fgeometry_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_messages_5frobocup_5fssl_5fgeometry_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_messages_5frobocup_5fssl_5fgeometry_2eproto), true);
+static bool dynamic_init_dummy_messages_5frobocup_5fssl_5fgeometry_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_messages_5frobocup_5fssl_5fgeometry_2eproto)), true);
 
 // ===================================================================
 
@@ -320,18 +319,21 @@ class Vector2f::_Internal {
   static void set_has_y(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
+  static bool MissingRequiredFields(const HasBits& has_bits) {
+    return ((has_bits[0] & 0x00000003) ^ 0x00000003) != 0;
+  }
 };
 
-Vector2f::Vector2f()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+Vector2f::Vector2f(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:Vector2f)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:Vector2f)
 }
 Vector2f::Vector2f(const Vector2f& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&x_, &from.x_,
     static_cast<size_t>(reinterpret_cast<char*>(&y_) -
     reinterpret_cast<char*>(&x_)) + sizeof(y_));
@@ -347,11 +349,19 @@ void Vector2f::SharedCtor() {
 Vector2f::~Vector2f() {
   // @@protoc_insertion_point(destructor:Vector2f)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void Vector2f::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void Vector2f::ArenaDtor(void* object) {
+  Vector2f* _this = reinterpret_cast< Vector2f* >(object);
+  (void)_this;
+}
+void Vector2f::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void Vector2f::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -374,12 +384,13 @@ void Vector2f::Clear() {
         reinterpret_cast<char*>(&x_)) + sizeof(y_));
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Vector2f::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -407,7 +418,9 @@ const char* Vector2f::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -443,7 +456,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:Vector2f)
   return target;
@@ -510,7 +523,7 @@ void Vector2f::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void Vector2f::MergeFrom(const Vector2f& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:Vector2f)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -541,16 +554,20 @@ void Vector2f::CopyFrom(const Vector2f& from) {
 }
 
 bool Vector2f::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
   return true;
 }
 
 void Vector2f::InternalSwap(Vector2f* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  swap(x_, other->x_);
-  swap(y_, other->y_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Vector2f, y_)
+      + sizeof(Vector2f::y_)
+      - PROTOBUF_FIELD_OFFSET(Vector2f, x_)>(
+          reinterpret_cast<char*>(&x_),
+          reinterpret_cast<char*>(&other->x_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Vector2f::GetMetadata() const {
@@ -583,6 +600,9 @@ class SSL_FieldLineSegment::_Internal {
   static void set_has_thickness(HasBits* has_bits) {
     (*has_bits)[0] |= 8u;
   }
+  static bool MissingRequiredFields(const HasBits& has_bits) {
+    return ((has_bits[0] & 0x0000000f) ^ 0x0000000f) != 0;
+  }
 };
 
 const ::Vector2f&
@@ -593,19 +613,20 @@ const ::Vector2f&
 SSL_FieldLineSegment::_Internal::p2(const SSL_FieldLineSegment* msg) {
   return *msg->p2_;
 }
-SSL_FieldLineSegment::SSL_FieldLineSegment()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SSL_FieldLineSegment::SSL_FieldLineSegment(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:SSL_FieldLineSegment)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:SSL_FieldLineSegment)
 }
 SSL_FieldLineSegment::SSL_FieldLineSegment(const SSL_FieldLineSegment& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_name()) {
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+    name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_name(),
+      GetArena());
   }
   if (from._internal_has_p1()) {
     p1_ = new ::Vector2f(*from.p1_);
@@ -632,14 +653,22 @@ void SSL_FieldLineSegment::SharedCtor() {
 SSL_FieldLineSegment::~SSL_FieldLineSegment() {
   // @@protoc_insertion_point(destructor:SSL_FieldLineSegment)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SSL_FieldLineSegment::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete p1_;
   if (this != internal_default_instance()) delete p2_;
 }
 
+void SSL_FieldLineSegment::ArenaDtor(void* object) {
+  SSL_FieldLineSegment* _this = reinterpret_cast< SSL_FieldLineSegment* >(object);
+  (void)_this;
+}
+void SSL_FieldLineSegment::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SSL_FieldLineSegment::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -658,7 +687,7 @@ void SSL_FieldLineSegment::Clear() {
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
-      name_.ClearNonDefaultToEmptyNoArena();
+      name_.ClearNonDefaultToEmpty();
     }
     if (cached_has_bits & 0x00000002u) {
       GOOGLE_DCHECK(p1_ != nullptr);
@@ -671,12 +700,13 @@ void SSL_FieldLineSegment::Clear() {
   }
   thickness_ = 0;
   _has_bits_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SSL_FieldLineSegment::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -721,7 +751,9 @@ const char* SSL_FieldLineSegment::_InternalParse(const char* ptr, ::PROTOBUF_NAM
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -777,7 +809,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:SSL_FieldLineSegment)
   return target;
@@ -872,15 +904,14 @@ void SSL_FieldLineSegment::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& fro
 void SSL_FieldLineSegment::MergeFrom(const SSL_FieldLineSegment& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:SSL_FieldLineSegment)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
-      _has_bits_[0] |= 0x00000001u;
-      name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+      _internal_set_name(from._internal_name());
     }
     if (cached_has_bits & 0x00000002u) {
       _internal_mutable_p1()->::Vector2f::MergeFrom(from._internal_p1());
@@ -910,7 +941,7 @@ void SSL_FieldLineSegment::CopyFrom(const SSL_FieldLineSegment& from) {
 }
 
 bool SSL_FieldLineSegment::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
   if (_internal_has_p1()) {
     if (!p1_->IsInitialized()) return false;
   }
@@ -922,13 +953,15 @@ bool SSL_FieldLineSegment::IsInitialized() const {
 
 void SSL_FieldLineSegment::InternalSwap(SSL_FieldLineSegment* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  swap(p1_, other->p1_);
-  swap(p2_, other->p2_);
-  swap(thickness_, other->thickness_);
+  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SSL_FieldLineSegment, thickness_)
+      + sizeof(SSL_FieldLineSegment::thickness_)
+      - PROTOBUF_FIELD_OFFSET(SSL_FieldLineSegment, p1_)>(
+          reinterpret_cast<char*>(&p1_),
+          reinterpret_cast<char*>(&other->p1_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SSL_FieldLineSegment::GetMetadata() const {
@@ -964,25 +997,29 @@ class SSL_FieldCicularArc::_Internal {
   static void set_has_thickness(HasBits* has_bits) {
     (*has_bits)[0] |= 32u;
   }
+  static bool MissingRequiredFields(const HasBits& has_bits) {
+    return ((has_bits[0] & 0x0000003f) ^ 0x0000003f) != 0;
+  }
 };
 
 const ::Vector2f&
 SSL_FieldCicularArc::_Internal::center(const SSL_FieldCicularArc* msg) {
   return *msg->center_;
 }
-SSL_FieldCicularArc::SSL_FieldCicularArc()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SSL_FieldCicularArc::SSL_FieldCicularArc(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:SSL_FieldCicularArc)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:SSL_FieldCicularArc)
 }
 SSL_FieldCicularArc::SSL_FieldCicularArc(const SSL_FieldCicularArc& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_name()) {
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+    name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_name(),
+      GetArena());
   }
   if (from._internal_has_center()) {
     center_ = new ::Vector2f(*from.center_);
@@ -1006,13 +1043,21 @@ void SSL_FieldCicularArc::SharedCtor() {
 SSL_FieldCicularArc::~SSL_FieldCicularArc() {
   // @@protoc_insertion_point(destructor:SSL_FieldCicularArc)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SSL_FieldCicularArc::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete center_;
 }
 
+void SSL_FieldCicularArc::ArenaDtor(void* object) {
+  SSL_FieldCicularArc* _this = reinterpret_cast< SSL_FieldCicularArc* >(object);
+  (void)_this;
+}
+void SSL_FieldCicularArc::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SSL_FieldCicularArc::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1031,7 +1076,7 @@ void SSL_FieldCicularArc::Clear() {
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      name_.ClearNonDefaultToEmptyNoArena();
+      name_.ClearNonDefaultToEmpty();
     }
     if (cached_has_bits & 0x00000002u) {
       GOOGLE_DCHECK(center_ != nullptr);
@@ -1044,12 +1089,13 @@ void SSL_FieldCicularArc::Clear() {
         reinterpret_cast<char*>(&radius_)) + sizeof(thickness_));
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SSL_FieldCicularArc::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1111,7 +1157,9 @@ const char* SSL_FieldCicularArc::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1177,7 +1225,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:SSL_FieldCicularArc)
   return target;
@@ -1284,15 +1332,14 @@ void SSL_FieldCicularArc::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from
 void SSL_FieldCicularArc::MergeFrom(const SSL_FieldCicularArc& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:SSL_FieldCicularArc)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
   if (cached_has_bits & 0x0000003fu) {
     if (cached_has_bits & 0x00000001u) {
-      _has_bits_[0] |= 0x00000001u;
-      name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
+      _internal_set_name(from._internal_name());
     }
     if (cached_has_bits & 0x00000002u) {
       _internal_mutable_center()->::Vector2f::MergeFrom(from._internal_center());
@@ -1328,7 +1375,7 @@ void SSL_FieldCicularArc::CopyFrom(const SSL_FieldCicularArc& from) {
 }
 
 bool SSL_FieldCicularArc::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000003f) != 0x0000003f) return false;
+  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
   if (_internal_has_center()) {
     if (!center_->IsInitialized()) return false;
   }
@@ -1337,15 +1384,15 @@ bool SSL_FieldCicularArc::IsInitialized() const {
 
 void SSL_FieldCicularArc::InternalSwap(SSL_FieldCicularArc* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-  swap(center_, other->center_);
-  swap(radius_, other->radius_);
-  swap(a1_, other->a1_);
-  swap(a2_, other->a2_);
-  swap(thickness_, other->thickness_);
+  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SSL_FieldCicularArc, thickness_)
+      + sizeof(SSL_FieldCicularArc::thickness_)
+      - PROTOBUF_FIELD_OFFSET(SSL_FieldCicularArc, center_)>(
+          reinterpret_cast<char*>(&center_),
+          reinterpret_cast<char*>(&other->center_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SSL_FieldCicularArc::GetMetadata() const {
@@ -1375,20 +1422,25 @@ class SSL_GeometryFieldSize::_Internal {
   static void set_has_boundary_width(HasBits* has_bits) {
     (*has_bits)[0] |= 16u;
   }
+  static bool MissingRequiredFields(const HasBits& has_bits) {
+    return ((has_bits[0] & 0x0000001f) ^ 0x0000001f) != 0;
+  }
 };
 
-SSL_GeometryFieldSize::SSL_GeometryFieldSize()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SSL_GeometryFieldSize::SSL_GeometryFieldSize(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
+  field_lines_(arena),
+  field_arcs_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:SSL_GeometryFieldSize)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:SSL_GeometryFieldSize)
 }
 SSL_GeometryFieldSize::SSL_GeometryFieldSize(const SSL_GeometryFieldSize& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_),
       field_lines_(from.field_lines_),
       field_arcs_(from.field_arcs_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&field_length_, &from.field_length_,
     static_cast<size_t>(reinterpret_cast<char*>(&boundary_width_) -
     reinterpret_cast<char*>(&field_length_)) + sizeof(boundary_width_));
@@ -1405,11 +1457,19 @@ void SSL_GeometryFieldSize::SharedCtor() {
 SSL_GeometryFieldSize::~SSL_GeometryFieldSize() {
   // @@protoc_insertion_point(destructor:SSL_GeometryFieldSize)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SSL_GeometryFieldSize::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void SSL_GeometryFieldSize::ArenaDtor(void* object) {
+  SSL_GeometryFieldSize* _this = reinterpret_cast< SSL_GeometryFieldSize* >(object);
+  (void)_this;
+}
+void SSL_GeometryFieldSize::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SSL_GeometryFieldSize::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1434,12 +1494,13 @@ void SSL_GeometryFieldSize::Clear() {
         reinterpret_cast<char*>(&field_length_)) + sizeof(boundary_width_));
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SSL_GeometryFieldSize::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1449,7 +1510,7 @@ const char* SSL_GeometryFieldSize::_InternalParse(const char* ptr, ::PROTOBUF_NA
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           _Internal::set_has_field_length(&has_bits);
-          field_length_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          field_length_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1457,7 +1518,7 @@ const char* SSL_GeometryFieldSize::_InternalParse(const char* ptr, ::PROTOBUF_NA
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
           _Internal::set_has_field_width(&has_bits);
-          field_width_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          field_width_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1465,7 +1526,7 @@ const char* SSL_GeometryFieldSize::_InternalParse(const char* ptr, ::PROTOBUF_NA
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
           _Internal::set_has_goal_width(&has_bits);
-          goal_width_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          goal_width_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1473,7 +1534,7 @@ const char* SSL_GeometryFieldSize::_InternalParse(const char* ptr, ::PROTOBUF_NA
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
           _Internal::set_has_goal_depth(&has_bits);
-          goal_depth_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          goal_depth_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1481,7 +1542,7 @@ const char* SSL_GeometryFieldSize::_InternalParse(const char* ptr, ::PROTOBUF_NA
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
           _Internal::set_has_boundary_width(&has_bits);
-          boundary_width_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          boundary_width_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1515,7 +1576,9 @@ const char* SSL_GeometryFieldSize::_InternalParse(const char* ptr, ::PROTOBUF_NA
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -1585,7 +1648,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:SSL_GeometryFieldSize)
   return target;
@@ -1710,7 +1773,7 @@ void SSL_GeometryFieldSize::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& fr
 void SSL_GeometryFieldSize::MergeFrom(const SSL_GeometryFieldSize& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:SSL_GeometryFieldSize)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1752,7 +1815,7 @@ void SSL_GeometryFieldSize::CopyFrom(const SSL_GeometryFieldSize& from) {
 }
 
 bool SSL_GeometryFieldSize::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
   if (!::PROTOBUF_NAMESPACE_ID::internal::AllAreInitialized(field_lines_)) return false;
   if (!::PROTOBUF_NAMESPACE_ID::internal::AllAreInitialized(field_arcs_)) return false;
   return true;
@@ -1760,15 +1823,16 @@ bool SSL_GeometryFieldSize::IsInitialized() const {
 
 void SSL_GeometryFieldSize::InternalSwap(SSL_GeometryFieldSize* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   field_lines_.InternalSwap(&other->field_lines_);
   field_arcs_.InternalSwap(&other->field_arcs_);
-  swap(field_length_, other->field_length_);
-  swap(field_width_, other->field_width_);
-  swap(goal_width_, other->goal_width_);
-  swap(goal_depth_, other->goal_depth_);
-  swap(boundary_width_, other->boundary_width_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SSL_GeometryFieldSize, boundary_width_)
+      + sizeof(SSL_GeometryFieldSize::boundary_width_)
+      - PROTOBUF_FIELD_OFFSET(SSL_GeometryFieldSize, field_length_)>(
+          reinterpret_cast<char*>(&field_length_),
+          reinterpret_cast<char*>(&other->field_length_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SSL_GeometryFieldSize::GetMetadata() const {
@@ -1828,18 +1892,21 @@ class SSL_GeometryCameraCalibration::_Internal {
   static void set_has_derived_camera_world_tz(HasBits* has_bits) {
     (*has_bits)[0] |= 16384u;
   }
+  static bool MissingRequiredFields(const HasBits& has_bits) {
+    return ((has_bits[0] & 0x00000fff) ^ 0x00000fff) != 0;
+  }
 };
 
-SSL_GeometryCameraCalibration::SSL_GeometryCameraCalibration()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SSL_GeometryCameraCalibration::SSL_GeometryCameraCalibration(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:SSL_GeometryCameraCalibration)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:SSL_GeometryCameraCalibration)
 }
 SSL_GeometryCameraCalibration::SSL_GeometryCameraCalibration(const SSL_GeometryCameraCalibration& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&camera_id_, &from.camera_id_,
     static_cast<size_t>(reinterpret_cast<char*>(&derived_camera_world_tz_) -
     reinterpret_cast<char*>(&camera_id_)) + sizeof(derived_camera_world_tz_));
@@ -1855,11 +1922,19 @@ void SSL_GeometryCameraCalibration::SharedCtor() {
 SSL_GeometryCameraCalibration::~SSL_GeometryCameraCalibration() {
   // @@protoc_insertion_point(destructor:SSL_GeometryCameraCalibration)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SSL_GeometryCameraCalibration::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
+void SSL_GeometryCameraCalibration::ArenaDtor(void* object) {
+  SSL_GeometryCameraCalibration* _this = reinterpret_cast< SSL_GeometryCameraCalibration* >(object);
+  (void)_this;
+}
+void SSL_GeometryCameraCalibration::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SSL_GeometryCameraCalibration::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -1887,12 +1962,13 @@ void SSL_GeometryCameraCalibration::Clear() {
         reinterpret_cast<char*>(&q3_)) + sizeof(derived_camera_world_tz_));
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SSL_GeometryCameraCalibration::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -1902,7 +1978,7 @@ const char* SSL_GeometryCameraCalibration::_InternalParse(const char* ptr, ::PRO
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           _Internal::set_has_camera_id(&has_bits);
-          camera_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          camera_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2024,7 +2100,9 @@ const char* SSL_GeometryCameraCalibration::_InternalParse(const char* ptr, ::PRO
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -2138,7 +2216,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:SSL_GeometryCameraCalibration)
   return target;
@@ -2307,7 +2385,7 @@ void SSL_GeometryCameraCalibration::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Mes
 void SSL_GeometryCameraCalibration::MergeFrom(const SSL_GeometryCameraCalibration& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:SSL_GeometryCameraCalibration)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2380,29 +2458,20 @@ void SSL_GeometryCameraCalibration::CopyFrom(const SSL_GeometryCameraCalibration
 }
 
 bool SSL_GeometryCameraCalibration::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000fff) != 0x00000fff) return false;
+  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
   return true;
 }
 
 void SSL_GeometryCameraCalibration::InternalSwap(SSL_GeometryCameraCalibration* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  swap(camera_id_, other->camera_id_);
-  swap(focal_length_, other->focal_length_);
-  swap(principal_point_x_, other->principal_point_x_);
-  swap(principal_point_y_, other->principal_point_y_);
-  swap(distortion_, other->distortion_);
-  swap(q0_, other->q0_);
-  swap(q1_, other->q1_);
-  swap(q2_, other->q2_);
-  swap(q3_, other->q3_);
-  swap(tx_, other->tx_);
-  swap(ty_, other->ty_);
-  swap(tz_, other->tz_);
-  swap(derived_camera_world_tx_, other->derived_camera_world_tx_);
-  swap(derived_camera_world_ty_, other->derived_camera_world_ty_);
-  swap(derived_camera_world_tz_, other->derived_camera_world_tz_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SSL_GeometryCameraCalibration, derived_camera_world_tz_)
+      + sizeof(SSL_GeometryCameraCalibration::derived_camera_world_tz_)
+      - PROTOBUF_FIELD_OFFSET(SSL_GeometryCameraCalibration, camera_id_)>(
+          reinterpret_cast<char*>(&camera_id_),
+          reinterpret_cast<char*>(&other->camera_id_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SSL_GeometryCameraCalibration::GetMetadata() const {
@@ -2423,23 +2492,27 @@ class SSL_GeometryData::_Internal {
   static void set_has_field(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
+  static bool MissingRequiredFields(const HasBits& has_bits) {
+    return ((has_bits[0] & 0x00000001) ^ 0x00000001) != 0;
+  }
 };
 
 const ::SSL_GeometryFieldSize&
 SSL_GeometryData::_Internal::field(const SSL_GeometryData* msg) {
   return *msg->field_;
 }
-SSL_GeometryData::SSL_GeometryData()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+SSL_GeometryData::SSL_GeometryData(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
+  calib_(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:SSL_GeometryData)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:SSL_GeometryData)
 }
 SSL_GeometryData::SSL_GeometryData(const SSL_GeometryData& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_),
       calib_(from.calib_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_field()) {
     field_ = new ::SSL_GeometryFieldSize(*from.field_);
   } else {
@@ -2456,12 +2529,20 @@ void SSL_GeometryData::SharedCtor() {
 SSL_GeometryData::~SSL_GeometryData() {
   // @@protoc_insertion_point(destructor:SSL_GeometryData)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SSL_GeometryData::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete field_;
 }
 
+void SSL_GeometryData::ArenaDtor(void* object) {
+  SSL_GeometryData* _this = reinterpret_cast< SSL_GeometryData* >(object);
+  (void)_this;
+}
+void SSL_GeometryData::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void SSL_GeometryData::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -2484,12 +2565,13 @@ void SSL_GeometryData::Clear() {
     field_->Clear();
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* SSL_GeometryData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -2520,7 +2602,9 @@ const char* SSL_GeometryData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -2560,7 +2644,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:SSL_GeometryData)
   return target;
@@ -2614,7 +2698,7 @@ void SSL_GeometryData::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void SSL_GeometryData::MergeFrom(const SSL_GeometryData& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:SSL_GeometryData)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -2639,7 +2723,7 @@ void SSL_GeometryData::CopyFrom(const SSL_GeometryData& from) {
 }
 
 bool SSL_GeometryData::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
   if (!::PROTOBUF_NAMESPACE_ID::internal::AllAreInitialized(calib_)) return false;
   if (_internal_has_field()) {
     if (!field_->IsInitialized()) return false;
@@ -2649,7 +2733,7 @@ bool SSL_GeometryData::IsInitialized() const {
 
 void SSL_GeometryData::InternalSwap(SSL_GeometryData* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
   calib_.InternalSwap(&other->calib_);
   swap(field_, other->field_);
@@ -2663,22 +2747,22 @@ void SSL_GeometryData::InternalSwap(SSL_GeometryData* other) {
 // @@protoc_insertion_point(namespace_scope)
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::Vector2f* Arena::CreateMaybeMessage< ::Vector2f >(Arena* arena) {
-  return Arena::CreateInternal< ::Vector2f >(arena);
+  return Arena::CreateMessageInternal< ::Vector2f >(arena);
 }
 template<> PROTOBUF_NOINLINE ::SSL_FieldLineSegment* Arena::CreateMaybeMessage< ::SSL_FieldLineSegment >(Arena* arena) {
-  return Arena::CreateInternal< ::SSL_FieldLineSegment >(arena);
+  return Arena::CreateMessageInternal< ::SSL_FieldLineSegment >(arena);
 }
 template<> PROTOBUF_NOINLINE ::SSL_FieldCicularArc* Arena::CreateMaybeMessage< ::SSL_FieldCicularArc >(Arena* arena) {
-  return Arena::CreateInternal< ::SSL_FieldCicularArc >(arena);
+  return Arena::CreateMessageInternal< ::SSL_FieldCicularArc >(arena);
 }
 template<> PROTOBUF_NOINLINE ::SSL_GeometryFieldSize* Arena::CreateMaybeMessage< ::SSL_GeometryFieldSize >(Arena* arena) {
-  return Arena::CreateInternal< ::SSL_GeometryFieldSize >(arena);
+  return Arena::CreateMessageInternal< ::SSL_GeometryFieldSize >(arena);
 }
 template<> PROTOBUF_NOINLINE ::SSL_GeometryCameraCalibration* Arena::CreateMaybeMessage< ::SSL_GeometryCameraCalibration >(Arena* arena) {
-  return Arena::CreateInternal< ::SSL_GeometryCameraCalibration >(arena);
+  return Arena::CreateMessageInternal< ::SSL_GeometryCameraCalibration >(arena);
 }
 template<> PROTOBUF_NOINLINE ::SSL_GeometryData* Arena::CreateMaybeMessage< ::SSL_GeometryData >(Arena* arena) {
-  return Arena::CreateInternal< ::SSL_GeometryData >(arena);
+  return Arena::CreateMessageInternal< ::SSL_GeometryData >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

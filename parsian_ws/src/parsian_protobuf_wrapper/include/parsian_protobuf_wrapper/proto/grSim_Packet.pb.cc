@@ -73,16 +73,15 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_grS
   &scc_info_grSim_Packet_grSim_5fPacket_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_grSim_5fPacket_2eproto_once;
-static bool descriptor_table_grSim_5fPacket_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_grSim_5fPacket_2eproto = {
-  &descriptor_table_grSim_5fPacket_2eproto_initialized, descriptor_table_protodef_grSim_5fPacket_2eproto, "grSim_Packet.proto", 159,
+  false, false, descriptor_table_protodef_grSim_5fPacket_2eproto, "grSim_Packet.proto", 159,
   &descriptor_table_grSim_5fPacket_2eproto_once, descriptor_table_grSim_5fPacket_2eproto_sccs, descriptor_table_grSim_5fPacket_2eproto_deps, 1, 2,
   schemas, file_default_instances, TableStruct_grSim_5fPacket_2eproto::offsets,
   file_level_metadata_grSim_5fPacket_2eproto, 1, file_level_enum_descriptors_grSim_5fPacket_2eproto, file_level_service_descriptors_grSim_5fPacket_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_grSim_5fPacket_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_grSim_5fPacket_2eproto), true);
+static bool dynamic_init_dummy_grSim_5fPacket_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_grSim_5fPacket_2eproto)), true);
 
 // ===================================================================
 
@@ -121,16 +120,16 @@ void grSim_Packet::clear_replacement() {
   if (replacement_ != nullptr) replacement_->Clear();
   _has_bits_[0] &= ~0x00000002u;
 }
-grSim_Packet::grSim_Packet()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+grSim_Packet::grSim_Packet(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:grSim_Packet)
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:grSim_Packet)
 }
 grSim_Packet::grSim_Packet(const grSim_Packet& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
       _has_bits_(from._has_bits_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_commands()) {
     commands_ = new ::grSim_Commands(*from.commands_);
   } else {
@@ -154,13 +153,21 @@ void grSim_Packet::SharedCtor() {
 grSim_Packet::~grSim_Packet() {
   // @@protoc_insertion_point(destructor:grSim_Packet)
   SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void grSim_Packet::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
   if (this != internal_default_instance()) delete commands_;
   if (this != internal_default_instance()) delete replacement_;
 }
 
+void grSim_Packet::ArenaDtor(void* object) {
+  grSim_Packet* _this = reinterpret_cast< grSim_Packet* >(object);
+  (void)_this;
+}
+void grSim_Packet::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
 void grSim_Packet::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
@@ -188,12 +195,13 @@ void grSim_Packet::Clear() {
     }
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* grSim_Packet::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
@@ -219,7 +227,9 @@ const char* grSim_Packet::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
           ctx->SetLastTag(tag);
           goto success;
         }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
         CHK_(ptr != nullptr);
         continue;
       }
@@ -259,7 +269,7 @@ failure:
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:grSim_Packet)
   return target;
@@ -317,7 +327,7 @@ void grSim_Packet::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 void grSim_Packet::MergeFrom(const grSim_Packet& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:grSim_Packet)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -358,10 +368,14 @@ bool grSim_Packet::IsInitialized() const {
 
 void grSim_Packet::InternalSwap(grSim_Packet* other) {
   using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  swap(commands_, other->commands_);
-  swap(replacement_, other->replacement_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(grSim_Packet, replacement_)
+      + sizeof(grSim_Packet::replacement_)
+      - PROTOBUF_FIELD_OFFSET(grSim_Packet, commands_)>(
+          reinterpret_cast<char*>(&commands_),
+          reinterpret_cast<char*>(&other->commands_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata grSim_Packet::GetMetadata() const {
@@ -372,7 +386,7 @@ void grSim_Packet::InternalSwap(grSim_Packet* other) {
 // @@protoc_insertion_point(namespace_scope)
 PROTOBUF_NAMESPACE_OPEN
 template<> PROTOBUF_NOINLINE ::grSim_Packet* Arena::CreateMaybeMessage< ::grSim_Packet >(Arena* arena) {
-  return Arena::CreateInternal< ::grSim_Packet >(arena);
+  return Arena::CreateMessageInternal< ::grSim_Packet >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

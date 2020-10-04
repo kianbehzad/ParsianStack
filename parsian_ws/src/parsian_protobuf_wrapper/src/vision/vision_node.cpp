@@ -17,6 +17,21 @@ VisionNode::VisionNode(const rclcpp::NodeOptions & options) : Node("vision_node"
         RCLCPP_INFO(this->get_logger(), "parameter service not available, waiting again...");
     }
 
+    // set up worldmodel parameter client
+    auto parameters_worldmodel_client = std::make_shared<rclcpp::SyncParametersClient>(this, "worldmodel_node");
+    while (!parameters_worldmodel_client->wait_for_service(1s)) {
+        if (!rclcpp::ok()) {
+            RCLCPP_ERROR(this->get_logger(), "Interrupted while waiting for the worldmodel parameter service. Exiting.");
+            rclcpp::shutdown();
+        }
+        RCLCPP_INFO(this->get_logger(), "worldmodel parameter service not available, waiting again...");
+    }
+
+    // initialize worldmodel parameters
+    is_our_color_yellow = parameters_worldmodel_client->get_parameter("is_our_color_yellow", is_our_color_yellow);
+    is_our_side_left = parameters_worldmodel_client->get_parameter("is_our_side_left", is_our_side_left);
+
+
     // set up udp connection
     vision = nullptr;
     vision_multicast_ip = parameters_client->get_parameter("vision_multicast_ip", vision_multicast_ip);
@@ -80,6 +95,16 @@ void VisionNode::define_params_change_callback_lambda_function()
             {
                 vision_multicast_port = changed_parameter.value.integer_value;
                 reconnect();
+            }
+            else if(changed_parameter.name == "is_our_color_yellow")
+            {
+                is_our_color_yellow = changed_parameter.value.bool_value;
+                RCLCPP_INFO(this->get_logger(), "changing color, is_our_color_yellow: %d", is_our_color_yellow);
+            }
+            else if(changed_parameter.name == "is_our_side_left")
+            {
+                is_our_side_left = changed_parameter.value.bool_value;
+                RCLCPP_INFO(this->get_logger(), "changing side, is_our_side_left: %d", is_our_side_left);
             }
 
         }

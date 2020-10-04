@@ -39,6 +39,10 @@
 #include <algorithm>
 #include <iostream>
 
+#ifndef EPSILON
+#define EPSILON 0.0001
+#endif
+
 namespace rcsc {
 
 
@@ -323,6 +327,67 @@ namespace rcsc {
     bool Segment2D::onSegment(const Vector2D & p) const {
         return Triangle2D(*this, p).signedArea2() == 0.0
                && this -> checkIntersectsOnLine(p);
+    }
+
+
+    Vector2D Segment2D::projection(const Vector2D & p) const {
+        Vector2D dir = terminal() - origin();
+        double len = dir.r();
+
+        if (len < EPSILON) {
+            return origin();
+        }
+
+        dir /= len; // normalize
+
+        double d = dir.innerProduct(p - origin());
+        if (-EPSILON < d && d < len + EPSILON) {
+            dir *= d;
+            return Vector2D(origin()) += dir;
+        }
+
+        return Vector2D::INVALIDATED;
+
+#if 0
+        Line2D my_line = this->line();
+    Vector2D sol = my_line.projection(p);
+
+    if (! sol.isValid()
+            || ! this->contains(sol)) {
+        return Vector2D::INVALIDATED;
+    }
+
+    return sol;
+#endif
+    }
+
+
+    bool Segment2D::onSegmentWeakly(const Vector2D & p) const {
+        Vector2D proj = projection(p);
+
+        return (proj.isValid()
+                && p.equalsWeakly(proj));
+
+#if 0
+        Vector2D o = origin();
+    Vector2D t = terminal();
+
+    const double buf = (allow_on_terminal
+                        ? EPSILON
+                        : 0.0);
+
+    if (std::fabs((t - o).outerProduct(p - o)) < EPSILON) {
+        if (std::fabs(o.x - t.x) < EPSILON) {
+            return ((o.y - buf < p.y && p.y < t.y + buf)
+                    || (t.y - buf < p.y && p.y < o.y + buf));
+        } else {
+            return ((o.x - buf < p.x && p.x < t.x + buf)
+                    || (t.x - buf < p.x && p.x < o.x + buf));
+        }
+    }
+
+    return false;
+#endif
     }
 
 

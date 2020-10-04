@@ -392,6 +392,7 @@ namespace rcsc {
 
 
     int Rect2D::rotateAndintersect(const Circle2D & circle, Vector2D center, float angle , Vector2D * sol1, Vector2D * sol2, Vector2D * sol3, Vector2D * sol4) const {
+
         Vector2D cirCenter = circle.center() - center;
         cirCenter.rotate(-angle);
         cirCenter += center;

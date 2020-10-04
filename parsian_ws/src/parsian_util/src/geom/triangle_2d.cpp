@@ -303,80 +303,61 @@ namespace rcsc {
         Line2D perpendicular_bc
                 = Line2D::perpendicular_bisector(b, c);
 
-        Vector2D sol = perpendicular_ab.intersection(perpendicular_bc);
+        return perpendicular_ab.intersection(perpendicular_bc);
 
-        if (! sol.isValid()) {
-            Line2D perpendicular_ca
-                    = Line2D::perpendicular_bisector(c, a);
-            sol = perpendicular_ab.intersection(perpendicular_ca);
-
-            if (sol.isValid()) {
-                return sol;
-            }
-
-            sol = perpendicular_bc.intersection(perpendicular_ca);
-
-            if (sol.isValid()) {
-                return sol;
-            }
-        }
-
+#if 0
         // Following algorithm seems faster than above method.
-        // However, result is as:
-        //   above method     10000000times 730 [ms]
-        //   following method 10000000times 934 [ms]
-        // So, I choose above method.
+    // However, result is as:
+    //   above method     10000000times 730 [ms]
+    //   following method 10000000times 934 [ms]
+    // So, I choose above method.
 
-        ////////////////////////////////////////////////////////////////
-        // Q : curcumcenter
-        // M : center of AB
-        // N : center of AC
-        // s, t : parameter
-        // <,> : inner product operator
-        // S : area of triangle
-        // a = |BC|, b = |CA|, c = |AB|
+    ////////////////////////////////////////////////////////////////
+    // Q : curcumcenter
+    // M : center of AB
+    // N : center of AC
+    // s, t : parameter
+    // <,> : inner product operator
+    // S : area of triangle
+    // a = |BC|, b = |CA|, c = |AB|
 
-        // AQ = s*AB + t*AC
+    // AQ = s*AB + t*AC
 
-        // <MQ, AB> = <AQ - AM, AB>
-        //          = <s*AB + t*AC - AB/2, AB >
-        //          = <(s-1/2)*AB^2 + tAB, AC>
-        //          = (s-1/2)*c^2 + t*b*c*cosA
-        //          = 0
-        // <NQ, AC> = s*b*c*cosA + (t-1/2)*b^2 = 0
+    // <MQ, AB> = <AQ - AM, AB>
+    //          = <s*AB + t*AC - AB/2, AB >
+    //          = <(s-1/2)*AB^2 + tAB, AC>
+    //          = (s-1/2)*c^2 + t*b*c*cosA
+    //          = 0
+    // <NQ, AC> = s*b*c*cosA + (t-1/2)*b^2 = 0
 
-        // c^2 * s + (b*c*cosA)*t = c^2 / 2
-        // (b*c*cosA)*s + b^2 * t = b^2 / 2
+    // c^2 * s + (b*c*cosA)*t = c^2 / 2
+    // (b*c*cosA)*s + b^2 * t = b^2 / 2
 
-        // s = b^2 * (c^2 + a^2 - b^2) / (16S^2)
-        // t = c^2 * (a^2 + b^2 - c^2) / (16S^2)
+    // s = b^2 * (c^2 + a^2 - b^2) / (16S^2)
+    // t = c^2 * (a^2 + b^2 - c^2) / (16S^2)
 
-        // AQ = {b^2 * (c^2 + a^2 - b^2) * AB + c^2 * (a^2 + b^2 - c^2)) * AC} /(16S^2)
+    // AQ = {b^2 * (c^2 + a^2 - b^2) * AB + c^2 * (a^2 + b^2 - c^2)) * AC} /(16S^2)
 
-        Vector2D ab = b - a;
-        Vector2D ca = c - a;
+    Vector2D ab = b - a;
+    Vector2D ac = c - a;
 
-        double tmp = ab.outerProduct(ca);
-        if (std::fabs(tmp) < 1.0e-10) {
-            // The area of parallelogram is 0.
-            std::cerr << "Triangle2D::circumcenter()"
-                      << " ***ERROR*** at least, two vertex points have same coordiante.\n"
-                      << a << '\n'
-                      << b << '\n'
-                      << c << '\n'
-                      << std::endl;
-            return Vector2D(Vector2D::INVALIDATED);
-        }
+    double tmp = ab.outerProduct(ac);
+    if (std::fabs(tmp) < 0.001) {
+        // The area of parallelogram is 0.
+        std::cerr << "Triangle2D::getCircumCenter()"
+                  << " ***ERROR*** at least, two vertex points have same coordiante"
+                  << std::endl;
+        return Vector2D(Vector2D::INVALID);
+    }
 
-        double inv = 0.5 / tmp;
-        double ab_len2 = ab.r2();
-        double ca_len2 = ca.r2();
-        double xcc = inv * (ab_len2 * ca.y - ca_len2 * ab.y);
-        double ycc = inv * (ab.x * ca_len2 - ca.x * ab_len2);
-
-
-        // circle radius = xcc*xcc + ycc*ycc
-        return Vector2D(a.x + xcc, a.y + ycc);
+    double inv = 0.5 / tmp;
+    double ab_len2 = ab.r2();
+    double ac_len2 = ac.r2();
+    double xcc = inv * (ab_len2 * ac.y - ac_len2 * ab.y);
+    double ycc = inv * (ab.x * ac_len2 - ac.x * ab_len2);
+    // circle radius = xcc*xcc + ycc*ycc
+    return Vector2D(a.x + xcc, a.y + ycc);
+#endif
     }
 
 

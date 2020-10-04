@@ -27,6 +27,8 @@ CField::CField() {
     _PENALTY_WIDTH           = 2.400;
     _CENTER_CIRCLE_RAD       = 0.600;
 
+    _BOUNDARY_WIDTH          = 0.250;
+    _LINE_THICKNESS          = 0.010;
 
     _MAX_DIST = sqrt(_FIELD_WIDTH * _FIELD_WIDTH + _FIELD_HEIGHT * _FIELD_HEIGHT);
 
